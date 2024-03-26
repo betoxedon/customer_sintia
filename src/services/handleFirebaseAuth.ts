@@ -3,7 +3,7 @@ import type { Email } from '@/models/globalModel'
 import { credentialSchema, initialUserSchema, userSchema } from '@/models/userModel'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 import { setInitialStore, resetUserStore } from '@/services/handleStore'
-import { createUserSolr } from '@/services/handleSolr'
+// import { createUserSolr } from '@/services/handleSolr'
 import {
    createUserFirestore,
    updateUserFirestore,
@@ -48,22 +48,22 @@ export const signInFirebase = async (credential: Credential) => {
       await updateUserFirestore(userParsed)
    }
 
-   if (!userParsed.userSolrCreated) {
-      const userId = userParsed.uid
-      const response = await createUserSolr(userId)
-      if (response?.success) {
-         userParsed.userSolrCreated = true
-         await updateUserFirestore(userParsed)
-      } else {
-         await signOutFirebase()
-         useInterfaceStore().notificationMessage =
-            'Erro na conexão com o Solr. Por favor, tente mais tarde'
-         useInterfaceStore().notificationType = 'alert'
-         useInterfaceStore().notificationIsPersistent = true
-         useInterfaceStore().showNotification = true
-         return
-      }
-   }
+   // if (!userParsed.userSolrCreated) {
+   //    const userId = userParsed.uid
+   //    const response = await createUserSolr(userId)
+   //    if (response?.success) {
+   //       userParsed.userSolrCreated = true
+   //       await updateUserFirestore(userParsed)
+   //    } else {
+   //       await signOutFirebase()
+   //       useInterfaceStore().notificationMessage =
+   //          'Erro na conexão com o Solr. Por favor, tente mais tarde'
+   //       useInterfaceStore().notificationType = 'alert'
+   //       useInterfaceStore().notificationIsPersistent = true
+   //       useInterfaceStore().showNotification = true
+   //       return
+   //    }
+   // }
 
    await setInitialStore(userParsed)
 }
