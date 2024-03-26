@@ -1,0 +1,29 @@
+# Vscode
+settings.json
+
+# Build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+dev-dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Local env files
+.env
+.env.*
+
+# Misc
+.DS_Store
+.fleet
+.idea
+.netlify
+keybindings.json

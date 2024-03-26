@@ -1,0 +1,160 @@
+.main-inner,
+.aside {
+   max-height: calc(100vh - theme('spacing.6'));
+}
+
+.main-inner ::-webkit-scrollbar {
+   width: theme('spacing.3');
+   height: theme('spacing[2.5]');
+}
+
+.main-inner ::-webkit-scrollbar-track {
+   background: theme('colors.slate.300');
+   border-radius: theme('borderRadius.lg');
+}
+
+.main-inner ::-webkit-scrollbar-thumb {
+   background: theme('colors.slate.400');
+   border-radius: theme('borderRadius.lg');
+}
+
+.main-inner ::-webkit-scrollbar-thumb:hover {
+   background: theme('colors.primary-30');
+}
+
+/* animation */
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+@keyframes fadeOut {
+   from {
+      opacity: 1;
+   }
+   to {
+      opacity: 0;
+   }
+}
+
+@keyframes botBottomToTop {
+   from {
+      bottom: -90px;
+   }
+   to {
+      bottom: -21px;
+   }
+}
+
+@keyframes botTopToBottom {
+   from {
+      transform: translate(0, 0);
+   }
+   to {
+      transform: translate(0, 100%);
+   }
+}
+
+@keyframes dialogRightToLeft {
+   from {
+      transform: translate(106%, 0);
+   }
+   to {
+      transform: translate(0, 0);
+   }
+}
+
+@keyframes dialogLeftToRight {
+   from {
+      transform: translate(0, 0);
+   }
+   to {
+      transform: translate(106%, 0);
+   }
+}
+
+@keyframes notificationRightToLeft {
+   from {
+      transform: translate(100%, 0);
+   }
+   to {
+      transform: translate(0%, 0);
+   }
+}
+
+@keyframes notificationLeftToRight {
+   from {
+      transform: translate(0%, 0);
+   }
+   to {
+      transform: translate(100%, 0);
+   }
+}
+
+@keyframes decrease {
+   from {
+      transform: translate(0%, 0);
+   }
+   to {
+      transform: translate(100%, 0);
+   }
+}
+
+.fade-in {
+   animation-name: fadeIn;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.fade-out {
+   animation-name: fadeOut;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.bot-entrance {
+   animation-name: botBottomToTop;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.bot-exit {
+   animation-name: botTopToBottom;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.dialog-entrance {
+   animation-name: dialogRightToLeft;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.dialog-exit {
+   animation-name: dialogLeftToRight;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.notification-entrance {
+   animation-name: notificationRightToLeft;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.notification-exit {
+   animation-name: notificationLeftToRight;
+   animation-duration: 1s;
+   animation-fill-mode: forwards;
+}
+
+.notification-bar-timeout-decrease {
+   animation-name: decrease;
+   animation-duration: 5s;
+   animation-fill-mode: forwards;
+   animation-delay: 1s;
+}
