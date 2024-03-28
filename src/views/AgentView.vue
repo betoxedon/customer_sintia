@@ -1,5 +1,8 @@
 <script setup lang="ts">
    import DrawerDefault from '@/drawer/DrawerDefault.vue'
+   import HomeAgent from '@/components/agents/HomeAgent.vue'
+   import FormCreateAgent from '@/components/agents/FormCreateAgent.vue'
+   import FormUpdateAgent from '@/components/agents/FormUpdateAgent.vue'
    import AsideAgent from '@/drawer/AsideAgent.vue'
    import { computed, onMounted, onUnmounted } from 'vue'
    import { getAgentsFirestore } from '@/services/handleFirebaseFirestore'

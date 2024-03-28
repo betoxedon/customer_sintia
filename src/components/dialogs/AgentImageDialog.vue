@@ -1,6 +1,7 @@
 <script setup lang="ts">
    import { imageFileSchema } from '@/models/globalModel'
    import { onUnmounted } from 'vue'
+   import ImagePickerForm from '@/components/forms/ImagePickerForm.vue'
 
    import { uploadAgentImageStorage } from '@/services/handleFirebaseStorage'
    import { useGlobalStore } from '@/stores/globalStore'

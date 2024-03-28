@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+   import AsideTop from '@/components/AsideTop.vue'
+   import AsideBottom from '@/components/AsideBottom.vue'
+</script>
 
 <template>
    <aside class="aside">

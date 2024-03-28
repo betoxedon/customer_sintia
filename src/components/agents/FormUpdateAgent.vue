@@ -1,7 +1,7 @@
 <script setup lang="ts">
    import { agentSchema } from '@/models/agentModel'
    import type { Agent } from '@/models/agentModel'
-
+   import FieldsUpdateAgent from '@/components/agents/FieldsUpdateAgent.vue'
    import { computed, onUnmounted, watch } from 'vue'
    import { updateAgentFirestore } from '@/services/handleFirebaseFirestore'
    import { setDataConfirmation, updateStyles } from '@/utils'

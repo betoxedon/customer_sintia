@@ -1,10 +1,10 @@
 <script setup lang="ts">
-   import NotificationComp from '@/components/NotificationComp.vue'
    import WarningLoading from '@/components/WarningLoading.vue'
    import WarningUseDesktop from '@/components/WarningUseDesktop.vue'
    import EmailVerificationDialog from '@/components/dialogs/EmailVerificationDialog.vue'
    import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
    import ForgotPasswordDialog from '@/components/dialogs/ForgotPasswordDialog.vue'
+   import NotificationComp from '@/components/NotificationComp.vue'
    import { useInterfaceStore } from '@/stores/interfaceStore'
    const interfaceStore = useInterfaceStore()
 </script>

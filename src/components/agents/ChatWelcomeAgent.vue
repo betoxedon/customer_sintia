@@ -15,10 +15,9 @@
 </script>
 
 <template>
-   <div
-      class="pointer-events-none flex select-none flex-nowrap items-end justify-between gap-x-3">
+   <div class="flex select-none flex-nowrap items-end justify-between gap-x-3">
       <div
-         class="flex w-full items-center gap-x-2 rounded-full bg-white px-5 py-2"
+         class="pointer-events-none flex w-full items-center gap-x-2 rounded-full bg-white px-5 py-2"
          :class="screenSideClasses">
          <div class="flex w-full items-center justify-between gap-x-3">
             <div class="flex min-h-[48px] select-none items-center justify-center">
@@ -30,7 +29,7 @@
       </div>
 
       <div
-         class="m-1 flex aspect-square w-[59px] shrink-0 items-center justify-center overflow-hidden rounded-full"
+         class="m-1 flex aspect-square w-[59px] shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full"
          :style="agentStore.agentActive.colorStyle"
          @click="interfaceStore.showDialogAgentImage = true">
          <img

@@ -1,11 +1,18 @@
 <script setup lang="ts">
    import { onMounted, ref } from 'vue'
+   import WarningLoading from '@/components/WarningLoading.vue'
+   import WarningUseDesktop from '@/components/WarningUseDesktop.vue'
+   import EmailVerificationDialog from '@/components/dialogs/EmailVerificationDialog.vue'
+   import AgentImageDialog from '@/components/dialogs/AgentImageDialog.vue'
+   import ScriptDialog from '@/components/dialogs/ScriptDialog.vue'
+   import UserImageDialog from '@/components/dialogs/UserImageDialog.vue'
+   import TrainingAiByWebsiteDialog from '@/components/dialogs/TrainingAiByWebsiteDialog.vue'
+   import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
    import NotificationComp from '@/components/NotificationComp.vue'
    import { useUserStore } from '@/stores/userStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
    const userStore = useUserStore()
    const interfaceStore = useInterfaceStore()
-
    const currentYear = ref(new Date().getFullYear())
 
    onMounted(async () => {

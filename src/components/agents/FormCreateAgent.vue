@@ -1,7 +1,7 @@
 <script setup lang="ts">
    import type { AgentInitial } from '@/models/agentModel'
    import { agentInitialSchema } from '@/models/agentModel'
-
+   import FieldsCreateAgent from '@/components/agents/FieldsCreateAgent.vue'
    import { computed, onUnmounted } from 'vue'
    import { createAgentFirestore } from '@/services/handleFirebaseFirestore'
    import { setDataConfirmation } from '@/utils'
@@ -73,7 +73,7 @@
          <div
             class="col-span-full mx-auto my-8 grid w-full max-w-[500px] grid-cols-12 content-start justify-center gap-x-6 gap-y-3 maxw:my-12 maxw:grid-cols-[repeat(2,_220px)]">
             <div
-               class="btn btn-p bg-positive"
+               class="btn btn-p col-span-full bg-positive maxw:col-span-1"
                :class="{ 'btn-disabled': !meta.dirty || !meta.valid }"
                @click="onSubmit()">
                <MonoSave />

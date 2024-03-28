@@ -6,7 +6,6 @@ const axiosSolr = axios.create({
 })
 
 export const createUserSolr = async (userId: string) => {
-   console.log('tryCreateUserSolr')
    try {
       const { data } = await axiosSolr.post(
          '3fa58a41-e17e-4e60-8f89-c604241aed11',

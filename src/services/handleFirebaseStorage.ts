@@ -13,8 +13,9 @@ import {
    actionUploadUserImageStorage,
 } from '@/services/actions/firebase'
 
-const bucket = 'sintia-chatbots.appspot.com'
-const defaultStorageURL = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/`
+const { VITE_FIREBASE_STORAGE_BUCKET } = import.meta.env
+
+const defaultStorageURL = `https://firebasestorage.googleapis.com/v0/b/${VITE_FIREBASE_STORAGE_BUCKET}/o/`
 
 export const uploadAgentImageStorage = async (imageFile: File) => {
    const email = useUserStore().user.email

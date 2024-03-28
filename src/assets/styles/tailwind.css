@@ -246,7 +246,7 @@
    }
 
    .btn.btn-disabled {
-      @apply btn-s pointer-events-none select-none bg-white  opacity-50 ring-primary-20 hover:opacity-50;
+      @apply btn-s pointer-events-none select-none bg-white opacity-50 ring-primary-20 hover:opacity-50;
    }
 
    .btn.btn-disabled span {

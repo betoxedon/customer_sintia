@@ -236,7 +236,7 @@
                <span
                   class="grid cursor-pointer grid-cols-[37px_1fr] rounded-lg bg-white/70 px-5 py-3">
                   <MonoAlert class="-mt-[2px] h-[25px] text-primary-30" />
-                  Primeiro crie um chatbot, para enviar poder enviar o material de
+                  Primeiro crie um chatbot, para poder enviar o material de
                   treinamento
                </span>
             </div>

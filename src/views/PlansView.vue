@@ -1,7 +1,7 @@
 <script setup lang="ts">
    import DrawerDefault from '@/drawer/DrawerDefault.vue'
    import AsidePlan from '@/drawer/AsidePlan.vue'
-   import { computed } from 'vue'
+   import { onMounted, ref } from 'vue'
    import { Plan } from '@/models/planModel'
    import { setNowUtcUnix, setPlanExpiresUtcUnix } from '@/utils'
    import {
@@ -18,17 +18,9 @@
    const agentStore = useAgentStore()
    const interfaceStore = useInterfaceStore()
 
-   const plansSorted = computed(() => {
-      return planStore.plans.sort((a, b) => {
-         return a.planValue - b.planValue
-      }) as Plan[]
-   })
-
-   const planIds = computed(() => plansSorted.value.map((plan) => plan.docId))
-   const planActive = computed(() => {
-      if (!userStore.user?.planId) return
-      return planIds.value.indexOf(userStore.user.planId)
-   })
+   const planActive = ref()
+   const planIds = ref<string[]>([])
+   const plansSorted = ref<Plan[]>([])
 
    const onSelectPlan = async (index: number) => {
       if (index === planActive.value) return
@@ -54,6 +46,15 @@
          await getActivePlanFirestore(planId as string)
       }
    }
+
+   onMounted(async () => {
+      plansSorted.value = planStore.plans.sort((a, b) => {
+         return a.planValue - b.planValue
+      })
+      if (!userStore.user.planId) return
+      planIds.value = plansSorted.value.map((plan) => plan.docId)
+      planActive.value = planIds.value.indexOf(userStore.user.planId)
+   })
 </script>
 
 <template>
@@ -82,7 +83,7 @@
                </div>
 
                <div
-                  class="col-span-full mx-auto grid w-full grid-cols-12 gap-y-12 px-1 py-4 maxw:w-[940px] maxw:gap-x-8">
+                  class="col-span-full mx-auto grid w-full grid-cols-12 place-items-center gap-y-12 px-1 py-4 maxw:w-[940px] maxw:gap-x-8">
                   <div
                      v-for="(item, index) in plansSorted"
                      :key="index"

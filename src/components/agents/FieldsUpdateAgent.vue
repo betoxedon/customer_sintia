@@ -1,6 +1,7 @@
 <script setup lang="ts">
    import FieldForm from '@/components/forms/FieldForm.vue'
    import RadioForm from '@/components/forms/RadioForm.vue'
+   import ColorPickerForm from '@/components/forms/ColorPickerForm.vue'
    import { useAgentStore } from '@/stores/agentStore'
    import { useCustomizableStore } from '@/stores/customizableStore'
    const agentStore = useAgentStore()
@@ -41,14 +42,14 @@
 
       <RadioForm
          class="col-span-full maxw:col-span-6"
-         labelField="Posição do chatbot"
+         labelField="Posição"
          nameField="screenSideId"
          :options="customizableStore.screenSides"
          :errorsMessage="errors" />
 
       <RadioForm
          class="col-span-full maxw:col-span-6"
-         labelField="Estilo de fonte para o chatbot"
+         labelField="Estilo de fonte"
          nameField="fontFamilyId"
          :options="customizableStore.fontFamilies"
          :errorsMessage="errors" />
