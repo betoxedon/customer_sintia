@@ -66,8 +66,7 @@
                :key="index"
                class="flex items-center justify-between gap-x-2">
                <div
-                  class="flex w-full max-w-[157px] items-center gap-x-2 pr-3 desk:max-w-[500px]"
-                  @click="onUpdateAgent(item as Agent)">
+                  class="flex w-full max-w-[157px] items-center gap-x-2 pr-3 desk:max-w-[500px]">
                   <span
                      class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white bg-white">
                      <img
@@ -84,7 +83,9 @@
                </div>
 
                <div class="flex gap-x-2 place-self-stretch">
-                  <div class="btn btn-md bg-primary-5">
+                  <div
+                     class="btn btn-md bg-primary-5"
+                     @click="onUpdateAgent(item as Agent)">
                      <span>Editar</span>
                   </div>
 
