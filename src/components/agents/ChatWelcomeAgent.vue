@@ -47,7 +47,6 @@
 
       <div
          class="relative m-1 flex h-[66px] w-[66px] shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-white bg-white shadow-md hover:bg-slate-50"
-         "
          @click="interfaceStore.showDialogAgentImage = true">
          <img
             v-if="agentStore.agentActive.imageUrl"

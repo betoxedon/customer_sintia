@@ -60,39 +60,38 @@
                   Edite ou copie o script de instalação
                </span>
             </div>
+
             <div
                v-for="(item, index) in agentStore.agents"
                :key="index"
-               class="flex w-full flex-col items-center justify-between gap-x-2">
+               class="flex items-center justify-between gap-x-2">
                <div
-                  class="flex w-full justify-stretch gap-x-2 rounded-lg bg-green-300"
+                  class="flex w-full max-w-[157px] items-center gap-x-2 pr-3 desk:max-w-[500px]"
                   @click="onUpdateAgent(item as Agent)">
-                  <div class="flex items-center gap-x-2 truncate">
-                     <span
-                        class="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white bg-white">
-                        <img
-                           v-if="!item.imageUrl"
-                           :src="item.imageUrl"
-                           class="h-full w-full" />
+                  <span
+                     class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white bg-white">
+                     <img
+                        v-if="item.imageUrl"
+                        :src="item.imageUrl"
+                        class="h-full w-full" />
 
-                        <MonoLogo v-else class="h-11 w-11 text-slate-600" />
-                     </span>
+                     <MonoLogo v-else class="h-11 w-11 text-slate-600" />
+                  </span>
 
-                     <span class="truncate font-normal !text-onsurface-30/80">
-                        {{ item.nickname }} hkjkjhjk
-                     </span>
+                  <span class="truncate font-normal">
+                     {{ item.nickname }}
+                  </span>
+               </div>
+
+               <div class="flex gap-x-2 place-self-stretch">
+                  <div class="btn btn-md bg-primary-5">
+                     <span>Editar</span>
                   </div>
 
-                  <div class="flex gap-x-2">
-                     <div class="btn btn-p bg-primary-5">
-                        <span class="!text-onsurface-30/80">Editar</span>
-                     </div>
-
-                     <div
-                        class="btn btn-p bg-primary-5"
-                        @click.stop="onshowDialogScript(item as Agent)">
-                        <span class="!text-onsurface-30/80">Script</span>
-                     </div>
+                  <div
+                     class="btn btn-md bg-primary-5"
+                     @click.stop="onshowDialogScript(item as Agent)">
+                     <span>Script</span>
                   </div>
                </div>
             </div>

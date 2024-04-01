@@ -115,8 +115,7 @@
                                        <MonoLogo v-else class="h-10 text-white" />
                                     </span>
 
-                                    <span
-                                       class="truncate font-normal !text-onsurface-30/80">
+                                    <span class="truncate font-normal">
                                        {{ agentStore.agents[1].nickname }} -
                                        {{ agentStore.agents[1].identifier }}
                                     </span>
@@ -179,8 +178,7 @@
                                        <MonoLogo v-else class="h-10 text-white" />
                                     </span>
 
-                                    <span
-                                       class="truncate font-normal !text-onsurface-30/80">
+                                    <span class="truncate font-normal">
                                        {{ agentStore.agents[0].nickname }} -
                                        {{ agentStore.agents[0].identifier }}
                                     </span>

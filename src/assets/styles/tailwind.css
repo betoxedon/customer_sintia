@@ -74,7 +74,7 @@
    }
 
    .main-bottom {
-      @apply container grid rounded-lg  bg-surface-30;
+      @apply container grid rounded-lg bg-surface-30;
    }
 
    .main-bottom .container-inner {
@@ -193,7 +193,7 @@
    }
 
    .btn-s {
-      @apply btn-md ring-2 ring-inset ring-primary-30  hover:opacity-70;
+      @apply btn-md ring-2 ring-inset ring-primary-30 hover:opacity-70;
    }
 
    .btn-c {
