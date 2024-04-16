@@ -127,10 +127,11 @@ export const getActivePlanFirestore = async (planId: string | null) => {
 }
 
 //* customizable
+//
 export const getCustomizablesFirestore = async () => {
    const res = await actionGetCustomizablesFirestore()
    if (!res) return
-   useCustomizableStore().screenSides = res.screenSides
-   useCustomizableStore().colors = res.colors
-   useCustomizableStore().fontFamilies = res.fontFamilies
+  // useCustomizableStore().screenSides = res.screenSides
+   //useCustomizableStore().colors = res.colors
+   //useCustomizableStore().fontFamilies = res.fontFamilies
 }

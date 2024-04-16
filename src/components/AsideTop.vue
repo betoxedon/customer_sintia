@@ -49,10 +49,10 @@
 </script>
 
 <template>
-   <div class="aside-top select-none">
+   <div class="aside-top select-none hidden">
       <div class="flex items-center gap-x-2">
          <div
-            class="flex h-[56px] w-full items-center justify-between rounded-lg bg-primary-30 px-5">
+            class="flex h-[44px] w-full items-center justify-between rounded-lg bg-primary-30 px-5">
             <div class="flex items-center">
                <MonoClock class="mr-1 text-white" />
                <span class="text-white">
@@ -66,14 +66,14 @@
             </div>
          </div>
 
-         <div class="btn btn-p h-[56px] w-4 bg-error" @click="onSignOut()">
+         <div class="btn btn-p h-[56px] w-4 bg-error hidden" @click="onSignOut()">
             <MonoSignOut class="h-8 hover:opacity-80" />
          </div>
       </div>
    </div>
 
-   <div class="aside-core">
-      <div class="flex flex-col">
+   <div class="aside-core ">
+      <div class="flex flex-col hidden">
          <div v-if="globalStore.isPlanDisabled" class="flex flex-col gap-y-3">
             <div class="tips">
                <MonoInfo />

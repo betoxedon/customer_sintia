@@ -69,8 +69,9 @@ export const signInFirebase = async (credential: Credential) => {
 }
 
 export const signOutFirebase = async () => {
-   await actionSignOutFirebase()
-   localStorage.removeItem('apiToken')
+   
+   localStorage.clear();  
+   
    router.push({ name: 'signIn' })
    resetUserStore()
 }

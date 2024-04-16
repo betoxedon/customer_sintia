@@ -11,20 +11,28 @@
    import NotificationComp from '@/components/NotificationComp.vue'
    import { useUserStore } from '@/stores/userStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
+   import NavbarMobile from '@/components/navs/NavbarMobile.vue'
+
+   import { useMediaQuery } from '@vueuse/core'
+
    const userStore = useUserStore()
    const interfaceStore = useInterfaceStore()
    const currentYear = ref(new Date().getFullYear())
 
+   const isMobileScreen = useMediaQuery('(max-width: 768px)')
+
+
    onMounted(async () => {
-      if (userStore.user.email && !userStore.user?.emailVerified) {
+      if (userStore.user.email && !userStore.user?.email_verified) {
          interfaceStore.showDialogEmailVerification = true
       }
    })
 </script>
 
 <template>
+   <NavbarMobile v-if="isMobileScreen"/>
    <div
-      class="layout layout-authenticated"
+      class="layout layout-authenticated "
       :class="{ 'has-backdrop-dialog': interfaceStore.hasBackdropDialog }">
       <RouterView />
       <div class="col-span-full mt-3 rounded-t-md bg-primary-10 px-3 py-1">
@@ -36,8 +44,8 @@
       </div>
    </div>
 
-   <WarningLoading v-if="interfaceStore.showScreenLoading" />
-   <WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />
+  <WarningLoading v-if="interfaceStore.showScreenLoading" />
+   <!-- <WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />-->
    <EmailVerificationDialog v-if="interfaceStore.showDialogEmailVerification" />
    <AgentImageDialog v-if="interfaceStore.showDialogAgentImage" />
    <ScriptDialog v-if="interfaceStore.showDialogScript" />
@@ -46,3 +54,4 @@
    <ConfirmationDialog v-if="interfaceStore.showDialogConfirmation" />
    <NotificationComp />
 </template>
+

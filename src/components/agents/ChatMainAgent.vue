@@ -1,28 +1,44 @@
 <script setup lang="ts">
    import { useAgentStore } from '@/stores/agentStore'
+   import {ref,computed} from 'vue'
    const agentStore = useAgentStore()
 
    const today = new Date().toLocaleString('pt-BR', {
       day: '2-digit',
       month: 'short',
    })
+
+   const backgroundColor = computed(() => {
+
+      if(agentStore.agentActive.color.includes('background-color:')){
+         return agentStore.agentActive.color
+      }else{
+         return 'background-color:'+agentStore.agentActive.color  
+      }
+   })
+   const defaultFont = ref("font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'")
+
+   const fontFamily = computed(() => {   
+      return agentStore.agentActive.font?.property || agentStore.agentActive.font?.property_value || defaultFont.value
+   })
+
 </script>
 
 <template>
    <div class="grid content-end">
       <div
-         class="pointer-events-none grid w-full select-none grid-rows-[min-content_minmax(0px,_480px)] overflow-hidden rounded-lg"
-         :style="agentStore.agentActive.fontFamilyStyle">
+         class="pointer-events-none grid w-full select-none grid-rows-[min-content_minmax(0px,_480px)] overflow-hidden rounded-lg drop-shadow-md"
+         :style="fontFamily">
          <div
             class="flex min-h-[74px] flex-col rounded-t-xl py-4 pl-5 pr-3"
-            :style="agentStore.agentActive.colorStyle">
+            :style="backgroundColor">
             <div
                class="relative grid grid-cols-[1fr_min-content_min-content] items-center gap-x-2">
                <div class="flex flex-col truncate">
                   <span
-                     v-if="agentStore.agentActive.nickname"
+                     v-if="agentStore.agentActive.name"
                      class="text-xl font-bold text-white">
-                     {{ agentStore.agentActive.nickname }}
+                     {{ agentStore.agentActive.name }}
                   </span>
                   <span v-else class="text-xl font-bold text-white">Sintia</span>
 
@@ -51,17 +67,17 @@
                <div class="col-span-full grid grid-cols-[min-content_77%] gap-x-2">
                   <div
                      class="flex aspect-square w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-30"
-                     :style="agentStore.agentActive.colorStyle">
+                     :style="backgroundColor">
                      <img
-                        v-if="agentStore.agentActive.imageUrl"
-                        :src="agentStore.agentActive.imageUrl"
+                        v-if="agentStore.agentActive.image_file"
+                        :src="agentStore.agentActive.image_file"
                         class="object-cover" />
                      <MonoLogo v-else class="h-7 text-white" />
                   </div>
 
                   <span
                      class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
-                     :style="agentStore.agentActive.colorStyle">
+                     :style="backgroundColor">
                      {{ agentStore.agentActive.welcomeMessage }}
                   </span>
                </div>
@@ -77,17 +93,17 @@
                <div class="col-span-full grid grid-cols-[min-content_77%] gap-x-2">
                   <div
                      class="flex aspect-square w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-30"
-                     :style="agentStore.agentActive.colorStyle">
+                     :style="backgroundColor">
                      <img
-                        v-if="agentStore.agentActive.imageUrl"
-                        :src="agentStore.agentActive.imageUrl"
+                        v-if="agentStore.agentActive.image_file"
+                        :src="agentStore.agentActive.image_file"
                         class="object-cover" />
                      <MonoLogo v-else class="h-7 text-white" />
                   </div>
 
                   <span
                      class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
-                     :style="agentStore.agentActive.colorStyle">
+                     :style="backgroundColor">
                      Hoje atendemos até as 18h.
                   </span>
                </div>

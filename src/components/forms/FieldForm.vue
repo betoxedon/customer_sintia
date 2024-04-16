@@ -141,7 +141,7 @@
 
       <div class="relative">
          <input
-            class="peer h-[52px] w-full rounded-lg border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent maxw:h-[60px]"
+            class="peer h-[42px] w-full rounded-lg border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent maxw:h-[60px]"
             :class="inputClasses"
             v-model.trim="value"
             autocomplete="on"
@@ -203,14 +203,14 @@
          class="col-span-full min-h-[24px] overflow-hidden whitespace-nowrap pt-[2px]">
          <div v-if="errorsMessage[nameField]" class="flex items-center text-error">
             <MonoAlert class="mr-[2px] h-4 w-4 text-error" />
-            <span>{{ errorsMessage[nameField] }}</span>
+            <span class="msg-error">{{ errorsMessage[nameField] }}</span>
          </div>
 
          <div
             v-else-if="messageIfMaxLength"
             class="flex items-center text-primary-30">
             <MonoInfo class="mr-[2px] h-4 w-4 text-primary-30" />
-            <span>{{ messageIfMaxLength }}</span>
+            <span class="msg-error">{{ messageIfMaxLength }}</span>
          </div>
 
          <div
@@ -235,3 +235,9 @@
       </div>
    </div>
 </template>
+
+<style scoped>
+   span.msg-error{
+      text-wrap: wrap;
+   }
+</style>

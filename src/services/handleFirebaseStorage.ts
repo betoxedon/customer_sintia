@@ -42,14 +42,19 @@ export const uploadUserImageStorage = async (imageFile: File) => {
    const emailParsed = setStringToId(email)
 
    if (!emailParsed) return
+
    const uploadResult = await actionUploadUserImageStorage(emailParsed, imageFile)
+
    const fullPath = uploadResult.ref.fullPath
+
    const codeInvalidator = generateInvalidator(12)
+
    const imageUrl =
       defaultStorageURL +
       encodeURIComponent(fullPath) +
       '?alt=media&code=' +
       codeInvalidator
+      
    const user = useUserStore().user
    user.imageUrl = imageUrl
 

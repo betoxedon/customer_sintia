@@ -4,7 +4,7 @@
 </script>
 
 <template>
-   <main class="main">
+   <main class="main_home">
       <DrawerDefault />
 
       <div class="main-inner grid-rows-[min-content_1fr]">

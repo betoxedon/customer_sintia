@@ -4,7 +4,7 @@
 </script>
 
 <template>
-   <aside class="aside">
+   <aside class="aside hidden">
       <div class="aside-inner grid grid-rows-[min-content_1fr_min-content]">
          <AsideTop />
          <AsideBottom />

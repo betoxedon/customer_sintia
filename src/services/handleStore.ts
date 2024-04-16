@@ -18,9 +18,10 @@ export const setInitialStore = async (initialUserParsed: InitialUser) => {
    await getAgentsFirestore()
    if (initialUserParsed.planId)
       await getActivePlanFirestore(initialUserParsed.planId)
-   useGlobalStore().userRoles.isAnonymous = !initialUserParsed.uid
-   useGlobalStore().userRoles.isAuthenticated = !!initialUserParsed.uid
-   useGlobalStore().userRoles.isAdmin = !!initialUserParsed.isAdmin
+
+   useGlobalStore().userRoles.isAnonymous = !initialUserParsed.id
+   useGlobalStore().userRoles.isAuthenticated = !!initialUserParsed.id
+   useGlobalStore().userRoles.isAdmin = !!initialUserParsed.is_superuser
 }
 
 export const resetUserStore = () => {

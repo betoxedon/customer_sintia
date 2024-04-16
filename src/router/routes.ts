@@ -8,7 +8,6 @@ import AgentView from '@/views/AgentView.vue'
 import PlansView from '@/views/PlansView.vue'
 import TrainingView from '@/views/TrainingView.vue'
 import AdminIconsView from '@/views/AdminIconsView.vue'
-
 import NeutralLayout from '@/layouts/NeutralLayout.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 

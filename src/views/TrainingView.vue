@@ -98,8 +98,8 @@
                         </thead>
 
                         <tbody class="text-center">
-                           <tr>
-                              <td
+                           <tr v-if="agentStore.agents.length>=2"> 
+                              <td 
                                  class="border-b border-dotted border-primary-20 pb-4">
                                  <div class="flex grow items-center gap-x-2 px-3">
                                     <span
@@ -117,7 +117,7 @@
 
                                     <span
                                        class="truncate font-normal !text-onsurface-30/80">
-                                       {{ agentStore.agents[1].nickname }} -
+                                       {{ agentStore.agents[1].name }} -
                                        {{ agentStore.agents[1].identifier }}
                                     </span>
                                  </div>
@@ -181,7 +181,7 @@
 
                                     <span
                                        class="truncate font-normal !text-onsurface-30/80">
-                                       {{ agentStore.agents[0].nickname }} -
+                                       {{ agentStore.agents[0].name }} -
                                        {{ agentStore.agents[0].identifier }}
                                     </span>
                                  </div>

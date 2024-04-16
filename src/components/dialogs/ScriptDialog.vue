@@ -19,7 +19,6 @@
          <div class="px-6 pb-6 pt-5">
             <div class="section-top items-center justify-between pb-5 font-bold">
                <span>Script de instalação</span>
-
                <div class="btn" @click="interfaceStore.partialReset()">
                   <MonoClose class="h-6 opacity-50" />
                </div>

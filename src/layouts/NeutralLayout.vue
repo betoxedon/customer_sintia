@@ -11,7 +11,7 @@
       </main>
    </div>
    <WarningLoading v-if="interfaceStore.showScreenLoading" />
-   <WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />
+   <!--<WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />-->
    <ConfirmationDialog v-if="interfaceStore.showDialogConfirmation" />
    <NotificationComp />
 </template>

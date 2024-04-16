@@ -18,7 +18,8 @@
    })
 
    const onSubmit = handleSubmit(async ({ imageFile }) => {
-      await uploadAgentImageStorage(imageFile)
+      //await uploadAgentImageStorage(imageFile)
+      await agentStore.updateAgentPicture(imageFile,agentStore.agentActive.id)
          .then(() => {
             interfaceStore.notificationMessage = 'Imagem enviada com sucesso'
             interfaceStore.notificationType = 'info'

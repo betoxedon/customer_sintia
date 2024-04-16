@@ -63,14 +63,18 @@ const nextRouteHandler = async (route: RouteLocationNormalized) => {
 
 router.beforeEach(async (route) => {
    let nextRoute: { name: string } | boolean | undefined
+
    await authHandler()
 
-   if (auth.currentUser && !useUserStore().user.uid) {
-      const { uid } = auth.currentUser
-      const user = await getUserByUidFirestore(uid)
-      if (!user) {
-         await signOutFirebase()
-      } else {
+   if (!useUserStore().user.id) {
+
+      const id = await JSON.parse(localStorage.getItem('uid'))
+
+      if (!id) {         
+        // await signOutFirebase()
+      } else {     
+
+         const user = await useUserStore().getUserById(id)   
          useUserStore().update(user)
          await setInitialStore(user)
       }

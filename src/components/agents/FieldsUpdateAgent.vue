@@ -4,6 +4,9 @@
    import ColorPickerForm from '@/components/forms/ColorPickerForm.vue'
    import { useAgentStore } from '@/stores/agentStore'
    import { useCustomizableStore } from '@/stores/customizableStore'
+
+   import ColorForm from '@/components/forms/ColorForm.vue'
+
    const agentStore = useAgentStore()
    const customizableStore = useCustomizableStore()
 
@@ -19,15 +22,15 @@
    <div
       class="col-span-full mx-auto grid w-full max-w-[500px] grid-cols-12 place-content-start justify-center gap-y-3 maxw:max-w-none maxw:gap-x-6">
       <FieldForm
-         class="col-span-full maxw:col-span-6"
+         class="col-span-full maxw:col-span-6 hidden"
          labelField="Nome"
-         nameField="nickname"
+         nameField="name"
          placeholder="Nome do chatbot"
          stringHandler="stringToCapital"
          :errorsMessage="errors" />
 
       <FieldForm
-         class="col-span-full maxw:col-span-6"
+         class="col-span-full maxw:col-span-6 hidden"
          labelField="Identificador"
          nameField="identifier"
          placeholder="Ex: vendas, suporte, atendimento, etc."
@@ -43,22 +46,29 @@
       <RadioForm
          class="col-span-full maxw:col-span-6"
          labelField="Posição"
-         nameField="screenSideId"
+         nameField="side"
          :options="customizableStore.screenSides"
          :errorsMessage="errors" />
 
       <RadioForm
          class="col-span-full maxw:col-span-6"
          labelField="Estilo de fonte"
-         nameField="fontFamilyId"
+         nameField="font"
          :options="customizableStore.fontFamilies"
          :errorsMessage="errors" />
 
       <ColorPickerForm
-         class="col-span-full maxw:col-span-6"
+         class="col-span-full maxw:col-span-6 hidden"
          labelField="Tema"
          nameField="colorId"
          :options="customizableStore.colors"
          :errorsMessage="errors" />
+
+      <ColorForm 
+      labelField="Cor do chatbot"
+      nameField="color"
+      class="col-span-full maxw:col-span-6"
+      :errorsMessage="errors" />
+         
    </div>
 </template>

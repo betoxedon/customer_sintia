@@ -1,0 +1,12 @@
+@media only screen and (max-width: 768px) {
+
+ .main, .main_home{
+    width: 100%;
+    display:flex !important;
+  }
+
+  .layout{
+    width:100% !important;
+    padding-inline:0px !important;
+  }
+}

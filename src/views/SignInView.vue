@@ -5,10 +5,15 @@
    import { signInFirebase } from '@/services/handleFirebaseAuth'
    import { useRouter } from 'vue-router'
    import { useInterfaceStore } from '@/stores/interfaceStore'
+   import { useUserStore } from '@/stores/userStore'
+
+
    import { useForm } from 'vee-validate'
    import { toTypedSchema } from '@vee-validate/zod'
    const router = useRouter()
+
    const interfaceStore = useInterfaceStore()
+   const useStore = useUserStore()
    const currentYear = ref(new Date().getFullYear())
    const showBtnLoading = ref(false)
 
@@ -21,29 +26,16 @@
 
    const onSubmit = handleSubmit(async (form) => {
       showBtnLoading.value = true
-      await signInFirebase(form)
-         .then(() => {
+
+         await useStore.login(form)
+            .then((res) => {
             router.push({ name: 'dashboard' })
          })
          .catch((error) => {
-            if (error.code === 'auth/user-not-found') {
-               interfaceStore.notificationMessage = `${form.email} não possui conta`
+               const error_msg = error.response.data.non_field_errors[0] || 'Falha ao tentar fazer login. Por favor, verifique os campos e tente novamente.';
+               interfaceStore.notificationMessage = `${error_msg}`
                interfaceStore.notificationType = 'alert'
                interfaceStore.showNotification = true
-            } else if (error.code === 'auth/wrong-password') {
-               interfaceStore.notificationMessage = `Senha incorreta`
-               interfaceStore.notificationType = 'alert'
-               interfaceStore.showNotification = true
-            } else if (error.code === 'auth/invalid-credential') {
-               interfaceStore.notificationMessage = 'Credenciais inválidas'
-               interfaceStore.notificationType = 'alert'
-               interfaceStore.showNotification = true
-            } else {
-               const errorCode = error.code ? error.code : 'desconhecido'
-               interfaceStore.notificationMessage = `Erro [${errorCode}]. Por favor, tente novamente`
-               interfaceStore.notificationType = 'alert'
-               interfaceStore.showNotification = true
-            }
          })
          .finally(() => {
             showBtnLoading.value = false
@@ -53,11 +45,19 @@
 
 <template>
    <div class="view grid-cols-[min-content_1fr]">
-      <div class="w-screen max-w-xl bg-surface-30">
-         <section class="form flex h-full min-h-screen flex-col rounded-none px-6">
+      <div class=" max-w-xl bg-white rounded">
+         <section class="form flex flex-col rounded-none px-6">
             <div class="px-4 py-4">
-               <div class="section-top mb-6 items-baseline justify-center">
-                  <span class="text-lg font-bold">Sintia Chatbots</span>
+               <span class="text-lg font-bold flex justify-center items-center gap-1 mb-8">                     
+                  <MonoBot  class="text-primary-20 group-hover:text-primary-30"/>
+                  SINTIA 
+               </span>
+
+               <div class="section-top mb-6 items-baseline justify-center">                 
+
+                  <span class="text-lg font-bold flex justify-center items-center gap-1">                 
+                     Fazer Login 
+                  </span>
                </div>
 
                <div class="section-core">
@@ -104,7 +104,7 @@
                </div>
             </div>
 
-            <div class="flex grow flex-col items-center justify-end pb-2">
+            <div class="flex grow flex-col items-center justify-end pb-2 hidden">
                <span class="grid text-sm opacity-60">
                   Copyright © {{ currentYear }} - Sintia Chatbots - Todos os
                   direitos reservados
@@ -114,3 +114,7 @@
       </div>
    </div>
 </template>
+
+<style scoped>
+
+</style>

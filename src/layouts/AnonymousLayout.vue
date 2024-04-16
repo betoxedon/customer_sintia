@@ -11,14 +11,32 @@
 
 <template>
    <div class="layout layout-anonymous">
+      
       <main class="main">
+         
+
          <RouterView />
+
+         <span class="grid text-sm opacity-60 hidden">
+            Copyright © {{ currentYear }} - Sintia Chatbots - Todos os direitos reservados
+         </span>
       </main>
    </div>
    <WarningLoading v-if="interfaceStore.showScreenLoading" />
-   <WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />
+   <!--<WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />-->
    <EmailVerificationDialog v-if="interfaceStore.showDialogEmailVerification" />
    <ConfirmationDialog v-if="interfaceStore.showDialogConfirmation" />
    <ForgotPasswordDialog v-if="interfaceStore.showDialogForgotPassword" />
    <NotificationComp />
 </template>
+
+<style scoped>
+
+.main{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+}
+
+</style>>

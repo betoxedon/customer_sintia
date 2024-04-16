@@ -7,6 +7,7 @@ import {
 import { useAgentStore } from '@/stores/agentStore'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 
+
 export const setDataConfirmation = (confirmationData: ConfirmationData): void => {
    useInterfaceStore().confirmationData = confirmationData
    useInterfaceStore().showDialogConfirmation = true
@@ -30,9 +31,11 @@ export const resolveConfirmation = async () => {
    }
 
    const handleDeleteAgent = async () => {
-      const docId = confirmationData?.param as string
-      await deleteAgentFirestore(docId)
+      const id = confirmationData?.param as string
+      //await deleteAgentFirestore(id)
+      await useAgentStore().deleteAgent(id)
       resetConfirmation()
+      
    }
 
    const handleSignOut = () => {

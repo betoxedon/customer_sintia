@@ -17,7 +17,10 @@
    })
 
    const onSubmit = handleSubmit(async ({ imageFile }) => {
-      await uploadUserImageStorage(imageFile)
+     // await uploadUserImageStorage(imageFile)
+
+      await userStore.updateUserPicture(imageFile,userStore.user.id)
+      
          .then(() => {
             interfaceStore.notificationMessage = 'Imagem enviada com sucesso'
             interfaceStore.notificationType = 'info'
@@ -60,7 +63,7 @@
                   :imageUrl="
                      globalStore.imageUrlActive
                         ? globalStore.imageUrlActive
-                        : userStore.user.imageUrl
+                        : userStore.user.profile_picture
                   "
                   hint="Use PNG ou JPEG (2MB no máximo)"
                   :errorsMessage="errors" />

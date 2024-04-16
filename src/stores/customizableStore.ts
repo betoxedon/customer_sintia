@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 export const useCustomizableStore = defineStore('customizable', () => {
    const colors = ref({} as Colors)
    const colorIdActive = ref<string>('')
+   
    const colorPickerStyle = computed(() => {
       const colorsObj = Object.values(colors.value)
       const cssValues = colorsObj.map((item) => {
@@ -16,6 +17,7 @@ export const useCustomizableStore = defineStore('customizable', () => {
    })
 
    const fontFamilies = ref({} as FontFamilies)
+   
    const fontFamilyIdActive = ref<string>('')
 
    const screenSides = ref({} as ScreenSides)

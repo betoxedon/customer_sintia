@@ -7,7 +7,7 @@
 </script>
 
 <template>
-   <div class="aside-bottom w-full select-none">
+   <div class="aside-bottom w-full select-none hidden">
       <div
          v-if="!globalStore.isPlanDisabled"
          class="flex h-[56px] w-full items-center rounded-lg bg-primary-30 px-5">
