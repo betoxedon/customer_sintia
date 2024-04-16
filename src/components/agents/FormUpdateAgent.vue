@@ -108,8 +108,7 @@
 
 <template>
    <div class="main-core">
-       {{ errors }}
-
+      
       <div
          class="container-inner grid-rows-auto  place-content-stretch content-start gap-y-3">
          <div class="tips col-span-full mb-3 flex text-lg">

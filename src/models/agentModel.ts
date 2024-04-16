@@ -1,5 +1,6 @@
    import { z } from 'zod'
    import { setNowUtcUnix } from '@/utils'   
+  
    const now = setNowUtcUnix()
 
    // [file]
@@ -52,7 +53,6 @@
 
    const promptSchema = z.string().min(5).max(1000)
 
-   const materialCoreSchema = z.array(z.string()).default([])
 
 
    const audio_responseSchema = z.boolean().default(false)
@@ -64,22 +64,20 @@
    //const buscaSchema = z.number()
    //const identifierSchema = z.string().min(3).max(15)
 
+   const materialCoreSchema = z.array().nullable().default(null)
 
 
 
    const agentInitialSchema = z.object({
       name: nicknameSchema,
-      //identifier: identifierSchema,
       temperature:temperatureSchema,
       audio_response:audio_responseSchema,
       material_core:materialCoreSchema,
       model:modelSchema,
       tone:toneSchema,
-      //busca:buscaSchema,
       prompt:promptSchema,
       voice: voiceSchema,
       language:languageSchema,
-      //api_key:api_keySchema,
       sources:sourcesSchema,
       query:querySchema,
       type:typeSchema   
