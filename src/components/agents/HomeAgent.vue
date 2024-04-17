@@ -59,6 +59,7 @@
       agentStore.agentActive = agent
       interfaceStore.showDialogScript = true
    }
+   
 </script>
 
 <template>

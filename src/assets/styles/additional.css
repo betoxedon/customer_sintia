@@ -23,6 +23,15 @@
 }
 
 /* animation */
+@keyframes showIn {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
 @keyframes fadeIn {
    from {
       opacity: 0;
@@ -104,13 +113,14 @@
    }
 }
 
-.fade-in {
-   animation-name: fadeIn;
+.show-in {
+   animation-name: showIn;
    animation-duration: 1s;
    animation-fill-mode: forwards;
+   animation-delay: 0.5s;
 }
 
-.fade-out {
+.show-out {
    animation-name: fadeOut;
    animation-duration: 1s;
    animation-fill-mode: forwards;
@@ -157,4 +167,8 @@
    animation-duration: 5s;
    animation-fill-mode: forwards;
    animation-delay: 1s;
+}
+
+.chat-balloon.show-in {
+   animation-delay: 2s;
 }

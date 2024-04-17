@@ -45,6 +45,11 @@ const interfaceStore = useInterfaceStore()
       interfaceStore.showDialogScript = true
       
    }
+   const onshowDialogShare = (agent: Agent) => {
+      agentStore.partialReset()
+      agentStore.agentActive = agent
+      interfaceStore.showDialogShare = true
+   }
 
 </script>
 
@@ -69,7 +74,11 @@ const interfaceStore = useInterfaceStore()
 
         </div>       
 
-        <ChatDropdown :identify="(item as Agent)"  @UpdateAgent="onUpdateAgent(item as Agent)" @shareAgent="onshowDialogScript(item as Agent)" @deleteAgent="onDeleteAgent(item as Agent)"/>
+        <ChatDropdown :identify="(item as Agent)"  
+        @UpdateAgent="onUpdateAgent(item as Agent)"
+         @copyScriptAgent="onshowDialogScript(item as Agent)" 
+         @shareAgent="onshowDialogShare(item as Agent)"
+         @deleteAgent="onDeleteAgent(item as Agent)"/>
            
     </div>
     

@@ -11,8 +11,10 @@
    <aside class="aside">
       <div class="aside-inner grid grid-rows-[min-content_minmax(0,_1fr)]">
          <AsideTop />
+         
          <ChatMainAgent v-if="agentStore.agentActive.id" />
          <ChatWelcomeAgent v-if="agentStore.agentActive.id"class="" />
+
          <AsideBottom v-if="!agentStore.agentActive.id" class="place-self-end " />
       </div>
    </aside>

@@ -47,7 +47,7 @@ export default {
             });
     },
     getChatbot(chatId){
-        return apiAuth.get(`chatbot/${chatId}`)
+        return apiAuth.get(`chatbots/${chatId}`)
             .then(res => {
                 if (res.data) {                    
                     return res.data;

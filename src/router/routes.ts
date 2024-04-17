@@ -10,6 +10,8 @@ import TrainingView from '@/views/TrainingView.vue'
 import AdminIconsView from '@/views/AdminIconsView.vue'
 import NeutralLayout from '@/layouts/NeutralLayout.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
+import SharedAgentView from '@/views/SharedAgentView.vue'
+
 
 export const routes = [
    {
@@ -88,6 +90,14 @@ export const routes = [
             path: ':pathMatch(.*)*',
             component: NotFoundView,
             name: 'NotFoundView',
+            meta: {
+               rules: [],
+            },
+         },
+         {
+            path: 'share/:chatbotId/:userId',
+            component: SharedAgentView,
+            name: 'sharedAgent',
             meta: {
                rules: [],
             },

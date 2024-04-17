@@ -4,7 +4,7 @@
   const active = ref(false);
   const activeMenu = ref(null);
 
-  const emit = defineEmits('UpdateAgent','shareAgent','deleteAgent');
+  const emit = defineEmits(['UpdateAgent','copyScriptAgent','deleteAgent','shareAgent']);
 
   const props = defineProps({
 
@@ -39,7 +39,11 @@
     emit('UpdateAgent');
   };
 
-  const share = ()=>{
+  const shareScript = () => {
+    emit('copyScriptAgent')
+  }
+
+  const shareAgent = () => {
     emit('shareAgent')
   }
 
@@ -86,6 +90,7 @@ onUnmounted(() => {
       <div v-show="active"  class="menu-items" :id="`agent-${identify.docId}`" :class="{'show':active}" ref="activeMenu">
         
         <div class="py-2">
+
           <div class="menu-item">
             <a @click="update()" href="#" class="block px-4 py-2 flex gap-1 items-center"
               ><MonoUpdate class="text-sm" style="width:16px" /> Editar chatbot</a
@@ -93,12 +98,19 @@ onUnmounted(() => {
           </div>
 
           <div class="menu-item">
-            <a @click.stop="share()" href="#" class="block px-4 py-2 flex gap-1 items-center"
+            <a @click.stop="shareAgent()" href="#" class="block px-4 py-2 flex gap-1 items-center"
+              ><MonoShare class="text-sm" style="width:16px" /> Compartilhar chatbot</a
+            >
+          </div>
+
+
+          <div class="menu-item">
+            <a @click.stop="shareScript()" href="#" class="block px-4 py-2 flex gap-1 items-center"
               ><MonoScript style="width:16px; " />Script de integração</a
             >
           </div>
 
-          <div class="menu-item">
+          <div class="menu-item hidden">
             <a @click.stop="share()" href="#" class="block px-4 py-2 flex gap-1 items-center">
 
               <MonoTraining  style="width:16px;"  />

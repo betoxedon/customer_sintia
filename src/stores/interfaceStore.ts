@@ -13,6 +13,7 @@ export const useInterfaceStore = defineStore('interface', () => {
    const showDialogForgotPassword = ref<boolean>()
    const showDialogAgentImage = ref<boolean>()
    const showDialogScript = ref<boolean>()
+   const showDialogShare = ref<boolean>()
    const showDialogUserImage = ref<boolean>()
    const showDialogTrainingAiByWebsite = ref<boolean>()
    const showDialogConfirmation = ref<boolean>()
@@ -25,6 +26,7 @@ export const useInterfaceStore = defineStore('interface', () => {
          showDialogAgentImage.value ||
          showDialogUserImage.value ||
          showDialogScript.value ||
+         showDialogShare.value ||
          showDialogTrainingAiByWebsite.value ||
          showDialogConfirmation.value
       )
@@ -61,6 +63,7 @@ export const useInterfaceStore = defineStore('interface', () => {
       showDialogAgentImage.value = undefined
       showDialogUserImage.value = undefined
       showDialogScript.value = undefined
+      showDialogShare.value = undefined
       showDialogTrainingAiByWebsite.value = undefined
       showDialogConfirmation.value = undefined
    }
@@ -97,6 +100,7 @@ export const useInterfaceStore = defineStore('interface', () => {
       showDialogAgentImage,
       showDialogUserImage,
       showDialogScript,
+      showDialogShare,
       showDialogConfirmation,
       showDialogTrainingAiByWebsite,
       confirmationData,

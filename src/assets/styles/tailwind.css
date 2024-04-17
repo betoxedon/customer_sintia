@@ -36,6 +36,9 @@
    .layout {
       @apply grid h-screen w-screen overflow-x-hidden bg-surface-10 px-3 pt-3 selection:bg-primary-5 selection:text-primary-30;
    }
+   .shared-agent{
+      @apply bg-onsurface-30
+   }
 
    .layout.layout-authenticated {
       @apply max-h-screen grid-rows-[minmax(0,_1fr)_min-content] bg-white;
@@ -326,4 +329,16 @@
 /*.  form */
 .option-selected {
    @apply border-primary-30 after:block after:h-4 after:w-4 after:rounded-full after:bg-primary-30;
+}
+
+
+.show-in {
+   animation-name: showShowIn;
+   animation-duration: 2s;
+   animation-fill-mode: forwards;
+   animation-delay: 0.5s;
+}
+
+.chat-balloon.show-in {
+   animation-delay: 2s;
 }

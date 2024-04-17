@@ -13,6 +13,7 @@ import { agentInitialSchema, agentSchema } from '@/models/agentModel'
 export const useAgentStore = defineStore('agent', () => {
    const creatingAgent = ref<boolean>(false)
    const updatingAgent = ref<boolean>(false)
+   const sharedAgent = ref<boolean>(false)
    const allowedForms = computed(() => {
       return creatingAgent.value || updatingAgent.value
    })
@@ -20,7 +21,8 @@ export const useAgentStore = defineStore('agent', () => {
    const agents = ref<Agent[]>([])
    const docIdAgentSelected = ref<string>('')
    const agentActive = ref({} as Agent)
-   const isLoading = ref(false)
+   const isLoading = ref(false) 
+   const hasAgentResponse = ref(false)
    const linkTest = ref()
    const tons = ref([
       {
@@ -154,6 +156,15 @@ export const useAgentStore = defineStore('agent', () => {
      });
    }
 
+   const getAgentById = (id) =>{
+      isLoading.value= true
+      agentApi.getChatbot(id).then(res =>{
+         agentActive.value = res              
+      }).catch(error => {
+         throw error;
+     });
+   }
+
    const updateAgent = (data,id) => {
       // Modificações nos dados antes de enviar
    
@@ -276,6 +287,9 @@ export const useAgentStore = defineStore('agent', () => {
       deleteAgent,
       isLoading,
       getLink,
-      updateAgentPicture
+      updateAgentPicture,
+      hasAgentResponse,
+      getAgentById,
+      sharedAgent
    }
 })

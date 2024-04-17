@@ -12,6 +12,7 @@
    import { useUserStore } from '@/stores/userStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
    import NavbarMobile from '@/components/navs/NavbarMobile.vue'
+   import ShareDialog from '@/components/dialogs/ShareDialog.vue'
 
    import { useMediaQuery } from '@vueuse/core'
 
@@ -52,6 +53,7 @@
    <UserImageDialog v-if="interfaceStore.showDialogUserImage" />
    <TrainingAiByWebsiteDialog v-if="interfaceStore.showDialogTrainingAiByWebsite" />
    <ConfirmationDialog v-if="interfaceStore.showDialogConfirmation" />
+   <ShareDialog v-if="interfaceStore.showDialogShare" />
    <NotificationComp />
 </template>
 
