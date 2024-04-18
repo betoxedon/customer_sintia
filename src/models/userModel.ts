@@ -14,7 +14,7 @@ const planIdSchema = z.string().nullable().default(null)
 const isAdminSchema = z.boolean().default(false)
 const emailVerifiedSchema = z.boolean().default(false)
 const userSolrCreatedSchema = z.boolean().default(false)
-const imagemUrlSchema = z.string().default('')
+const imagemUrlSchema = z.string().nullable().default('')
 
 const docIdSchema = z.number()
 const addDaysToPlanAtSchema = z.number().nullable().default(null)

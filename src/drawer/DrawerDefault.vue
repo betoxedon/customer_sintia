@@ -117,7 +117,7 @@
 
                <div class="flex w-full flex-col overflow-hidden">
                   <span class="truncate pl-2 font-bold">
-                     {{ userStore.user.firstName }} {{ userStore.user.lastName }}
+                     {{ userStore.user.first_name }} {{ userStore.user.last_name }}
                   </span>
                   <span class="truncate pl-2 text-base">
                      {{ userStore.user?.email }}
