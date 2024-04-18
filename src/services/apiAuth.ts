@@ -14,19 +14,20 @@ const api: AxiosInstance = axios.create({
 
 api.interceptors.request.use(async config => {
    const apiToken = await JSON.parse(localStorage.getItem('apiToken'))
-
-    // Verifica se o content type foi especificado no objeto de configuração
-   if (config.headers && config.headers['Content-Type']) {
-      config.headers['Content-Type'] = config.headers['Content-Type'];
-   } else {
-         // Caso contrário, usa o valor padrão 'application/json'
-         config.headers['Content-Type'] = 'application/json';
-   }
    
 
-   if (apiToken){
-   config.headers['Authorization'] = `Token ${apiToken.token}`;
-   }
+      if (config.headers && config.headers['Content-Type']) {
+         config.headers['Content-Type'] = config.headers['Content-Type'];
+      } else {
+            // Caso contrário, usa o valor padrão 'application/json'
+            config.headers['Content-Type'] = 'application/json';
+      }
+
+
+      if (apiToken){
+         config.headers['Authorization'] = `Token ${apiToken.token}`;
+      }
+
    return config
 })
 

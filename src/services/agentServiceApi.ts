@@ -62,6 +62,25 @@ export default {
             });
     },
 
+    getChatbotById(chatId,userId){
+        return apiAuth.get(`chatbots/${chatId}/chatbotByid/?userId=${userId}`)
+            .then(res => {
+                if (res.data) {                    
+                    return res.data;
+                } else {
+                    throw new Error('Resposta da API vazia');
+                }
+            })
+            .catch(error => {
+                
+                if (error.response && error.response.status === 401) {
+                    throw new Error('Não autorizado - Falha na autenticação');
+                } else {
+                    throw error;
+                }
+            });
+    },
+
     getChatbots(){
         return apiAuth.get(`chatbots`)
             .then(res => {

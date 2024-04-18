@@ -1,9 +1,11 @@
 <script setup lang="ts">
    import { computed, nextTick, onMounted, ref } from 'vue'
    import { useAgentStore } from '@/stores/agentStore'
+   import {useChatStore} from '@/stores/chatStore'
    import { useRoute } from 'vue-router'
 
    const agentStore = useAgentStore()
+   const chatStore = useChatStore()
    const route = useRoute()
 
    const showAvatar = ref(false)
@@ -25,7 +27,7 @@
    })
 
    const closeChatBalloonClass = computed(() => {
-      if (agentStore.agentActive?.side.name == 'Direita') {
+      if (agentStore.agentActive?.side?.name == 'Direita') {
          return '-left-1'
       } else {
          return '-right-1'
@@ -67,6 +69,7 @@
       showAvatar.value = false
       showChatBalloon.value = false
       showDialog.value = true
+      
       nextTick(() => {
          const inputElement = document.querySelector('input')
          if (!inputElement) return
@@ -79,16 +82,40 @@
       showAvatar.value = true
    }
 
-   onMounted(async () => {   
+   const sendMessage = async() => {
+      chatStore.isLoading = true     
+      scrollToBottom()
+      await chatStore.sendMessage(chatStore.currentMessage)     
+      chatStore.isLoading = false
+
+   }
+
+   const scrollToBottom = () => {
+        // Verifica se o navegador suporta o método scrollTo
+        if (window.scrollTo) {
+            // Rola a página para a parte inferior
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth' // Rola suavemente
+            })
+        }
+    }
+
+   onMounted( () => {   
       const agentId = route.params.chatbotId as string
-     // const userId =  route.params.userId as string
+      const userId =  route.params.userId as string
 
-      await agentStore.getAgentById(agentId)
-      showAvatar.value = true
-      agentStore.sharedAgent = true
-      
-
+      agentStore.getAgentById(agentId,userId).then(res =>{
+         showAvatar.value = true
+         agentStore.sharedAgent = true  
+         chatStore.startSession(agentId)
+      }).catch(error => {
+            //console.error('Ocorreu um erro ao buscar o agente:', error)
+            
+     });
+       
    })
+   
 </script>
 
 <template>
@@ -126,13 +153,15 @@
 
             <div
                class="grid grid-rows-[1fr_min-content] rounded-b-xl bg-white pb-[10px]">
-               <div class="grid grid-cols-2 content-start px-2 pb-1">
+               
+               <div class="flex flex-col content-start px-2 pb-1 overflow-x-hidden">
                   <span
                      class="col-span-2 mb-4 mt-1 place-self-center rounded-lg bg-slate-400 px-4 py-0.5 text-white">
                      {{ today }}
                   </span>
 
-                  <div
+                  
+                  <div 
                      class="col-span-full grid grid-cols-[min-content_77%] gap-x-2">
                      <div
                         class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
@@ -149,15 +178,77 @@
                         {{ welcomeMessage }}
                      </span>
                   </div>
+
+               <div           
+                  v-for="message in chatStore?.sessionActive?.messages" :key="message">
+                  
+                   <!--message.type == bot -->
+                  <div 
+                  v-if="message.type == 'bot'"  style="max-width:100%"
+                  class=" message-ballon col-span-full grid grid-cols-[min-content_77%] gap-x-2"> 
+                     
+                     <div
+                        class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
+                        <img
+                           v-if="agentStore.agentActive.image_file"
+                           :src="agentStore.agentActive.image_file"
+                           class="w-full" />
+                        <MonoLogo v-else class="h-6 w-6 text-slate-500" />
+                     </div>                 
+
+                     <span
+                        class=" mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                        :style="backgroundColor">
+                        {{ message.content }}
+                     </span>              
+
+                  </div>
+                 
+                  <!--message.type == user -->
+                  <div  v-if="message.type == 'user'"
+                  class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2">
+                     <span
+                        class="relative mb-[10px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
+                        {{ message.content }}
+                     </span>
+                  </div>
+
                </div>
 
+               <div 
+                  v-if="chatStore.isLoading"  style="max-width:100%"
+                  class=" message-ballon col-span-full grid grid-cols-[min-content_77%] gap-x-2"> 
+                     
+                     <div
+                        class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
+                        <img
+                           v-if="agentStore.agentActive.image_file"
+                           :src="agentStore.agentActive.image_file"
+                           class="w-full" />
+                        <MonoLogo v-else class="h-6 w-6 text-slate-500" />
+                     </div>                 
+
+                     <span
+                        class=" mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                        :style="backgroundColor">
+                        <AnimLoadingComp />
+                     </span>              
+
+                  </div>
+
+                  
+
+               </div>
+
+               
+
                <div
-                  class="mx-2 flex items-center overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-400 has-[:focus]:ring-2 has-[:focus]:ring-primary-40">
-                  <input
+                  class="mx-2 z-20 flex items-center overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-400 has-[:focus]:ring-2 has-[:focus]:ring-primary-40">
+                  <input v-model.trim="chatStore.currentMessage"
                      class=":focus:ring-2 block h-[40px] w-full rounded-l-lg border-0 bg-slate-100 pl-3 pr-2 text-base ring-0 placeholder:text-base focus:border-0 focus:outline-0"
                      placeholder="Digite sua mensagem..." />
 
-                  <div
+                  <div @click.stop="sendMessage"
                      class="mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg bg-slate-400">
                      <MonoSend class="h-5 text-white" />
                   </div>
@@ -204,3 +295,26 @@
       </div>
    </div>
 </template>
+
+<style scoped>
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>

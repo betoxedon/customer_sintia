@@ -14,6 +14,7 @@ export const useAgentStore = defineStore('agent', () => {
    const creatingAgent = ref<boolean>(false)
    const updatingAgent = ref<boolean>(false)
    const sharedAgent = ref<boolean>(false)
+
    const allowedForms = computed(() => {
       return creatingAgent.value || updatingAgent.value
    })
@@ -87,12 +88,12 @@ export const useAgentStore = defineStore('agent', () => {
 
    const agentScript = computed(() => {
       
-      linkTest.value = `<start-sintia id=${agentActive.value.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
-      return `<start-sintia id=${agentActive.value.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
+      linkTest.value = `<start-sintia id=${agentActive.value.id} userId=${agentActive.value.user.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
+      return `<start-sintia id=${agentActive.value.id} userId=${agentActive.value.user.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
    })
 
-   const getLink = (agentID) => {
-         return `<start-sintia id=${agentID}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
+   const getLink = (agentID, userID) => {
+         return `<start-sintia id=${agentID} userId=${userID}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
    }
 
    // on update
@@ -118,6 +119,7 @@ export const useAgentStore = defineStore('agent', () => {
       updatingAgent.value = false
       docIdAgentSelected.value = ''
       agentActive.value = {} as Agent
+      getAgents()
    }
 
    const $reset = () => {
@@ -156,13 +158,15 @@ export const useAgentStore = defineStore('agent', () => {
      });
    }
 
-   const getAgentById = (id) =>{
-      isLoading.value= true
-      agentApi.getChatbot(id).then(res =>{
-         agentActive.value = res              
-      }).catch(error => {
-         throw error;
-     });
+   const getAgentById = (id, userId) => {     
+      return agentApi.getChatbotById(id, userId)
+          .then(res => {
+              agentActive.value = res      
+              return res        
+          })
+          .catch(error => {
+              throw error;
+          });
    }
 
    const updateAgent = (data,id) => {
