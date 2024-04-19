@@ -76,7 +76,7 @@ const props = defineProps({
 
         <div class="relative">
             <textarea 
-            class="peer h-[90px] w-full rounded-lg border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent maxw:h-[60px]"
+            class="peer h-[100px] w-full rounded-lg border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent maxw:h-[120px]"
             
             :placeholder="placeholder"
             v-model.trim="value"

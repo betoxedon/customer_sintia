@@ -88,7 +88,7 @@ const interfaceStore = useInterfaceStore()
 
 .my-bot{
     display: flex;
-    flex: 1 1 300px;
+    /* flex: 1 1 300px; */
     min-width: 300px;
     min-height: 90px;
     justify-content: space-between;   

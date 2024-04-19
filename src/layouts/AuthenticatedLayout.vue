@@ -1,7 +1,6 @@
 <script setup lang="ts">
    import { onMounted, ref } from 'vue'
    import WarningLoading from '@/components/WarningLoading.vue'
-   import WarningUseDesktop from '@/components/WarningUseDesktop.vue'
    import EmailVerificationDialog from '@/components/dialogs/EmailVerificationDialog.vue'
    import AgentImageDialog from '@/components/dialogs/AgentImageDialog.vue'
    import ScriptDialog from '@/components/dialogs/ScriptDialog.vue'
@@ -31,7 +30,7 @@
 </script>
 
 <template>
-   <NavbarMobile v-if="isMobileScreen"/>
+   <NavbarMobile v-if="isMobileScreen"/>     
    <div
       class="layout layout-authenticated "
       :class="{ 'has-backdrop-dialog': interfaceStore.hasBackdropDialog }">
@@ -46,7 +45,6 @@
    </div>
 
   <WarningLoading v-if="interfaceStore.showScreenLoading" />
-   <!-- <WarningUseDesktop v-if="interfaceStore.showWidthMin1024" />-->
    <EmailVerificationDialog v-if="interfaceStore.showDialogEmailVerification" />
    <AgentImageDialog v-if="interfaceStore.showDialogAgentImage" />
    <ScriptDialog v-if="interfaceStore.showDialogScript" />

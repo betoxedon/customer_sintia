@@ -97,7 +97,7 @@ const updateSlider = (e) => {
       </div>
 
       <div class="relative flex items-center gap-3">
-        <input class="input-range border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent maxw:h-[60px]" type="range" :id="nameField" :name="nameField" :style="{backgroundSize: backgroundSize}" 
+        <input class="input-range border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent" type="range" :id="nameField" :name="nameField" :style="{backgroundSize: backgroundSize}" 
         :min="minValue" 
         :max="maxValue" 
         :step="stepValue" 

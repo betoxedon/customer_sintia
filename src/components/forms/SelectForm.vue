@@ -91,7 +91,7 @@ watch(() => valueSelected.value, (newValue, oldValue) => {
       
       <div class="relative">   
               
-        <ListboxButton class="relative w-full h-[42px] cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+        <ListboxButton class="relative w-full h-[42px] cursor-default rounded-lg bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-onsurface-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
           <span class="flex items-center">
             <span class="ml-3 block truncate" v-if="valueSelected && valueSelected !== undefined && valueSelected?.name !== undefined">{{ valueSelected.name}}</span>
             <span class="ml-3 block truncate text-gray-400" v-else>{{ placeholder }}</span>

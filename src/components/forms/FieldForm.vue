@@ -141,7 +141,7 @@
 
       <div class="relative">
          <input
-            class="peer h-[42px] w-full rounded-lg border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent maxw:h-[60px]"
+            class="peer h-[42px] w-full rounded-lg border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent"
             :class="inputClasses"
             v-model.trim="value"
             autocomplete="on"

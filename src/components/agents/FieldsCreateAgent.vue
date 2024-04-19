@@ -28,7 +28,7 @@
 
 <template>
    <div
-      class="col-span-full mx-auto  grid w-full  px-24 gap-x-3 gap-y-3 maxw:max-w-none maxw:gap-x-6">
+      class="col-span-full mx-auto   w-full  px-24 gap-x-3 gap-y-3 maxw:max-w-none maxw:gap-x-6">
       
       <div class="flex gap-3"> 
       <FieldForm
