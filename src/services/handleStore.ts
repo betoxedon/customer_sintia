@@ -1,8 +1,6 @@
 import type { InitialUser } from '@/models/userModel'
-import {
-   getCustomizablesFirestore,
+import { 
    getPlansFirestore,
-   getAgentsFirestore,
    getActivePlanFirestore,
 } from '@/services/handleFirebaseFirestore'
 
@@ -12,10 +10,10 @@ import { useAgentStore } from '@/stores/agentStore'
 import { usePlanStore } from '@/stores/planStore'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 
-export const setInitialStore = async (initialUserParsed: InitialUser) => {
-   await getCustomizablesFirestore()
-   await getPlansFirestore()
-   await getAgentsFirestore()
+
+export const setInitialStore = async (initialUserParsed: InitialUser) => {  
+   await getPlansFirestore()  
+   useAgentStore().getAgents()
    if (initialUserParsed.planId)
       await getActivePlanFirestore(initialUserParsed.planId)
 

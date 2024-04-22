@@ -5,36 +5,13 @@ import { useField } from 'vee-validate'
 import { vMaska } from 'maska'
 
 const props = defineProps({
-      appendBtn: {
-         type: String,
-      },
-      appendText: {
-         type: String,
-      },
-      className: {
-         type: String,
-         default: '',
-      },
+      
+     
       errorsMessage: {
          type: Object,
          required: true,
       },
-      readOnlyField: {
-         type: Boolean,
-      },
-      stringHandler: {
-         type: String,
-      },
-      hint: {
-         type: String,
-      },
       labelField: {
-         type: String,
-      },
-      mask: {
-         type: String,
-      },
-      maskTokens: {
          type: String,
       },
       nameField: {
@@ -47,40 +24,38 @@ const props = defineProps({
       prependIcon: {
          type: String,
       },
-      typeField: {
-         type: String,
-      },
-      validations: {
-         type: String,
-      },
       minValue:{
-        type:Number
+        type:Number,
+        required: true,
       },
       maxValue:{
-        type:Number
+        type:Number,
+        required: true,
       },
       stepValue:{
-        type:Number
+        type:Number,
+        required: true,
       }
    })
-const { value } = useField(props.nameField)
+const { value } = useField<number>(props.nameField)
 
-const parsedValue = computed(() => parseFloat(value.value));
+const parsedValue = computed(() => parseFloat(String(value.value)));
 
+const backgroundSize = ref('')
 
-onMounted(() => {      
-    backgroundSize.value = (parsedValue.value - props.minValue) * 100.5   / (props.maxValue - props.minValue) + '% 100%';
-   })
-
-const onChangeRange = (event: string) => {
-    value.value = parseFloat(event.target.value) 
-    updateSlider(event)   
+const onChangeRange = (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      value.value = parseFloat(target.value); 
+      updateSlider(event)   
    }
 
-const backgroundSize = ref(null)
+onMounted(() => {      
+    backgroundSize.value = (parsedValue?.value - props?.minValue) * 100.5   / (props?.maxValue - props?.minValue) + '% 100%';
+   })
 
-const updateSlider = (e) => {
-    let clickedElement = e.target,
+
+const updateSlider = (e:Event) => {
+    let clickedElement = e.target as HTMLInputElement,
     min = clickedElement.min,
     max = clickedElement.max,
     val = clickedElement.value;
@@ -97,15 +72,14 @@ const updateSlider = (e) => {
       </div>
 
       <div class="relative flex items-center gap-3">
-        <input class="input-range border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent" type="range" :id="nameField" :name="nameField" :style="{backgroundSize: backgroundSize}" 
+        <input class="input-range border-onsurface-10 bg-white placeholder:normal-case focus:border-[2px] focus:border-primary-40 focus:outline-transparent focus:ring-transparent" type="range" :id="nameField" :name="nameField" 
+        :style="{backgroundSize: backgroundSize || 'auto'}"
         :min="minValue" 
         :max="maxValue" 
         :step="stepValue" 
         v-model.trim="parsedValue"
         @change="(event) => onChangeRange(event)"
-        v-maska
-        :data-maska="mask"
-        :data-maska-tokens="maskTokens"
+        v-maska        
         list="markers"/>
         <span class="flex">{{value}}
             <span v-if="value == 0 || value == 1">.0</span>

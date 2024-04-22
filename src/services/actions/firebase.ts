@@ -1,6 +1,6 @@
 import type { Email } from '@/models/globalModel'
 import type { AgentInitial, Agent } from '@/models/agentModel'
-import type { Credential, InitialUser, UpdateUser } from '@/models/userModel'
+import type { Credential } from '@/models/userModel'
 import type { Plan } from '@/models/planModel'
 
 import {
@@ -20,8 +20,6 @@ import {
    getDocs,
    query,
    where,
-   updateDoc,
-   deleteDoc,
    //- storage
    storage,
    ref,
@@ -57,21 +55,21 @@ export const actionResetPasswordFirebase = async (email: Email) => {
 }
 
 //- firestore
-//* user
-export const actionCreateUserFirestore = async (initialUser: InitialUser) => {
-   const docRef = await addDoc(collection(firestore, 'users'), initialUser)
-   return docRef.id
-}
+// //* user
+// export const actionCreateUserFirestore = async (initialUser: InitialUser) => {
+//    const docRef = await addDoc(collection(firestore, 'users'), initialUser)
+//    return docRef.id
+// }
 
-export const actionUpdateUserFirestore = async (user: UpdateUser) => {
-   const docId = user.docId as string
-   try {
-      const docRef = doc(firestore, 'users', docId)
-      await updateDoc(docRef, user)
-   } catch (error) {
-      console.error(error)
-   }
-}
+// export const actionUpdateUserFirestore = async (user: UpdateUser) => {
+//    const docId = user.id as string
+//    try {
+//       const docRef = doc(firestore, 'users', docId)
+//       await updateDoc(docRef, user)
+//    } catch (error) {
+//       console.error(error)
+//    }
+// }
 
 export const actionGetUserByUidFirestore = async (uid: string) => {
    const q = query(collection(firestore, 'users'), where('uid', '==', uid))
@@ -96,16 +94,16 @@ export const actionCreateAgentFirestore = async (agentInitial: AgentInitial) => 
    return docRef.id
 }
 
-export const actionUpdateAgentFirestore = async (agent: Agent) => {
-   const docId = agent.docId
-   const docRef = doc(firestore, 'agents', docId)
-   await updateDoc(docRef, agent)
-}
+// export const actionUpdateAgentFirestore = async (agent: Agent) => {
+//    // const docId = agent.id
+//    // const docRef = doc(firestore, 'agents', docId)
+//    // await updateDoc(docRef, agent)
+// }
 
-export const actionDeleteAgentFirestore = async (docId: string) => {
-   const docRef = doc(firestore, 'agents', docId)
-   await deleteDoc(docRef)
-}
+// export const actionDeleteAgentFirestore = async (docId: string) => {
+//    // const docRef = doc(firestore, 'agents', docId)
+//    // await deleteDoc(docRef)
+// }
 
 export const actionGetAgentsFirestore = async (userId: string) => {
    const q = query(collection(firestore, 'agents'), where('userId', '==', userId))
@@ -156,7 +154,7 @@ export const actionUploadAgentImageStorage = async (
    email: string,
    imageFile: File,
 ) => {
-   const agentId = useAgentStore().agentActive.docId
+   const agentId = useAgentStore().agentActive.id
    const logoRef = `/agents/${email}/${agentId}/image`
    const pathRef = ref(storage, logoRef)
    const uploadResult = await uploadBytes(pathRef, imageFile)

@@ -1,4 +1,5 @@
-import { Colors, FontFamilies, ScreenSides } from '@/models/globalModel'
+import { Colors } from '@/models/globalModel'
+import {Side,Font} from '@/models/agentModel'
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
@@ -16,11 +17,11 @@ export const useCustomizableStore = defineStore('customizable', () => {
       return cssValues
    })
 
-   const fontFamilies = ref({} as FontFamilies)
+   const fontFamilies = ref([] as Font[])
    
    const fontFamilyIdActive = ref<string>('')
 
-   const screenSides = ref({} as ScreenSides)
+   const screenSides = ref([] as Side[])
    const screenSideIdActive = ref<string>('')
 
    const welcomeMessageActive = ref<string>('')
@@ -28,9 +29,9 @@ export const useCustomizableStore = defineStore('customizable', () => {
    const $reset = () => {
       colors.value = {} as Colors
       colorIdActive.value = ''
-      fontFamilies.value = {} as FontFamilies
+      fontFamilies.value = [] as Font[]
       fontFamilyIdActive.value = ''
-      screenSides.value = {} as ScreenSides
+      screenSides.value = [] as Side[]
       screenSideIdActive.value = ''
       welcomeMessageActive.value = ''
    }

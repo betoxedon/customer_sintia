@@ -7,14 +7,12 @@
    import { Plan } from '@/models/planModel'
    import { setNowUtcUnix, setPlanExpiresUtcUnix } from '@/utils'
    import {
-      getActivePlanFirestore,
-      updateUserFirestore,
+      getActivePlanFirestore,   
    } from '@/services/handleFirebaseFirestore'
    import { useUserStore } from '@/stores/userStore'
    import { usePlanStore } from '@/stores/planStore'
    import { useAgentStore } from '@/stores/agentStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
-   import { updateUserSchema } from '@/models/userModel'
    const userStore = useUserStore()
    const planStore = usePlanStore()
    const agentStore = useAgentStore()
@@ -42,8 +40,8 @@
          }
          userStore.user.planExpiresAt = setPlanExpiresUtcUnix(planExpiresAt, 30)
          userStore.user.addDaysToPlanAt = setNowUtcUnix()
-         const userParsed = updateUserSchema.parse(userStore.user)
-         await updateUserFirestore(userParsed)
+         //const userParsed = updateUserSchema.parse(userStore.user)
+         //await updateUserFirestore(userParsed)
          const planId = useUserStore().user.planId
          await getActivePlanFirestore(planId as string)
       }

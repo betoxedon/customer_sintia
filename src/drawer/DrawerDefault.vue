@@ -110,7 +110,7 @@
                   <img
                      v-if="userStore.user.profile_picture"
                      :src="userStore.user.profile_picture"
-                     class="object-cover transition duration-700" />
+                     class="object-cover transition duration-700 h-full" />
 
                   <MonoUser v-else class="h-10 p-1.5 text-primary-30" />
                </div>

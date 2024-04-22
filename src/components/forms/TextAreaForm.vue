@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useField } from 'vee-validate'
 
 
@@ -54,15 +54,15 @@ const props = defineProps({
       validations: {
          type: String,
       },
+      
    })
 
-   const { meta, value } = useField(props.nameField)
+   const { meta, value } = useField<string>(props.nameField);
+   
    const valueLength = ref(String(value).length)
-
    const maxValueLength = ref()
-
-   const textValue = ref(value.value)
-
+   const leftValueLength = ref()
+   const messageIfMaxLength = ref('')
 
 </script>
 
@@ -86,11 +86,7 @@ const props = defineProps({
             v-maska
             :data-maska="mask"
             :data-maska-tokens="maskTokens"
-            :read-only-field="readOnlyField"
-            @blur="isFocused = false"
-            @focus="isFocused = true"
-            @keyup.enter="onEnter()"           
-            
+            :read-only-field="readOnlyField"                      
             >
             </textarea>
         </div>
@@ -110,8 +106,7 @@ const props = defineProps({
          </div>
 
          <div
-            v-else-if="
-               isFocused &&
+            v-else-if="              
                value &&
                leftValueLength &&
                !errorsMessage[nameField] &&

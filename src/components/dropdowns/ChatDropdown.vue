@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
   import { ref, onUnmounted,onMounted} from 'vue';
 
   const active = ref(false);
-  const activeMenu = ref(null);
-
+  const activeMenu =ref<HTMLElement | null>(null);
+  //import type { Agent } from '@/models/agentModel'
   const emit = defineEmits(['UpdateAgent','copyScriptAgent','deleteAgent','shareAgent']);
 
   const props = defineProps({
 
     identify: {
-        type: String,
+        type: Object,
         required:true
     },
   })
@@ -28,8 +28,7 @@
    
     document.querySelectorAll('.menu-items').forEach((menu) => {
         
-        if (menu !== activeMenu.value) {
-            
+        if (menu instanceof HTMLElement && menu !== activeMenu.value) {            
             menu.style.display ='none'
         }
     });
@@ -54,19 +53,17 @@
   onMounted(() => {
     
     // Fecha outros menus quando clicado fora
-    activeMenu.value = document.querySelector(`#agent-${props.identify.docId}`)
+    activeMenu.value = document.querySelector(`#agent-${props?.identify?.id}`)
     
     document.addEventListener('click', (event) => {
         closeMenu()
-        if (!event.target.closest('.menu-dropdown')) {
+        if (!(event.target as HTMLElement).closest('.menu-dropdown')) {
             closeMenus();
         }
     });
 });
 
-onUnmounted(() => {  
-    
-  
+onUnmounted(() => {    
     document.removeEventListener('click', closeMenus);
 });
 
@@ -75,7 +72,7 @@ onUnmounted(() => {
 
 <template>
   <div class="menu-dropdown" @click.stop >
-    <button @click="toggleMenu" class="hover:text-slate-400" :class="{ 'rounded-md': rounded}">
+    <button @click="toggleMenu" class="hover:text-slate-400">
       <MonoEllipsis class="" />      
     </button>
     
@@ -87,7 +84,7 @@ onUnmounted(() => {
       leave-from-class="transform opacity-100 scale-100"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <div v-show="active"  class="menu-items" :id="`agent-${identify.docId}`" :class="{'show':active}" ref="activeMenu">
+      <div v-show="active"  class="menu-items" :id="`agent-${identify.id}`" :class="{'show':active}" ref="activeMenu">
         
         <div class="py-2">
 
@@ -111,9 +108,9 @@ onUnmounted(() => {
           </div>
 
           <div class="menu-item hidden">
-            <a @click.stop="share()" href="#" class="block px-4 py-2 flex gap-1 items-center">
+            <a href="#" class="block px-4 py-2 flex gap-1 items-center">
 
-              <MonoTraining  style="width:16px;"  />
+              <MonoTraining style="width:16px;"  />
               Treinar chatbot</a
             >
           </div>

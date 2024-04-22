@@ -2,10 +2,9 @@
    import type { AgentInitial } from '@/models/agentModel'
    import { agentInitialSchema } from '@/models/agentModel'
    import FieldsCreateAgent from '@/components/agents/FieldsCreateAgent.vue'
-   import FieldsUpdateAgent from '@/components/agents/FieldsUpdateAgent.vue'
-   import agentApi from '@/services/agentServiceApi'
+
    import { computed, onUnmounted } from 'vue'
-   import { createAgentFirestore } from '@/services/handleFirebaseFirestore'
+ 
    import { setDataConfirmation } from '@/utils'
    import { useAgentStore } from '@/stores/agentStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'

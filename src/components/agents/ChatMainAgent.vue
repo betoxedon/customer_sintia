@@ -19,7 +19,7 @@
    const defaultFont = ref("font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'")
 
    const fontFamily = computed(() => {   
-      return agentStore.agentActive.font?.property || agentStore.agentActive.font?.property_value || defaultFont.value
+      return agentStore.agentActive.font?.property_value || defaultFont.value
    })
 
 </script>

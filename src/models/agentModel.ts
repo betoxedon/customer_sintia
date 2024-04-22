@@ -1,5 +1,5 @@
    import { z } from 'zod'
-   import { setNowUtcUnix } from '@/utils'   
+   import { setNowUtcUnix } from '@/utils'    
   
    const now = setNowUtcUnix()
 
@@ -64,7 +64,7 @@
    //const buscaSchema = z.number()
    //const identifierSchema = z.string().min(3).max(15)
 
-   const materialCoreSchema = z.array().nullable().default(null)
+   const materialCoreSchema = z.array(z.string()).nullable().default([])
 
 
 
@@ -88,8 +88,7 @@
    // [additional]
    const createdAtSchema = z.number().default(now)
    const updatedAtSchema = z.number().default(now)
-   const idSchema = z.number()
-   const userIdSchema = z.string().min(20).max(24)
+   const idSchema = z.number()   
    const welcomeMessageSchema = z
       .string()
       .min(3)
@@ -102,13 +101,26 @@
    const fontFamilyStyleSchema = z.object({
       name: z.string(),
       id: z.number(), 
+      property_value: z.string(),
    });     
 
    const screenSideStyleSchema = z.object({
       name: z.string(),
       id: z.number(),
+      property_value: z.string(),
       
    });
+
+   const userSchema = z.object({
+      first_name: z.string(),
+      last_name: z.string(),
+      email: z.string(),
+      email_verified: z.boolean(),
+      id: z.number(),
+      profile_picture: z.string(),
+      is_superuser: z.boolean(),
+      token: z.string(),
+   }).nullable().default(null)
 
    const imageUrlSchema = z.string().default('')
    const allowedDomainsSchema = z.array(z.string()).default([])
@@ -121,8 +133,9 @@
       color: colorStyleSchema,
       font: fontFamilyStyleSchema,
       side: screenSideStyleSchema,
-      imageUrl: imageUrlSchema,
+      image_file: imageUrlSchema,
       allowedDomains: allowedDomainsSchema,
+      user:userSchema
 
    })
 
@@ -139,3 +152,54 @@
 
    export { agentInitialSchema, agentAdditionalSchema, agentSchema }
    export type { ImageFile, AgentInitial, AgentAdditional, Agent }
+
+   export type Font = {
+      id: number
+      name: string
+      property_value: string    
+   }
+
+   export type Side = {   
+      id: number
+      name: string
+      property_value: string 
+   }
+
+   export type SelecObjects = {
+      id: number
+      name: string        
+   }
+
+   export type ApiCreateAgent = {    
+      name: string
+      temperature: number
+      audio_response: boolean
+      material_core: string | null; // Aceita null
+      model: number
+      tone: number
+      prompt: string
+      voice: number | undefined;
+      language: string
+      sources: number
+      query: string
+      type: number 
+   }
+   export type ApiUpdateAgent = {    
+      name: string
+      temperature: number
+      audio_response: boolean
+      material_core: string | null; // Aceita null
+      model: number
+      tone: number
+      prompt: string
+      voice: number | undefined;
+      language: string
+      sources: number
+      query: string
+      type: number  
+      font: number
+      side: number       
+   }
+
+   export type PropertyValue = string | { id: number; name: string; property_value: string; };
+

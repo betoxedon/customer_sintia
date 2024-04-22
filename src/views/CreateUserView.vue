@@ -2,7 +2,6 @@
    import { initialFormUserSchema } from '@/models/userModel'
    import { ref } from 'vue'
    import FieldForm from '@/components/forms/FieldForm.vue'
-   import { createAuthFirebase } from '@/services/handleFirebaseAuth'
    import userApi from '@/services/userServiceApi'
 
    import { useRouter } from 'vue-router'

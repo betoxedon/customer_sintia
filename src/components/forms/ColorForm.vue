@@ -1,62 +1,29 @@
-<script setup>
+<script setup lang="ts">
 import { useField } from 'vee-validate'
 
 const props = defineProps({
-      options: {
-         type: Array,
-         required: true,
-      },
-      appendBtn: {
-         type: String,
-      },
-      appendText: {
-         type: String,
-      },
-      className: {
-         type: String,
-         default: '',
-      },
+                 
       errorsMessage: {
          type: Object,
          required: true,
       },
-      readOnlyField: {
-         type: Boolean,
-      },
-      stringHandler: {
-         type: String,
-      },
-      hint: {
-         type: String,
-      },
+      
       labelField: {
          type: String,
       },
-      mask: {
-         type: String,
-      },
-      maskTokens: {
-         type: String,
-      },
+      
       nameField: {
          type: String,
          required: true,
       },
+
       placeholder: {
          type: String,
       },
-      prependIcon: {
-         type: String,
-      },
-      typeField: {
-         type: String,
-      },
-      validations: {
-         type: String,
-      },
+     
    })
 
-   const { meta, value } = useField(props.nameField)
+   const { value } = useField(props.nameField)
 
    
 
@@ -71,8 +38,7 @@ const props = defineProps({
 
         <div class="relative mt-2 ms-3">
             <input 
-            type="color" 
-            @input="(event) => onInput(event)" 
+            type="color"            
             v-model="value" 
             :id="nameField" 
             :name="nameField">

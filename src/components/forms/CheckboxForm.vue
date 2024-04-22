@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import {ref} from 'vue'
 import { useField } from 'vee-validate'
@@ -27,11 +27,11 @@ const props = defineProps({
 })
 
 
-const { meta, value } = useField(props.nameField)
+const { value } = useField(props.nameField)
 
 const checkvalue = ref(value)
 
-const emits = defineEmits('update:modelValue')
+const emits = defineEmits(['update:modelValue'])
 
 const onCheck = () => {    
     console.log('nameField',props.nameField)
@@ -49,7 +49,7 @@ const onCheck = () => {
 
         
         <div class="relative flex items-center gap-2">  
-            <input checked="outline-none" type="checkbox" :id="nameField" :name="nameField" v-model="checkvalue" @change="onCheck"/>
+            <input class="outline-none" type="checkbox" :id="nameField" :name="nameField" v-model="checkvalue" @change="onCheck"/>
             <label for="checkbox">{{placeholder}}</label>
         </div>
 

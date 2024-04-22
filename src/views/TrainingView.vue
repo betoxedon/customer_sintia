@@ -1,18 +1,18 @@
 <script setup lang="ts">
    import DrawerDefault from '@/drawer/DrawerDefault.vue'
    import AsidePlan from '@/drawer/AsidePlan.vue'
-   import { setColorStyle } from '@/utils'
-   import { useAgentStore } from '@/stores/agentStore'
-   import { useInterfaceStore } from '@/stores/interfaceStore'
-   const agentStore = useAgentStore()
-   const interfaceStore = useInterfaceStore()
+   // import { setColorStyle } from '@/utils'
+   // import { useAgentStore } from '@/stores/agentStore'
+   // import { useInterfaceStore } from '@/stores/interfaceStore'
+   // const agentStore = useAgentStore()
+   // const interfaceStore = useInterfaceStore()
 </script>
 
 <template>
    <main class="main">
       <DrawerDefault />
 
-      <div class="main-inner grid-rows-[min-content_1fr]">
+      <!-- <div class="main-inner grid-rows-[min-content_1fr]">
          <div class="main-top">
             <span class="container-inner">Treinamento</span>
          </div>
@@ -117,8 +117,8 @@
 
                                     <span
                                        class="truncate font-normal !text-onsurface-30/80">
-                                       {{ agentStore.agents[1].name }} -
-                                       {{ agentStore.agents[1].identifier }}
+                                       {{ agentStore.agents[1].name }}
+                                 
                                     </span>
                                  </div>
                               </td>
@@ -168,9 +168,7 @@
                                  <div class="flex grow items-center gap-x-2 px-3">
                                     <span
                                        class="flex aspect-square w-14 items-center justify-center overflow-hidden rounded-full"
-                                       :style="
-                                          setColorStyle(agentStore.agents[0].colorId)
-                                       ">
+                                       >
                                        <img
                                           v-if="agentStore.agents[0].imageUrl"
                                           :src="agentStore.agents[0].imageUrl"
@@ -181,8 +179,7 @@
 
                                     <span
                                        class="truncate font-normal !text-onsurface-30/80">
-                                       {{ agentStore.agents[0].name }} -
-                                       {{ agentStore.agents[0].identifier }}
+                                       {{ agentStore.agents[0].name }}                                        
                                     </span>
                                  </div>
                               </td>
@@ -241,7 +238,7 @@
                </span>
             </div>
          </div>
-      </div>
+      </div> -->
 
       <AsidePlan />
    </main>

@@ -1,8 +1,9 @@
 import AnonymousLayout from '@/layouts/AnonymousLayout.vue'
 import SignInView from '@/views/SignInView.vue'
 import CreateUserView from '@/views/CreateUserView.vue'
-
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+
+import ShareLayout from '@/layouts/ShareLayout.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import AgentView from '@/views/AgentView.vue'
 import PlansView from '@/views/PlansView.vue'
@@ -93,7 +94,13 @@ export const routes = [
             meta: {
                rules: [],
             },
-         },
+         },         
+      ],
+   },
+   {
+      path: '/',
+      component: ShareLayout,
+      children: [         
          {
             path: 'share/:chatbotId/:userId',
             component: SharedAgentView,

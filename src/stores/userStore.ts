@@ -1,12 +1,13 @@
-import { User, UpdateUser } from '@/models/userModel'
+import { User, UpdateUser,Credential } from '@/models/userModel'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import userApi from '@/services/userServiceApi'
 import Axios from 'axios'
 const { VITE_LOCAL_BASE_URL } = import.meta.env
 
-import { credentialSchema, initialUserSchema, userSchema } from '@/models/userModel'
-import { setInitialStore, resetUserStore } from '@/services/handleStore'
+import { userSchema } from '@/models/userModel'
+import { setInitialStore } from '@/services/handleStore'
+import type { ImageFile } from '@/models/agentModel'
 
 
 export const useUserStore = defineStore('user', () => {
@@ -43,7 +44,7 @@ export const useUserStore = defineStore('user', () => {
 
   };
 
-   const login = async (payload) => {
+   const login = async (payload:Credential) => {
 
       try {
          const modifiedPayload = {
@@ -66,7 +67,7 @@ export const useUserStore = defineStore('user', () => {
       }
    }
 
-   const getUserById = async (userId) =>{
+   const getUserById = async (userId:number) =>{
       
       return userApi.getUserById(userId).then((res)=>{
          return res
@@ -77,8 +78,8 @@ export const useUserStore = defineStore('user', () => {
      
    }
 
-   const updateUserPicture  = async (payload,userId) =>{
-    
+   const updateUserPicture  = async (payload:ImageFile,userId:number) =>{
+      
       let form_data = new FormData();
       form_data.append('profile_picture', payload);
       

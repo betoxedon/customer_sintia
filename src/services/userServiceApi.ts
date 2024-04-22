@@ -1,10 +1,12 @@
 // agentServiceApi.ts
 
 import apiAuth from './apiAuth';
+import { User,InitialFormUser,ApiCredetial } from '@/models/userModel';
+import { ImageFile} from '@/models/agentModel';
 
 export default {
 
-    createUser(payload){
+    createUser(payload:InitialFormUser){
         return apiAuth.post('users/', payload) 
         .then(res => {
             return res;
@@ -14,7 +16,7 @@ export default {
         });
     },
 
-    updateUser(payload,userId){
+    updateUser(payload:User,userId:number){
         return apiAuth.patch(`users/${userId}/`, payload)
             .then(res => {
                 return res;
@@ -24,7 +26,7 @@ export default {
             });
     },
 
-    deleteUser(userId){
+    deleteUser(userId:number){
         return apiAuth.delete(`users/${userId}`)
             .then(res => {
                 return res;
@@ -34,7 +36,7 @@ export default {
             });
     },
 
-    getUserById(userId){
+    getUserById(userId: number){
         return apiAuth.get(`users/${userId}`)
             .then(res => {
                 if (res.data) {                    
@@ -82,7 +84,7 @@ export default {
     },
 
     //Auth
-    signin(payload){
+    signin(payload:ApiCredetial){
         return apiAuth.post('login/', payload) 
         .then(res => {
             return res;
@@ -91,8 +93,8 @@ export default {
             throw error;
         });
     },
-    updateImageUser(formData,userId){
-        
+
+    updateImageUser(formData:ImageFile,userId:number){        
         // Configuração do cabeçalho para o tipo de conteúdo
         const config = {
             headers: {

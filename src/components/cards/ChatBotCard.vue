@@ -16,7 +16,7 @@ const interfaceStore = useInterfaceStore()
  defineProps({
     item: {
         type: Object,
-        required: false,
+        required: true,
     },
 })
 
@@ -25,7 +25,7 @@ const interfaceStore = useInterfaceStore()
         agentStore.agentActive = agent
         setDataConfirmation({
             action: 'handleDeleteAgent',
-            param: agentStore.agentActive.id as string,
+            param: agentStore.agentActive.id.toString(),
             message: 'Tem certeza que deseja apagar ',
         })
         return

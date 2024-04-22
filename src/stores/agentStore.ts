@@ -1,4 +1,4 @@
-import type { Agent } from '@/models/agentModel'
+import type { Agent,ImageFile,AgentInitial } from '@/models/agentModel'
 
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
@@ -7,7 +7,7 @@ import agentApi from '@/services/agentServiceApi'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 
 import { useCustomizableStore } from '@/stores/customizableStore'
-import { agentInitialSchema, agentSchema } from '@/models/agentModel'
+//import { agentInitialSchema, agentSchema } from '@/models/agentModel'
 
 
 export const useAgentStore = defineStore('agent', () => {
@@ -20,7 +20,7 @@ export const useAgentStore = defineStore('agent', () => {
    })
 
    const agents = ref<Agent[]>([])
-   const docIdAgentSelected = ref<string>('')
+   const docIdAgentSelected = ref<number>()
    const agentActive = ref({} as Agent)
    const isLoading = ref(false) 
    const hasAgentResponse = ref(false)
@@ -88,18 +88,18 @@ export const useAgentStore = defineStore('agent', () => {
 
    const agentScript = computed(() => {
       
-      linkTest.value = `<start-sintia id=${agentActive.value.id} userId=${agentActive.value.user.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
-      return `<start-sintia id=${agentActive.value.id} userId=${agentActive.value.user.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
+      linkTest.value = `<start-sintia id=${agentActive?.value?.id} userId=${agentActive.value?.user?.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
+      return `<start-sintia id=${agentActive?.value?.id} userId=${agentActive?.value?.user?.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
    })
 
-   const getLink = (agentID, userID) => {
+   const getLink = (agentID:string, userID:string) => {
          return `<start-sintia id=${agentID} userId=${userID}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
    }
 
    // on update
    const cloneAgentUpdated = () => {
       agents.value.some((agent) => {
-         if (agent.docId === docIdAgentSelected.value) {
+         if (agent.id === docIdAgentSelected.value) {
             Object.assign(agentActive.value)
             Object.assign(agent, agentActive.value)
             return true
@@ -108,8 +108,8 @@ export const useAgentStore = defineStore('agent', () => {
    }
 
    // on delete
-   const spliceAgent = (docId: string) => {
-      const docIds = agents.value.map((agent) => agent.docId)
+   const spliceAgent = (docId: number) => {
+      const docIds = agents.value.map((agent) => agent.id)
       const agentIndex = docIds.indexOf(docId)
       agents.value.splice(agentIndex, 1)
    }
@@ -117,9 +117,9 @@ export const useAgentStore = defineStore('agent', () => {
    const partialReset = () => {
       creatingAgent.value = false
       updatingAgent.value = false
-      docIdAgentSelected.value = ''
+      docIdAgentSelected.value = undefined
       agentActive.value = {} as Agent
-      getAgents()
+      //getAgents()
    }
 
    const $reset = () => {
@@ -158,7 +158,7 @@ export const useAgentStore = defineStore('agent', () => {
      });
    }
 
-   const getAgentById = (id, userId) => {     
+   const getAgentById = (id:string, userId:string) => {     
       return agentApi.getChatbotById(id, userId)
           .then(res => {
               agentActive.value = res      
@@ -169,7 +169,7 @@ export const useAgentStore = defineStore('agent', () => {
           });
    }
 
-   const updateAgent = (data,id) => {
+   const updateAgent = (data:Agent,id:number) => {
       // Modificações nos dados antes de enviar
    
       const modifiedData = {
@@ -196,24 +196,25 @@ export const useAgentStore = defineStore('agent', () => {
      });
    }
 
-   const createAgent = (data) => {
+   const createAgent = (data:AgentInitial) => {
       isLoading.value= true   
 
       const modifiedData = {
          ...data,
-         // Substitui 'side' pelo ID, se 'side' for um objeto
-         side: typeof data.side === 'object' ? data.side.id : data.side,
-         // Substitui 'font' pelo ID, se 'font' for um objeto
-         font: typeof data.font === 'object' ? data.font.id : data.font,
-
+         // // Substitui 'side' pelo ID, se 'side' for um objeto
+         // side: typeof data?.side === 'object' ? data?.side.id : data?.side,
+         // // Substitui 'font' pelo ID, se 'font' for um objeto
+         // font: typeof data?.font === 'object' ? data?.font.id : data?.font,
+         
          model: typeof data.model === 'object' ? data.model.id : data.model,
          type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
 
-         material_core: typeof data.material_core !== 'undefined' ? (Array.isArray(data.material_core) ? data.material_core.join(',') : data.material_core) : ''
+         // Verifica se material_core não é indefinido antes de tratá-lo
+         material_core: typeof data.material_core !== 'undefined' ? 
+         (Array.isArray(data.material_core) ? data.material_core.join(',') : data.material_core) : ''
 
-         //material_core: typeof data.material_core ? data.material_core.join(',') : data.material_core,
      };   
 
       agentApi.createAgent(modifiedData).then((res)=>{
@@ -227,10 +228,10 @@ export const useAgentStore = defineStore('agent', () => {
      });
    }
 
-   const deleteAgent = (id) => {
+   const deleteAgent = (id:string) => {
       isLoading.value= true      
 
-      agentApi.deleteAgent(id).then((res)=>{      
+      agentApi.deleteAgent(id).then(()=>{      
          getAgents()
          useInterfaceStore().notificationMessage = 'Chatbot deletado com sucesso!'
          useInterfaceStore().notificationIsPersistent = false
@@ -243,8 +244,9 @@ export const useAgentStore = defineStore('agent', () => {
      });
    }
 
-   const updateAgentPicture  = async (payload,agentId) =>{
-    
+   const updateAgentPicture  = async (payload:ImageFile,agentId:number) =>{
+      
+      console.log('updateAgentPicture',payload)
       let form_data = new FormData();
       form_data.append('image_file', payload);
       

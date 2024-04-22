@@ -1,8 +1,7 @@
 <script setup lang="ts">
    import { ref } from 'vue'
    import FieldForm from '@/components/forms/FieldForm.vue'
-   import { credentialSchema } from '@/models/userModel'
-   import { signInFirebase } from '@/services/handleFirebaseAuth'
+   import { credentialSchema } from '@/models/userModel'  
    import { useRouter } from 'vue-router'
    import { useInterfaceStore } from '@/stores/interfaceStore'
    import { useUserStore } from '@/stores/userStore'
@@ -28,7 +27,11 @@
       showBtnLoading.value = true
 
          await useStore.login(form)
-            .then((res) => {
+            .then(() => {
+               interfaceStore.showNotification = true
+               interfaceStore.notificationMessage = 'Login efetuado com sucesso!'
+               interfaceStore.notificationType = 'success'
+
             router.push({ name: 'dashboard' })
          })
          .catch((error) => {

@@ -39,7 +39,7 @@
    const onDeleteAgent = async () => {
       setDataConfirmation({
          action: 'handleDeleteAgent',
-         param: agentStore.agentActive.id as string,
+         param: agentStore.agentActive.id.toString(),
          message: 'Tem certeza que deseja apagar ',
       })
       return
@@ -88,6 +88,7 @@
             font: values.font,
             side: values.side,
          }
+         console.log(stylesUpdated)
          Object.assign(agentStore.agentActive, stylesUpdated, idsUpdated)
       },
       { immediate: true },
@@ -108,7 +109,7 @@
 
 <template>
    <div class="main-core">
-      
+      {{ errors }}
       <div
          class="container-inner grid-rows-auto  place-content-stretch content-start gap-y-3">
          <div class="tips col-span-full mb-3 flex text-lg">

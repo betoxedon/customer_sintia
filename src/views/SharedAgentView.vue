@@ -11,6 +11,7 @@
    const showAvatar = ref(false)
    const showChatBalloon = ref(true)
    const showDialog = ref(false)
+   const body = ref(document.body)
    
    const today = new Date().toLocaleString('pt-BR', {
       day: '2-digit',
@@ -91,10 +92,12 @@
    }
 
    onMounted( () => {   
+      body.value.style.backgroundColor = '#0f172a'
+      body.value.style.overflow = 'hidden'
       const agentId = route.params.chatbotId as string
       const userId =  route.params.userId as string
 
-      agentStore.getAgentById(agentId,userId).then(res =>{
+      agentStore.getAgentById(agentId,userId).then(() =>{
          showAvatar.value = true
          agentStore.sharedAgent = true  
          chatStore.startSession(agentId)
@@ -155,7 +158,7 @@
                         <img
                            v-if="agentStore.agentActive.image_file"
                            :src="agentStore.agentActive.image_file"
-                           class="w-full" />
+                           class="w-full h-full object-cover " />
                         <MonoLogo v-else class="h-6 w-6 text-slate-500" />
                      </div>
 
@@ -178,7 +181,7 @@
                            <img
                               v-if="agentStore.agentActive.image_file"
                               :src="agentStore.agentActive.image_file"
-                              class="w-full" />
+                              class="w-full h-full object-cover " />
                            <MonoLogo v-else class="h-6 w-6 text-slate-500" />
                         </div>                 
 
@@ -209,7 +212,7 @@
                            <img
                               v-if="agentStore.agentActive.image_file"
                               :src="agentStore.agentActive.image_file"
-                              class="w-full" />
+                              class="w-full h-full object-cover " />
                            <MonoLogo v-else class="h-6 w-6 text-slate-500" />
                         </div>                 
 
@@ -276,7 +279,7 @@
             <img
                v-if="agentStore.agentActive.image_file"
                :src="agentStore.agentActive.image_file"
-               class=" w-full" />
+               class=" w-full h-full object-cover " />
             <MonoLogo v-else class="h-11 w-11 text-slate-600" />
          </div>
       </div>

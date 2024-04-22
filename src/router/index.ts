@@ -1,8 +1,7 @@
-import { signOutFirebase } from '@/services/handleFirebaseAuth'
 import { RouteLocationNormalized, createRouter, createWebHistory } from 'vue-router'
 import { auth, onAuthStateChanged } from '@/services/configs/firebase-config'
 import { setInitialStore } from '@/services/handleStore'
-import { getUserByUidFirestore } from '@/services/handleFirebaseFirestore'
+
 import { useUserStore } from '@/stores/userStore'
 import { useGlobalStore } from '@/stores/globalStore'
 import { useInterfaceStore } from '@/stores/interfaceStore'
@@ -68,7 +67,8 @@ router.beforeEach(async (route) => {
 
    if (!useUserStore().user.id) {
 
-      const id = await JSON.parse(localStorage.getItem('uid'))
+      const idStorage = localStorage.getItem('uid') 
+      const id = idStorage ? JSON.parse(idStorage) : null
 
       if (!id) {         
         // await signOutFirebase()

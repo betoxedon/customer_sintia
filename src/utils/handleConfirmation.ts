@@ -1,9 +1,6 @@
 import { ConfirmationData } from '@/models/globalModel'
 import { signOutFirebase } from '@/services/handleFirebaseAuth'
-import {
-   getAgentsFirestore,
-   deleteAgentFirestore,
-} from '@/services/handleFirebaseFirestore'
+
 import { useAgentStore } from '@/stores/agentStore'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 
@@ -25,7 +22,7 @@ export const resolveConfirmation = async () => {
 
    const handleCancelForm = async () => {
       useAgentStore().$reset()
-      await getAgentsFirestore()
+      //await getAgentsFirestore()
       useInterfaceStore().showDialogConfirmation = false
       useInterfaceStore().confirmationData = undefined
    }

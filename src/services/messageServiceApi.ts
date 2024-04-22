@@ -4,7 +4,7 @@ import apiAuth from './apiAuth';
 
 export default {
 
-    createMessage(session,message){
+    createMessage(session:number,message:string){
         const payload = {
             request:message,
             session:session

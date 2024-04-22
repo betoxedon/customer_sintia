@@ -1,12 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { useField } from 'vee-validate'
 import { ref,watch } from 'vue'
-import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import type { PropType } from 'vue'
+import {SelecObjects} from '@/models/agentModel'
 
 const props = defineProps({
       options: {
-         type: Array,
+         type: Array as PropType<SelecObjects[]>,
          required: true,
       },
       appendBtn: {
@@ -61,7 +63,9 @@ const props = defineProps({
    })
 
 
-const { meta, value } = useField(props.nameField)
+const {value } = useField<SelecObjects>(props.nameField);
+//ex: const { meta, value } = useField<string>(props.nameField);
+
 const valueSelected = ref(value.value)
 
 

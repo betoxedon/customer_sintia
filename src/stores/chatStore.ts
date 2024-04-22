@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import messageApi from '@/services/messageServiceApi'
 import sessionApi from '@/services/sessionServiceApi'
-
+import { Session,SessionCreate } from '@/models/sessionModel'
 
 
 export const useChatStore = defineStore('chat', () => {
@@ -13,14 +13,17 @@ export const useChatStore = defineStore('chat', () => {
     const isLoading = ref(false)
     const currentMessage = ref('')
 
-    const startSession = async (botId) => {
+    const startSession = async (botId:string) => {
 
         isLoading.value = true
+
         const data = {
             bot:botId
         }
-        const storageSession = JSON.parse(localStorage.getItem('currentSession')) || null
-        
+        //const storageSession = JSON.parse(localStorage.getItem('currentSession')) || null
+        const storageSessionString = localStorage.getItem('currentSession');
+        const storageSession = storageSessionString ? JSON.parse(storageSessionString) as Session : null;
+
         if (storageSession) sessionActive.value = storageSession
         
         if (!sessionActive.value || sessionActive.value.bot != botId){
@@ -37,7 +40,7 @@ export const useChatStore = defineStore('chat', () => {
         isLoading.value = false
     }
 
-    const createSession = async (payload) => {
+    const createSession = async (payload:SessionCreate) => {
         try {
             isLoading.value = true
             const res = await sessionApi.createSession(payload)
@@ -50,7 +53,7 @@ export const useChatStore = defineStore('chat', () => {
         }
     }
 
-    const sendMessage = async (request) => {
+    const sendMessage = async (request:string) => {
         
         if (!sessionActive.value) {
             console.log(request)

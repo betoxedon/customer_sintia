@@ -13,8 +13,9 @@ const api: AxiosInstance = axios.create({
 
 
 api.interceptors.request.use(async config => {
-   const apiToken = await JSON.parse(localStorage.getItem('apiToken'))
    
+   const apiTokenStorage = localStorage.getItem('apiToken')
+   const apiToken  = apiTokenStorage ? JSON.parse(apiTokenStorage) : null;
 
       if (config.headers && config.headers['Content-Type']) {
          config.headers['Content-Type'] = config.headers['Content-Type'];

@@ -1,6 +1,7 @@
-import { useCustomizableStore } from '@/stores/customizableStore'
+import { PropertyValue } from '@/models/agentModel'
 
-export const updateStyles = (newValues: string[]) => {
+export const updateStyles = (newValues: PropertyValue[]) => {
+  
 
    const colorValue = newValues[0]
    const fontValue = newValues[1]
@@ -9,8 +10,8 @@ export const updateStyles = (newValues: string[]) => {
 
    const stylesUpdated = {
       color: colorValue,
-      fontFamily: fontValue,
-      screenSide: screenSideValue
+      font: fontValue,
+      side: screenSideValue
    }
    return stylesUpdated
 }

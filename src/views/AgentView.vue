@@ -5,12 +5,10 @@
    import FormUpdateAgent from '@/components/agents/FormUpdateAgent.vue'
    import AsideAgent from '@/drawer/AsideAgent.vue'
    import { computed, onMounted, onUnmounted } from 'vue'
-   import { getAgentsFirestore } from '@/services/handleFirebaseFirestore'
    
    import { useGlobalStore } from '@/stores/globalStore'
    import { useAgentStore } from '@/stores/agentStore'
-   import { usePlanStore } from '@/stores/planStore'
-   import agentServiceApi from '@/services/agentServiceApi'
+   import { usePlanStore } from '@/stores/planStore'  
    const globalStore = useGlobalStore()
    const agentStore = useAgentStore()
    const planStore = usePlanStore()
@@ -19,23 +17,10 @@
       return planStore.planActive?.features.agentsLimit || 0
    })
 
-   const mainClass = computed(()=>{
-
-      if (!agentStore.updatingAgent){
-         return 'main_home'
-      } else{
-         return 'main'
-      }
-      
-   })
-
    onMounted(async () => {
-      agentStore.isLoading = true
-      if (agentStore.agents.length === 0) {
-         await getAgentsFirestore()
-         await agentStore.getAgents()
-      }
-      await agentStore.getDatas()
+      agentStore.isLoading = true          
+      agentStore.getAgents()     
+      agentStore.getDatas()
    })
    onUnmounted(() => {
       agentStore.partialReset()

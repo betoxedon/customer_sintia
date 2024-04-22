@@ -1,10 +1,11 @@
 // agentServiceApi.ts
 
+import { ImageFile, ApiUpdateAgent,ApiCreateAgent } from '@/models/agentModel';
 import apiAuth from './apiAuth';
 
 export default {
 
-    createAgent(payload){
+    createAgent(payload:ApiCreateAgent){
           return apiAuth.post('chatbots/', payload) 
             .then(res => {
                 return res;
@@ -28,7 +29,7 @@ export default {
                 throw error;
             });
     },
-    updateAgent(payload,chatId){
+    updateAgent(payload:ApiUpdateAgent,chatId:number){
         return apiAuth.patch(`chatbots/${chatId}/`, payload)
             .then(res => {
                 return res;
@@ -37,7 +38,7 @@ export default {
                 throw error;
             });
     },
-    deleteAgent(chatId){
+    deleteAgent(chatId:string){
         return apiAuth.delete(`chatbots/${chatId}`)
             .then(res => {
                 return res;
@@ -46,7 +47,7 @@ export default {
                 throw error;
             });
     },
-    getChatbot(chatId){
+    getChatbot(chatId:number){
         return apiAuth.get(`chatbots/${chatId}`)
             .then(res => {
                 if (res.data) {                    
@@ -62,7 +63,7 @@ export default {
             });
     },
 
-    getChatbotById(chatId,userId){
+    getChatbotById(chatId:string,userId:string){
         return apiAuth.get(`chatbots/${chatId}/chatbotByid/?userId=${userId}`)
             .then(res => {
                 if (res.data) {                    
@@ -97,7 +98,7 @@ export default {
             });
     },
 
-    updateImageAgent(formData,chatId){
+    updateImageAgent(formData:ImageFile,chatId: number){
 
         // Configuração do cabeçalho para o tipo de conteúdo
 

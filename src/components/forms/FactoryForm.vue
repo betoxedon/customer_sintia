@@ -1,14 +1,13 @@
-<script setup>
+<script setup lang="ts">
 
-    import FieldForm from '@/components/forms/FieldForm.vue'
     import {ref} from 'vue'
     import { useField } from 'vee-validate'
-
 
    const props = defineProps({
 
         limit :{
-            type:Number
+            type:Number,
+            required:true
         },
         labelField:{
             type: String,
@@ -24,17 +23,22 @@
         placeholder: {
          type: String,
       },
-      initialCount:{},
-      initialValues:{}
+      initialCount:{
+          type:Number,
+          default:0
+      },
+      initialValues:{
+          type:Array,
+          default:[],
+      }
 
    })
 
-   const { meta, value } = useField(props.nameField)
+   const { value } = useField(props.nameField)
 
 
     const countInputs = ref(props.initialCount)
-    const errors = [] // Certifique-se de inicializar errors, se necessário
-
+   
     const materials = ref(props.initialValues||[])
 
     const addInput = () => {
@@ -43,15 +47,14 @@
     }
     }
 
-    const removeInput = (index) => {
+    const removeInput = (index: number) => {
     countInputs.value -= 1
     materials.value.splice(index - 1, 1)
     onchangeMaterials()    
     }
 
 
-    const onchangeMaterials = () => {
-        const strinOfMaterials = materials.value.join(',')
+    const onchangeMaterials = () => {        
         value.value = materials.value
     }
 

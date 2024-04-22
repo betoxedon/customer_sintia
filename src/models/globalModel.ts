@@ -50,12 +50,13 @@ export type ScreenSides = z.infer<typeof screenSidesSchema>
 
 export const imageUrlSchema = z.string().default('')
 export const userRolesSchema = z.record(z.boolean())
+
 export const confirmationDataSchema = z.object({
    message: z.string().min(5).max(100),
    action: z
       .enum(['handleCancelForm', 'handleDeleteAgent', 'handleSignOut'])
       .optional(),
-   param: z.string().min(5).max(100).optional(),
+   param: z.string().or(z.number()).optional(),
 })
 export type ImageUrl = z.infer<typeof imageUrlSchema>
 export type UserRoles = z.infer<typeof userRolesSchema>
@@ -64,4 +65,4 @@ export type ConfirmationData = z.infer<typeof confirmationDataSchema>
 // const userIdSchema = z.string().min(20).max(24)
 // const planIdSchema = z.string().min(20).max(24)
 
-// type DocId = z.infer<typeof docIdSchema>
+//type DocId = z.infer<typeof docIdSchema>

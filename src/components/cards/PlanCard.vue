@@ -1,23 +1,15 @@
-<script setup>
-
+<script setup lang="ts">
 
 import { useUserStore } from '@/stores/userStore'
-import { usePlanStore } from '@/stores/planStore'
-import { useAgentStore } from '@/stores/agentStore'
-import { useInterfaceStore } from '@/stores/interfaceStore'
-import { updateUserSchema } from '@/models/userModel'
 
 const userStore = useUserStore()
-const planStore = usePlanStore()
-const agentStore = useAgentStore()
-const interfaceStore = useInterfaceStore()
 
-const emits = defineEmits('onSelectPlan')
+const emits = defineEmits(['onSelectPlan'])
 
-const props = defineProps({
+defineProps({
     item:{
         type: Object,
-        required: false,
+        required: true,
     },
     index:{
         type: [Number,String],
@@ -29,7 +21,7 @@ const props = defineProps({
     },
 })
 
-const onSelectPlan = ((index)=>{
+const onSelectPlan = ((index: string | number | undefined)=>{   
     emits('onSelectPlan',index)
 })
 

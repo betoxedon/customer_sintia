@@ -5,7 +5,7 @@
    const interfaceStore = useInterfaceStore()
    const currentOrigin = window.location.origin
    const agentId = agentStore.agentActive.id
-   const userId = agentStore.agentActive.user.id
+   const userId = agentStore?.agentActive?.user?.id
 
    const onCopyUrl = () => {
       navigator.clipboard.writeText(currentOrigin + '/share/' + agentId + '/' + userId)

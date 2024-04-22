@@ -2,7 +2,7 @@
    import { imageFileSchema } from '@/models/globalModel'
    import { onUnmounted } from 'vue'
    import ImagePickerForm from '@/components/forms/ImagePickerForm.vue'
-   import { uploadUserImageStorage } from '@/services/handleFirebaseStorage'
+   //import { uploadUserImageStorage } from '@/services/handleFirebaseStorage'
    import { useGlobalStore } from '@/stores/globalStore'
    import { useUserStore } from '@/stores/userStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
@@ -61,9 +61,9 @@
                   labelField="Clique para atualizar sua imagem do perfil"
                   nameField="imageFile"
                   :imageUrl="
-                     globalStore.imageUrlActive
-                        ? globalStore.imageUrlActive
-                        : userStore.user.profile_picture
+                      globalStore.imageUrlActive
+                     ? globalStore.imageUrlActive
+                     : (userStore.user.profile_picture !== null ? userStore.user.profile_picture : '')
                   "
                   hint="Use PNG ou JPEG (2MB no máximo)"
                   :errorsMessage="errors" />

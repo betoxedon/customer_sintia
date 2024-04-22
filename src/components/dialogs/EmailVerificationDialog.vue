@@ -20,7 +20,7 @@
             interfaceStore.notificationMessage = `Link de verificação enviado para ${currentUserEmail}. Por favor, verifique sua caixa de entrada.`
             interfaceStore.notificationType = 'success'
             interfaceStore.showNotification = true
-            userStore.user.emailVerified = true
+            userStore.user.email_verified = true
             interfaceStore.resetDialog()
             router.push({ name: 'signIn' })
          })

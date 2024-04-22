@@ -2,11 +2,9 @@
    import { computed, ref } from 'vue'
    import { useAgentStore } from '@/stores/agentStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
-   import { useCustomizableStore } from '@/stores/customizableStore';
 
    const agentStore = useAgentStore()
-   const interfaceStore = useInterfaceStore()
-   const customizableStore = useCustomizableStore()
+   const interfaceStore = useInterfaceStore()  
 
    const background = computed(() => {
 
@@ -29,7 +27,7 @@
    const defaultFont = ref("font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'")
    
    const fontFamily = computed(() => {   
-   return agentStore.agentActive.font?.property || agentStore.agentActive.font?.property_value||defaultFont.value
+   return agentStore.agentActive.font?.property_value||defaultFont.value
    })
 
 

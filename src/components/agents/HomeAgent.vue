@@ -1,20 +1,16 @@
-<script setup lang="ts">
-   import type { Agent } from '@/models/agentModel'
+<script setup lang="ts">   
    import { computed } from 'vue'
-   import { setColorStyle } from '@/utils'
+  
    import { useGlobalStore } from '@/stores/globalStore'
    import { useAgentStore } from '@/stores/agentStore'
    import { usePlanStore } from '@/stores/planStore'
-   import { useInterfaceStore } from '@/stores/interfaceStore'
-   import {setDataConfirmation} from '@/utils'
-   import ChatDropdown from '@/components/dropdowns/ChatDropdown.vue'
-
+   
    import ChatBotCard from '@/components/cards/ChatBotCard.vue' 
 
    const globalStore = useGlobalStore()
    const agentStore = useAgentStore()
    const planStore = usePlanStore()
-   const interfaceStore = useInterfaceStore()
+   
 
    const planAgentsLimit = computed(() => {
       return planStore.planActive?.features.agentsLimit || 0
@@ -37,28 +33,28 @@
       agentStore.updatingAgent = false
    }
 
-   const onUpdateAgent = (agent: Agent) => {
-      agentStore.partialReset()
-      agentStore.agentActive = agent
-      agentStore.updatingAgent = true
-      agentStore.creatingAgent = false
-   }
+   // const onUpdateAgent = (agent: Agent) => {
+   //    agentStore.partialReset()
+   //    agentStore.agentActive = agent
+   //    agentStore.updatingAgent = true
+   //    agentStore.creatingAgent = false
+   // }
 
-   const onDeleteAgent = async (agent: Agent) => {
-      agentStore.agentActive = agent
-      setDataConfirmation({
-         action: 'handleDeleteAgent',
-         param: agentStore.agentActive.id as string,
-         message: 'Tem certeza que deseja apagar ',
-      })
-      return
-   }
+   // const onDeleteAgent = async (agent: Agent) => {
+   //    agentStore.agentActive = agent
+   //    setDataConfirmation({
+   //       action: 'handleDeleteAgent',
+   //       param: agentStore.agentActive.id as string,
+   //       message: 'Tem certeza que deseja apagar ',
+   //    })
+   //    return
+   // }
 
-   const onshowDialogScript = (agent: Agent) => {
-      agentStore.partialReset()
-      agentStore.agentActive = agent
-      interfaceStore.showDialogScript = true
-   }
+   // const onshowDialogScript = (agent: Agent) => {
+   //    agentStore.partialReset()
+   //    agentStore.agentActive = agent
+   //    interfaceStore.showDialogScript = true
+   // }
    
 </script>
 

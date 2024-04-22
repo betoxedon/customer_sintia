@@ -15,13 +15,16 @@
          required: true,
       },
       imageUrl: {
-         type: String,
+         type: [String],
+         default: '',
       },
       hint: {
          type: String,
+         required: true,
       },
       labelField: {
          type: String,
+         required: true,
       },
    })
 

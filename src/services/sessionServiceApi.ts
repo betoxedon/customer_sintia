@@ -1,10 +1,10 @@
-// agentServiceApi.ts
+import { SessionCreate } from '@/models/sessionModel';
 
 import apiAuth from './apiAuth';
 
 export default {
 
-    createSession(payload){
+    createSession(payload:SessionCreate){
         //payload = {bot:1}
           return apiAuth.post('sessions/', payload) 
             .then(res => {
@@ -24,7 +24,7 @@ export default {
                 throw error;
             });
     },
-    getSessionMessages(sessionId){
+    getSessionMessages(sessionId:number){
         return apiAuth.get(`sessions/${sessionId}`) 
             .then(res => {
                 return res;

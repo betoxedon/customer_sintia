@@ -1,8 +1,11 @@
 <script setup lang="ts">
-   import { FontFamilies, ScreenSides } from '@/models/globalModel'
+
+   //import { FontFamilies, ScreenSides } from '@/models/globalModel'
+   import { Font, Side } from '@/models/agentModel'
+
    import type { PropType } from 'vue'
    import { useField } from 'vee-validate'
-
+   
    const props = defineProps({
       errorsMessage: {
          type: Object,
@@ -16,14 +19,15 @@
          required: true,
       },
       options: {
-         type: Object as PropType<FontFamilies | ScreenSides>,
+         type: Array as PropType<Font[] | Side[]>,
          required: true,
       },
    })
 
    const { value } = useField(props.nameField)
 
-   const onSelectItem = (item) => {
+   const onSelectItem = (item: Font | Side) => {
+      console.log(item)
       value.value = item
    }
 </script>
@@ -35,17 +39,20 @@
       </div>
 
       <div class="col-span-full flex flex-row-reverse gap-x-3">
+
          <div
-            v-for="(option, itemId, index) in options"
+            v-for="(option, index) in options"
             :key="index"
             class="flex h-[52px] w-full items-center gap-x-2 rounded-lg bg-white px-3 outline outline-1 outline-onsurface-10 maxw:h-[60px]">
+            
             <span
                class="hover:ring-primary-100 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-slate-500 bg-slate-100 hover:ring-2 hover:ring-offset-2"
-               :class="{ 'option-selected': value?.id === option.id }"
+               :class="{ 'option-selected': value === option }"
                @click="onSelectItem(option)"></span>
             <span>{{ option.name }}</span>
             
          </div>
+
       </div>
 
       <div

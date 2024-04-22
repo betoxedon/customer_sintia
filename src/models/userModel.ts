@@ -34,6 +34,7 @@ export type InitialFormUser = z.infer<typeof initialFormUserSchema>
 
 export const initialUserSchema = initialFormUserSchema
    .extend({
+      id: docIdSchema,
       createdAt: createdAtSchema,
       updatedAt: updatedAtSchema,
       token: uidSchema,
@@ -62,6 +63,13 @@ export const userSchema = initialUserSchema.extend({
    planExpiresAt: planExpiresAtSchema,
    monthlyMessagesUsed: monthlyMessagesUsedSchema,
 })
+
+export type ApiCredetial = {
+   username: string
+   password: string
+
+}
+
 export type User = z.infer<typeof userSchema>
 
 export const updateUserSchema = userSchema.partial()

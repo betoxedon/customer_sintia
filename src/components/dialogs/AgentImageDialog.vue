@@ -3,7 +3,7 @@
    import { onUnmounted } from 'vue'
    import ImagePickerForm from '@/components/forms/ImagePickerForm.vue'
 
-   import { uploadAgentImageStorage } from '@/services/handleFirebaseStorage'
+   //import { uploadAgentImageStorage } from '@/services/handleFirebaseStorage'
    import { useGlobalStore } from '@/stores/globalStore'
    import { useAgentStore } from '@/stores/agentStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
@@ -62,7 +62,7 @@
                   :imageUrl="
                      globalStore.imageUrlActive
                         ? globalStore.imageUrlActive
-                        : agentStore.agentActive.imageUrl
+                        : agentStore.agentActive.image_file
                   "
                   hint="Use PNG ou JPEG (2MB no máximo)"
                   :errorsMessage="errors" />
