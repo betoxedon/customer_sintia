@@ -8,6 +8,7 @@
    const chatStore = useChatStore()
    const route = useRoute()
 
+   const scrollElement = ref<HTMLElement | null>(null)
    const showAvatar = ref(false)
    const showChatBalloon = ref(true)
    const showDialog = ref(false)
@@ -69,8 +70,10 @@
       showAvatar.value = false
       showChatBalloon.value = false
       showDialog.value = true
+     
       
       nextTick(() => {
+         scrollMessage() 
          const inputElement = document.querySelector('input')
          if (!inputElement) return
          inputElement.focus()
@@ -82,16 +85,32 @@
       showAvatar.value = true
    }
 
+   const scrollMessage = () => {
+      if (!scrollElement.value) return  
+      scrollElement.value.scrollTop = scrollElement.value?.scrollHeight
+   }
+
    const sendMessage = async() => {             
 
       if (chatStore.currentMessage) {
-         chatStore.isLoading = true    
-         await chatStore.sendMessage(chatStore.currentMessage)  
+         chatStore.isLoading = true  
+
+         nextTick(() => {
+            scrollMessage()      
+         })
+
+         await chatStore.sendMessage(chatStore.currentMessage)
+
+          nextTick(() => {
+            scrollMessage()      
+         }) 
+         
       }     
       chatStore.isLoading = false
    }
 
-   onMounted( () => {   
+   onMounted( () => {           
+          
       body.value.style.backgroundColor = '#0f172a'
       body.value.style.overflow = 'hidden'
       const agentId = route.params.chatbotId as string
@@ -101,9 +120,11 @@
          showAvatar.value = true
          agentStore.sharedAgent = true  
          chatStore.startSession(agentId)
+         
       }).catch(error => {
          console.log(error)            
      });       
+       
    })
    
 </script>
@@ -112,7 +133,7 @@
    <div
       class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[326px]"
       :class="screenSideClass">
-      <div v-if="showDialog" class="chat-main grid content-end">
+      <div v-show="showDialog" class="chat-main grid content-end">
          <div
             class="grid w-full grid-rows-[min-content_minmax(0px,_480px)] overflow-hidden rounded-xl"
             :style="fontFamily">
@@ -143,7 +164,7 @@
 
             <div class="grid grid-rows-[1fr_min-content] rounded-b-xl bg-white pb-[10px]">
                
-               <div class="flex flex-col content-start px-2 pb-1 overflow-x-hidden">
+               <div class="flex flex-col content-start px-2 pb-1 overflow-x-hidden" id="messages_list" ref="scrollElement" >
                   
                   <span
                      class="col-span-2 mb-4 mt-1 place-self-center rounded-lg bg-slate-400 px-4 py-0.5 text-white">
@@ -230,11 +251,11 @@
                <div
                   class="mx-2 z-20 flex items-center overflow-hidden rounded-lg border-on
                     has-[:focus]:ring-2 has-[:focus]:ring-primary-40" :style="borderColor" >
-                  <input v-model.trim="chatStore.currentMessage" style="font-size: 16px;"
+                  <input @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" style="font-size: 16px;"
                      class=":focus:ring-2 block h-[40px] w-full rounded-l-lg border-0  pl-3 pr-2 text-base ring-0 placeholder:text-base placeholder:font-normal focus:border-0 focus:outline-0"
                      placeholder="Digite sua mensagem..." />
 
-                  <button @click.stop="sendMessage" :style="backgroundColor" :disabled="!chatStore.currentMessage || chatStore.isLoading"
+                  <button  @click.stop="sendMessage" :style="backgroundColor" :disabled="!chatStore.currentMessage || chatStore.isLoading"
                      class="mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg">
                      <MonoSend class="h-5 text-white" />
                   </button>
