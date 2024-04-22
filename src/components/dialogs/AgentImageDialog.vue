@@ -60,9 +60,7 @@
                   labelField="Clique na imagem para atualizar a imagem do chatbot"
                   nameField="imageFile"
                   :imageUrl="
-                     globalStore.imageUrlActive
-                        ? globalStore.imageUrlActive
-                        : agentStore.agentActive.image_file
+                      (globalStore.imageUrlActive || agentStore.agentActive.image_file) as string
                   "
                   hint="Use PNG ou JPEG (2MB no máximo)"
                   :errorsMessage="errors" />
