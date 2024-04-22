@@ -179,7 +179,7 @@
            -->
          </div>
 
-         <div class="col-span-12 mx-auto grid w-full max-w-[560px]">
+         <div class="col-span-12 mx-auto grid w-full max-w-[560px] hidden">
             <div
                class="btn h-[68px] w-full rounded-lg bg-primary-30 hover:opacity-90 items-center btn-disabled"
                :class="btnDisabledClass"   
