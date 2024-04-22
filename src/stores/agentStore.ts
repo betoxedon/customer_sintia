@@ -186,8 +186,12 @@ export const useAgentStore = defineStore('agent', () => {
          
          material_core: typeof data.material_core !== 'undefined' ? (Array.isArray(data.material_core) ? data.material_core.join(',') : data.material_core) : ''
 
-         //material_core: typeof data.material_core ? data.material_core.join(',') : data.material_core,
+         
      };
+     //remover image_file
+      if ('image_file' in modifiedData) {
+         delete modifiedData.image_file;
+      }
       
       agentApi.updateAgent(modifiedData,id).then((res)=>{
          return res

@@ -122,7 +122,7 @@
       token: z.string(),
    }).nullable().default(null)
 
-   const imageUrlSchema = z.string().default('')
+   const imageUrlSchema = z.string().default('').nullable().optional()
    const allowedDomainsSchema = z.array(z.string()).default([])
    const agentAdditionalSchema = z.object({
       createdAt: createdAtSchema,

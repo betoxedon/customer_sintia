@@ -109,7 +109,7 @@
 
 <template>
    <div class="main-core">
-      {{ errors }}
+     
       <div
          class="container-inner grid-rows-auto  place-content-stretch content-start gap-y-3">
          <div class="tips col-span-full mb-3 flex text-lg">
@@ -117,7 +117,7 @@
             <span class="text-lg font-medium">Editar chatbot</span>
          </div>
         
-         <tabs >
+         <tabs cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
                <tab name="Geral">
                   <FieldsCreateAgent :errors="errors" />
                </tab>   
