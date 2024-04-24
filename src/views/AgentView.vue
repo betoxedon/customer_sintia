@@ -47,10 +47,8 @@
 
 <template>
    <main class="main_home">      
-      <SideBar /> 
-      <div class="flex justify-center items-center" v-if="agentStore.isLoading">
-            <AnimLoadingBtn class="text-primary-30 h-[36px]" />
-      </div>
+      <SideBar />     
+    
 
 
       <div class="main-inner grid-rows-[min-content_1fr_min-content]" >
@@ -77,10 +75,13 @@
 
          </div>
 
+         <div class="flex justify-center items-center w-full" v-if="agentStore.isLoading">
+            <AnimLoadingBtn class="text-primary-30 h-[36px]" />
+         </div>
        
-         <HomeAgent v-if="!agentStore.creatingAgent && !agentStore.updatingAgent" />
-         <FormCreateAgent v-else-if="agentStore.creatingAgent" />
-         <FormUpdateAgent v-else-if="agentStore.updatingAgent" />
+         <HomeAgent v-if="!agentStore.isLoading && !agentStore.creatingAgent && !agentStore.updatingAgent" />
+         <FormCreateAgent v-else-if="!agentStore.isLoading &&  agentStore.creatingAgent" />
+         <FormUpdateAgent v-else-if="!agentStore.isLoading &&  agentStore.updatingAgent" />
 
          
          <div class="main-bottom hidden">
