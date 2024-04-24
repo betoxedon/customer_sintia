@@ -24,6 +24,7 @@ export default {
                 throw error;
             });
     },
+    
     getSessionMessages(sessionId:number){
         return apiAuth.get(`sessions/${sessionId}`) 
             .then(res => {

@@ -70,7 +70,11 @@
 <template>
    
    <div class="main-core">
-
+            <span v-if="errors" class="text-red-500 flex flex-col gap-2">
+               <span class="text-red-500" v-for="(errorMessage, fieldName) in errors" :key="fieldName">
+                  Erro no campo {{ fieldName }}: {{ errorMessage }}
+               </span>
+            </span>
             <div
                class="container-inner grid-rows-auto  place-content-stretch content-start gap-y-3">
                <div class="tips col-span-full mb-3 flex text-lg">

@@ -4,7 +4,6 @@
    import { useUserStore } from '@/stores/userStore'
    import ProfileDropdown from '@/components/dropdowns/ProfileDropdown.vue'
 
-
    const interfaceStore = useInterfaceStore()
    const router = useRouter()
    const userStore = useUserStore()

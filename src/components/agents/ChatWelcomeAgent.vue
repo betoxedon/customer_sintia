@@ -54,7 +54,7 @@
          <img
             v-if="agentStore.agentActive.image_file"
             :src="agentStore.agentActive.image_file"
-            class="object-cover" />
+            class="object-cover h-full w-full" />
             <MonoAddFile v-else class="h-10 text-white"/>
          
       </div>

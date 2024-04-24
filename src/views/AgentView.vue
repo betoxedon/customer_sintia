@@ -1,11 +1,11 @@
 <script setup lang="ts">
-   import DrawerDefault from '@/drawer/DrawerDefault.vue'
+   //import DrawerDefault from '@/drawer/DrawerDefault.vue'
    import HomeAgent from '@/components/agents/HomeAgent.vue'
    import FormCreateAgent from '@/components/agents/FormCreateAgent.vue'
    import FormUpdateAgent from '@/components/agents/FormUpdateAgent.vue'
    import AsideAgent from '@/drawer/AsideAgent.vue'
    import { computed, onMounted, onUnmounted } from 'vue'
-   
+   import SideBar from '@/components/sidebars/SideBar.vue'
    import { useGlobalStore } from '@/stores/globalStore'
    import { useAgentStore } from '@/stores/agentStore'
    import { usePlanStore } from '@/stores/planStore'  
@@ -29,9 +29,9 @@
    const btnDisabledClass = computed(() => {
       if (
          agentStore.creatingAgent ||
-         agentStore.updatingAgent ||
-         globalStore.isPlanDisabled ||
-         agentStore.agents.length >= planAgentsLimit.value
+         agentStore.updatingAgent
+         // globalStore.isPlanDisabled ||
+         // agentStore.agents.length >= planAgentsLimit.value
       ) {
          return 'btn-disabled hidden'
       }
@@ -46,17 +46,16 @@
 </script>
 
 <template>
-   <main class="main" :class="{'main_home': !agentStore.updatingAgent}">
-      <DrawerDefault />
-
+   <main class="main_home">      
+      <SideBar /> 
       <div class="flex justify-center items-center" v-if="agentStore.isLoading">
             <AnimLoadingBtn class="text-primary-30 h-[36px]" />
       </div>
 
 
-      <div class="main-inner grid-rows-[min-content_1fr_min-content]" v-else>
+      <div class="main-inner grid-rows-[min-content_1fr_min-content]" >
          <div class="main-top flex items-center" >
-            <span class="container-inner">Chatbots</span>
+            <span class="container-inner page_title">Chatbots</span>
 
             <div
                class="btn flex items-center gap-2 rounded-lg bg-primary-30 hover:opacity-90 text-white p-2 items-center"
@@ -65,14 +64,12 @@
 
                <MonoAdd class="" style="width:18px;margin-top:0;"/>
                <span
-                  class="text-lg font-medium text-white"
-                  v-if="globalStore.isPlanDisabled">
+                  class="text-lg font-medium text-white hidden">
                   Consulte nossos planos
                </span>
 
-               <span
-                  class="text-lg font-normal text-white" style="font-weight:400;"
-                  v-else>
+               <span class="text-lg font-normal text-white" style="font-weight:400;"
+                  >
                   Adicionar chatbot
                </span>
                
@@ -122,7 +119,9 @@
 <style>
 .loading{
    font-size: 52px;
-   width: 82px;
-   
+   width: 82px;   
+}
+.bg-primary-30 {
+   background: #4f8aff;
 }
 </style>

@@ -1,3 +1,17 @@
+  
+  <script setup lang="ts">
+  import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+  import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import MonoLogo from '../icons/MonoLogo.vue';
+  
+  const navigation = [
+    { name: 'Dashboard', href: '/', current: true },
+    { name: 'Chatbots', href: '/agente', current: false },
+    { name: 'Planos', href: '/planos', current: false },
+    
+  ]
+  </script>
+
 <template>
     <Disclosure as="nav" class="" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -12,9 +26,10 @@
             </DisclosureButton>
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex flex-shrink-0 items-center">
+            <div class="flex gap-2 flex-shrink-0 items-center site-name">
+              <MonoLogo class="icon-logo"/>
                 SINTIA
-                <img class="h-8 w-auto hidden" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+               
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
@@ -63,15 +78,25 @@
       </DisclosurePanel>
     </Disclosure>
   </template>
-  
-  <script setup lang="ts">
-  import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-  import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-  
-  const navigation = [
-    { name: 'Dashboard', href: '/', current: true },
-    { name: 'Chatbots', href: '/agente', current: false },
-    { name: 'Planos', href: '/planos', current: false },
-    
-  ]
-  </script>
+
+<style scoped>
+
+.bg-gray-900{
+  background-color: rgb(79 138 255);
+}
+.text-gray-300{
+  color: rgb(79 138 255);
+}
+
+.hover\:bg-gray-700:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+    color: white;
+}
+.site-name{
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #4f8aff;
+    letter-spacing: 0.25em;
+}
+</style>

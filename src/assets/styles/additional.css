@@ -21,6 +21,9 @@
 .main-inner ::-webkit-scrollbar-thumb:hover {
    background: theme('colors.primary-30');
 }
+.page_title{
+   color: #4f8aff;
+}
 
 /* animation */
 @keyframes showIn {

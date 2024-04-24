@@ -70,7 +70,13 @@ export const useChatStore = defineStore('chat', () => {
             const response = await messageApi.createMessage(sessionActive.value.id, request)
     
             
-            sessionActive.value.messages.push({ type: 'bot', content: response.data.response })
+            sessionActive.value.messages.push(
+                {   id: response.data.id,
+                    type: 'bot', 
+                    content: response.data.response,
+                    sources:response.data?.sources.split(', ') || []
+                }
+            )
 
             // Atualiza a sessão ativa no localStorage
             localStorage.setItem('currentSession', JSON.stringify(sessionActive.value))
@@ -100,7 +106,22 @@ export const useChatStore = defineStore('chat', () => {
             // Tratar o erro conforme necessário
         }
     }
- 
+    
+    const rateMessage = async (rate:boolean, messageId:number) => {
+        try {
+            await messageApi.RatingMessage(rate, messageId)
+            // Atualizar a mensagem avaliada da sessão ativa 
+            const message = sessionActive.value.messages.find((m:any) => m.id === messageId)
+            if (message) message.rating = rate
+
+            // Atualizar a sessão ativa no localStorage
+            localStorage.setItem('currentSession', JSON.stringify(sessionActive.value))
+
+        } catch (error) {
+            console.error('Erro ao avaliar mensagem:', error)
+            // Tratar o erro conforme necessário
+        }
+    }
 
     return {
         sessionActive,
@@ -109,6 +130,7 @@ export const useChatStore = defineStore('chat', () => {
         sendMessage,
         updateMessages,
         isLoading,
-        currentMessage
+        currentMessage,
+        rateMessage
      }
   })

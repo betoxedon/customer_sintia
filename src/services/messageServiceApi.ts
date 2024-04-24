@@ -17,5 +17,21 @@ export default {
         .catch(error => {
             throw error;
         });
+    },
+    
+    RatingMessage(rate:boolean, message:number){
+        
+        const payload = {
+            rate:rate,
+            message:message
+        }
+
+        return apiAuth.post('/messages/rate_message/', payload) 
+        .then(res => {
+            return res;
+        })
+        .catch(error => {
+            throw error;
+        });
     }
 }

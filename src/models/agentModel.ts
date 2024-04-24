@@ -117,7 +117,7 @@
       email: z.string(),
       email_verified: z.boolean(),
       id: z.number(),
-      profile_picture: z.string(),
+      profile_picture: z.string().nullable().default(null),
       is_superuser: z.boolean(),
       token: z.string(),
    }).nullable().default(null)

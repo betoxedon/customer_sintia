@@ -57,14 +57,14 @@
    }
 
    .main_home{
-      @apply grid grid-cols-[minmax(290px,_350px)_minmax(396px,_1fr)] grid-rows-1 gap-x-3;
+      @apply flex  gap-x-3;
    }
    .main_mobile{
       @apply flex;
    }
 
    .main-inner {
-      @apply grid content-start gap-y-3;
+      @apply grid content-start gap-y-3 w-full; 
    }
 
    .main-top {

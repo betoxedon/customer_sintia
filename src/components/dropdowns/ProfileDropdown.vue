@@ -20,7 +20,7 @@
 <template>
   <div class="menu-dropdown" @click.stop>
     <button @click="toggleMenu">
-      <MonoChevronRight class="mr-1" />    
+      <MonoChevronRight class="" />    
     </button>
 
     <transition 
@@ -72,9 +72,19 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped>¨
+
 .menu-dropdown {
   position: relative;
+}
+.menu-dropdown button { 
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+}
+.menu-dropdown button:hover {
+  background: #f5f5f5;
 }
 
 .menu-items {

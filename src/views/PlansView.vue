@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
    import PlanCard from '@/components/cards/PlanCard.vue'
-   import DrawerDefault from '@/drawer/DrawerDefault.vue'
+   // import DrawerDefault from '@/drawer/DrawerDefault.vue'
    import AsidePlan from '@/drawer/AsidePlan.vue'
    import { onMounted, ref } from 'vue'
    import { Plan } from '@/models/planModel'
@@ -17,7 +17,7 @@
    const planStore = usePlanStore()
    const agentStore = useAgentStore()
    const interfaceStore = useInterfaceStore()
-
+   import SideBar from '@/components/sidebars/SideBar.vue'
    const planActive = ref()
    const planIds = ref<string[]>([])
    const plansSorted = ref<Plan[]>([])
@@ -59,11 +59,11 @@
 
 <template>
    <main class="main_home">
-      <DrawerDefault />
-
+      <!-- <DrawerDefault /> -->
+      <SideBar />
       <div class="main-inner ">
          <div class="main-top">
-            <span class="container-inner">Planos</span>
+            <span class="container-inner page_title">Planos</span>
          </div>
 
          <div class="main-core" style="display:flex; flex-direction:column; justify-content: center;">

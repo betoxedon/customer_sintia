@@ -1,15 +1,16 @@
 <script setup lang="ts">
-   import DrawerDefault from '@/drawer/DrawerDefault.vue'
+   // import DrawerDefault from '@/drawer/DrawerDefault.vue'
    import AsidePlan from '@/drawer/AsidePlan.vue'
+   import SideBar from '@/components/sidebars/SideBar.vue'
 </script>
 
 <template>
    <main class="main_home">
-      <DrawerDefault />
-
+      <!-- <<DrawerDefault />> -->
+      <SideBar />
       <div class="main-inner grid-rows-[min-content_1fr]">
          <div class="main-top">
-            <span class="container-inner">Painel</span>
+            <span class="container-inner page_title">Painel</span>
          </div>
 
          <div class="main-core">

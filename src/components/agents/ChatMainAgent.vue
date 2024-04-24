@@ -71,7 +71,7 @@
                      <img
                         v-if="agentStore.agentActive.image_file"
                         :src="agentStore.agentActive.image_file"
-                        class="object-cover" />
+                        class="object-cover h-full w-full" />
                      <MonoLogo v-else class="h-7 text-white" />
                   </div>
 
@@ -97,7 +97,7 @@
                      <img
                         v-if="agentStore.agentActive.image_file"
                         :src="agentStore.agentActive.image_file"
-                        class="object-cover" />
+                        class="object-cover h-full w-full" />
                      <MonoLogo v-else class="h-7 text-white" />
                   </div>
 

@@ -19,3 +19,23 @@
       </div>
    </aside>
 </template>
+
+<style scoped>
+.aside {
+   /* width: 100%; */
+   max-width: 100%;
+   height: 100%;
+   background-color: var(--color-surface-10);
+   border-left: 1px solid var(--color-surface-20);
+   border-right: 1px solid var(--color-surface-20);
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   overflow: hidden;
+   justify-content: flex-end;
+   min-width: 340px;
+   background: #e7e9f1;
+   border-radius: 16px;
+}
+
+</style>

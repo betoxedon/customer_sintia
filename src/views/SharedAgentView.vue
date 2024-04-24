@@ -109,6 +109,17 @@
       chatStore.isLoading = false
    }
 
+   const truncateText = (text: string, length: number) => {
+      if (text.length > length) {
+         return text.slice(0, length) + '...'
+      }
+      return text
+   }
+
+   const rateMessage = (rate: boolean, messageId: number) => {
+      chatStore.rateMessage(rate, messageId)
+   }
+
    onMounted( () => {           
           
       body.value.style.backgroundColor = '#0f172a'
@@ -204,19 +215,53 @@
                               :src="agentStore.agentActive.image_file"
                               class="w-full h-full object-cover " />
                            <MonoLogo v-else class="h-6 w-6 text-slate-500" />
-                        </div>                 
+                        </div>      
+                        
+                        
+                        <div> 
 
                         <span
-                           class="break-words mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                           class="break-words  mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                            :style="backgroundColor">
-                           {{ message.content }}
-                        </span>              
+                           {{ message.content }}                           
+                        </span>       
+                        <div class="flex  justify-end">
+
+                           <button 
+                              @click="rateMessage(true, message.id)"
+                              :class="{active: message.rating === true}"
+                              class="btn-raiting btn-like">
+                                 <MonoLike class="h-4 w-4"/>
+                           </button>
+
+                           <button
+                              :class="{active: message.rating === false}"
+                              @click="rateMessage(false, message.id)"
+                              class="btn-raiting btn-unlike">
+                              <MonoUnlike class="h-4 w-4"/>
+                           </button>
+                        </div>
+
+                        <!--Sources-->       
+                        <div class="flex gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
+                           v-if="message.sources && message.sources.length > 0 && message.sources[0] != '' " >
+                              <span>Sources: </span>
+                              <a :href="source" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
+                                 <MonoLink class="h-4 w-4" />
+                                 <span >
+                                    <span>{{ truncateText(source,20) }}</span> 
+                                 </span>
+                              </a>
+                        </div>
+
+                     </div>
+                        
 
                      </div>
                   
                      <!--message.type == user -->
                      <div  v-if="message.type == 'user'"
-                     class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2">
+                     class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 my-[10px]">
                         <span
                            class="break-words relative mb-[10px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
                            {{ message.content }}
@@ -249,7 +294,7 @@
                
 
                <div
-                  class="mx-2 z-20 flex items-center overflow-hidden rounded-lg border-on
+                  class="mx-2 mt-5 z-20 flex items-center overflow-hidden rounded-lg border-on
                     has-[:focus]:ring-2 has-[:focus]:ring-primary-40" :style="borderColor" >
                   <input @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" style="font-size: 16px;"
                      class=":focus:ring-2 block h-[40px] w-full rounded-l-lg border-0  pl-3 pr-2 text-base ring-0 placeholder:text-base placeholder:font-normal focus:border-0 focus:outline-0"
@@ -309,6 +354,36 @@
 
 <style scoped>
 
+.btn-raiting{
+   border-radius: 50%;
+   padding: 0.5rem;
+   cursor: pointer;
+   transition: color 0.2s;
+}
+
+.btn-like:hover{
+   color: #029dfe;  
+}
+
+.btn-like.active{
+   color: #029dfe;  
+}
+.btn-unlike:hover{
+   color: #ff0000;
+}
+
+.btn-unlike.active{
+   color: #ff0000;
+}
+
+.sources span{
+   font-size: 12px;
+   font-weight: 400;
+   color: #4a5568;
+   text-wrap: nowrap;
+
+}
+
 .cursor-not-allowed {
   cursor: not-allowed;
 }
@@ -345,4 +420,21 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.sources::-webkit-scrollbar {
+    width: 2px;
+}
+
+.sources::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.sources::-webkit-scrollbar-thumb {
+    background: #445360;
+    border-radius: 4px;
+}
+.sources::-webkit-scrollbar-thumb:hover {
+    background: #283037;
+}
+
+
 </style>

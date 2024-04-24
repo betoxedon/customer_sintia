@@ -24,7 +24,8 @@
       },
    })
 
-   const { value } = useField(props.nameField)
+    //Font[] | Side[]
+   const { value } = useField<Font | Side>(props.nameField)
 
    const onSelectItem = (item: Font | Side) => {
       console.log(item)
@@ -47,9 +48,10 @@
             
             <span
                class="hover:ring-primary-100 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-slate-500 bg-slate-100 hover:ring-2 hover:ring-offset-2"
-               :class="{ 'option-selected': value === option }"
+               :class="{ 'option-selected': value.name == option.name }"
                @click="onSelectItem(option)"></span>
             <span>{{ option.name }}</span>
+           
             
          </div>
 
