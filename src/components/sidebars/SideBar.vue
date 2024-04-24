@@ -12,6 +12,8 @@ import MonoLogo from '../icons/MonoLogo.vue'
 import MonoSignOut from '../icons/MonoSignOut.vue'
 import MonoUser from '../icons/MonoUser.vue'
 
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+
 
 const interfaceStore = useInterfaceStore()
 //const router = useRouter()
@@ -94,6 +96,7 @@ const onSignOut = () => {
                 </div>            
 
                 <div class="flex w-full items-center gap-x-1 pt-3 border-t-2 ">
+                        
                     <div
                         class="m-1 flex aspect-square w-14 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full outline outline-1 outline-offset-2 outline-primary-40"
                         @click="interfaceStore.showDialogUserImage = true">
@@ -104,19 +107,59 @@ const onSignOut = () => {
 
                         <MonoUser v-else class="h-10 p-1.5 text-primary-30" />
                     </div>
+                    
+                    
 
-                    <div class="flex w-full flex-col overflow-hidden" v-if="is_expanded">
-                        <span class="truncate pl-2 font-bold">
-                            {{ userStore.user.first_name }} {{ userStore.user.last_name }}
-                        </span>
-                        <span class="truncate pl-2 text-base">
-                            {{ userStore.user?.email }}
-                        </span>                        
-                    </div>
-
+                        <div class="flex w-full flex-col overflow-hidden" v-if="is_expanded">
+                            <span class="truncate pl-2 font-bold">
+                                {{ userStore.user.first_name }} {{ userStore.user.last_name }}
+                            </span>
+                            <span class="truncate pl-2 text-base">
+                                {{ userStore.user?.email }}
+                            </span>                        
+                        </div>                                      
+                    
+               
                     <!-- <ProfileDropdown/> -->
+
+                    <Menu as="div" class="relative ml-3">
+
+                        <MenuButton class="relative flex rounded-full text-sm hover:bg-slate-200">
+                            <MonoChevronRight class="" />    
+                        </MenuButton>
+
+                        <!-- TRANSITION-->
+                        <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                            <MenuItems class="absolute z-10 mt-2 w-48 bottom-0 left-8 origin-left-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <MenuItem v-slot="{ active }">
+                                    <a href="#" class="menuItem" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                                        <MonoUser class="h-5 w-5 border-rounded  cursor-pointer text-primary-600" />
+                                        <span>Perfil</span>
+                                    </a>
+                                </MenuItem>
+
+                                <MenuItem v-slot="{ active }">
+                                    <a href="#" class="menuItem" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                                        <MonoSettings class="h-5 w-5 cursor-pointer text-primary-600" />
+                                        <span> Configurações</span>
+                                    </a>
+                                </MenuItem>
+
+                                <hr>
+
+                                <MenuItem v-slot="{ active }">
+                                    <a @click="onSignOut" href="#" class="menuItem" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                                       <MonoSignOut class="h-5 w-5 cursor-pointer text-red-600" /> 
+                                        <span>Sair</span>
+                                    </a>
+                                </MenuItem>
+
+                            </MenuItems>
+                        </transition>
+
+                    </Menu>
                    
-                    <div @click="onSignOut" class="p-1 cursor-pointer text-red-600 hover:bg-slate-200 rounded">
+                    <div @click="onSignOut" class=" hidden p-1 cursor-pointer text-red-600 hover:bg-slate-200 rounded">
                         <MonoSignOut class="h-6 w-6 cursor-pointer" />
                     </div>
 
@@ -130,6 +173,19 @@ const onSignOut = () => {
 
 
 <style  scoped>
+
+.border-rounded{
+    border: 1px solid;
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.menuItem {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    padding: .7rem 1rem;
+}
 
 aside {
 	display: flex;    
