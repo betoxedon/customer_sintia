@@ -77,7 +77,7 @@
             </span>
             <div
                class="container-inner grid-rows-auto  place-content-stretch content-start gap-y-3">
-               <div class="tips col-span-full mb-3 flex text-lg">
+               <div class="tips col-span-full  flex text-lg">
                   <MonoBot />
                   <span class="text-lg font-medium">Criar chatbot</span>
                </div>

@@ -41,7 +41,7 @@
          <div class="flex w-full items-center justify-between gap-x-3">
             <div class="flex min-h-[48px] select-none items-center justify-center">
                <span :style="fontFamily">
-                  {{ agentStore.agentActive.welcomeMessage }}
+                  {{ agentStore.agentActive.welcome_message }}
                </span>
             </div>
          </div>

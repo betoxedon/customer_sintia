@@ -63,6 +63,10 @@
    })
 
    const welcomeMessage = computed(() => {
+      
+      if (agentStore.agentActive?.welcome_message) {
+         return agentStore.agentActive?.welcome_message
+      }      
        return 'Olá!👋 Como posso te ajudar?'
    })
 

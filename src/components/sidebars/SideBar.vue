@@ -2,13 +2,16 @@
 <script setup lang="ts">
 import SideBarItem from '@/components/sidebars/SideBarItem.vue'
 import { ref } from 'vue'
-
+import { setDataConfirmation } from '@/utils'
 // import ProfileDropdown from '@/components/dropdowns/ProfileDropdown.vue'
 
 //import { useRouter } from 'vue-router'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 import { useUserStore } from '@/stores/userStore'
 import MonoLogo from '../icons/MonoLogo.vue'
+import MonoSignOut from '../icons/MonoSignOut.vue'
+import MonoUser from '../icons/MonoUser.vue'
+
 
 const interfaceStore = useInterfaceStore()
 //const router = useRouter()
@@ -19,6 +22,16 @@ const is_expanded = ref(true)
 const ToggleMenu = () => {
 	is_expanded.value = !is_expanded.value	
 }
+
+
+
+
+const onSignOut = () => {
+    setDataConfirmation({
+       action: 'handleSignOut',
+       message: 'Tem certeza que deseja sair?',
+    })
+ }
 
 </script>
 
@@ -42,15 +55,45 @@ const ToggleMenu = () => {
 	
 		<div class="menu flex flex-col justify-between h-full mt-3">	
           
-            <div class="flex  flex-col">                
-                <SideBarItem to="/" icon="dashboard " text="Dashboard" :is_expanded="is_expanded" />
-                <SideBarItem to="/agente" icon="agente" text="Chatbots" :is_expanded="is_expanded"/>
-                <SideBarItem to="/planos" icon="planos" text="Plano" :is_expanded="is_expanded"/> 
-            </div>                              
-            
-            <div class="user-menu">
-			    <!--MENU USER -->
-                <div class="flex w-full items-center gap-x-1 pt-3 border-t-2">
+            <div class="flex  flex-col">   
+
+                <SideBarItem to="/" icon="dashboard " text="Dashboard" :is_expanded="is_expanded">
+                    <template #icon>
+                        <MonoDashboard/>
+                    </template>
+                </SideBarItem>
+
+                <SideBarItem to="/agente" icon="agente " text="Chatbots" :is_expanded="is_expanded">
+                    <template #icon>
+                        <MonoBot/>
+                    </template>
+                </SideBarItem>
+
+                <SideBarItem to="/planos" icon="planos " text="Plano" :is_expanded="is_expanded">
+                    <template #icon>
+                        <MonoBox
+                            />
+                    </template>
+                </SideBarItem>              
+            </div>          
+
+            <div class="user-menu">		
+                   
+                <div class="end hidden">
+                    <SideBarItem to="/profile" icon="user " text="Perfil" :is_expanded="is_expanded">
+                        <template #icon>
+                            <MonoUser/>
+                        </template>
+                    </SideBarItem>
+
+                    <SideBarItem to="/configuracoes" icon="dashboard " text="Configurações" :is_expanded="is_expanded">
+                        <template #icon>
+                            <MonoSettings />
+                        </template>
+                    </SideBarItem>
+                </div>            
+
+                <div class="flex w-full items-center gap-x-1 pt-3 border-t-2 ">
                     <div
                         class="m-1 flex aspect-square w-14 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full outline outline-1 outline-offset-2 outline-primary-40"
                         @click="interfaceStore.showDialogUserImage = true">
@@ -68,17 +111,19 @@ const ToggleMenu = () => {
                         </span>
                         <span class="truncate pl-2 text-base">
                             {{ userStore.user?.email }}
-                        </span>
-                        
+                        </span>                        
                     </div>
 
                     <!-- <ProfileDropdown/> -->
+                   
+                    <div @click="onSignOut" class="p-1 cursor-pointer text-red-600 hover:bg-slate-200 rounded">
+                        <MonoSignOut class="h-6 w-6 cursor-pointer" />
+                    </div>
 
                 </div>
 		    </div>
 
-		</div>
-		
+		</div>		
 
 	</aside>
 </template>

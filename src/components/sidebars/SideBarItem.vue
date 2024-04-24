@@ -34,7 +34,7 @@ const hoved = ref(false)
         @mouseenter="hoved = true"
       @mouseleave="hoved = false"
     :to="to" class="button flex gap-2" :class="{ active: $route.path === to, is_expanded:!is_expanded }">
-        <MonoDashboard />
+        <slot name="icon"></slot>
         <span class="text" v-if="is_expanded">{{text}}</span>
     </router-link> 
  
@@ -61,6 +61,9 @@ const hoved = ref(false)
     color: #2c3e50;  
     transition: background-color 0.2s;
     width: 100%;
+    cursor: pointer;
+    align-items: center;
+    
 }
 
 .button:hover {
@@ -99,6 +102,9 @@ const hoved = ref(false)
     border-radius: 0.5rem;
 }
 
+.button.active span {
+    color: #fff;
+}
 
 
 </style>

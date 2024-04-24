@@ -140,7 +140,7 @@
 
    /** tips */
    .tips {
-      @apply mx-auto grid min-h-[52px] w-full max-w-[1122px] grid-cols-[27px_1fr] gap-x-1.5 rounded-lg bg-white/70 py-6 pl-5 pr-3;
+      @apply mx-auto grid min-h-[52px] w-full  grid-cols-[27px_1fr] gap-x-1.5 rounded-lg bg-white/70 py-6 pl-5 pr-3;
    }
 
    .tips svg {

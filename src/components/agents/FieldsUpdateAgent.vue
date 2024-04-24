@@ -39,8 +39,8 @@
       <FieldForm
          class="col-span-full maxw:col-span-6"
          labelField="Edite a mensagem de boas-vindas"
-         nameField="welcomeMessage"
-         :placeholder="agentStore.agentActive.welcomeMessage"
+         nameField="welcome_message"
+         :placeholder="agentStore.agentActive.welcome_message"
          :errorsMessage="errors" />
 
       <RadioForm

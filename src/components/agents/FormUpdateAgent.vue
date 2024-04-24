@@ -64,11 +64,11 @@
    })
 
    watch(
-      () => [values.name, values.welcomeMessage,values.audio_response, values.prompt],
+      () => [values.name, values.welcome_message,values.audio_response, values.prompt],
       () => {
          agentStore.agentActive.name = values.name
         // agentStore.agentActive.identifier = values.identifier
-         agentStore.agentActive.welcomeMessage = values.welcomeMessage
+         agentStore.agentActive.welcome_message = values.welcome_message
          agentStore.agentActive.audio_response = values.audio_response
          agentStore.agentActive.prompt = values.prompt
 

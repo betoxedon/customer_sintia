@@ -88,10 +88,10 @@
 }
 
 .menu-items {
-  position: absolute;
+  position: fixed;
   background-color: white;
-  top: -168px;
-  left: 46px;
+  bottom: 140px;
+  left: 160px;
   width: max-content;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgb(0 0 0 / 24%);

@@ -28,12 +28,11 @@
    background-color: var(--color-surface-10);
    border-left: 1px solid var(--color-surface-20);
    border-right: 1px solid var(--color-surface-20);
-   display: flex;
-   flex-direction: column;
+   display: flex;   
    justify-content: space-between;
    overflow: hidden;
    justify-content: flex-end;
-   min-width: 340px;
+   min-width: 360px;
    background: #e7e9f1;
    border-radius: 16px;
 }

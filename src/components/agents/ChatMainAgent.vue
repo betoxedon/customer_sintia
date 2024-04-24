@@ -78,7 +78,7 @@
                   <span
                      class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                      :style="backgroundColor">
-                     {{ agentStore.agentActive.welcomeMessage }}
+                     {{ agentStore.agentActive.welcome_message }}
                   </span>
                </div>
 

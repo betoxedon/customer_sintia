@@ -129,7 +129,7 @@
       updatedAt: updatedAtSchema,
       id: idSchema,
       //userId: userIdSchema,
-      welcomeMessage: welcomeMessageSchema,
+      welcome_message: welcomeMessageSchema,
       color: colorStyleSchema,
       font: fontFamilyStyleSchema,
       side: screenSideStyleSchema,
