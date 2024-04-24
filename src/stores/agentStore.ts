@@ -1,5 +1,5 @@
 import type { Agent,ImageFile,AgentInitial } from '@/models/agentModel'
-
+const { VITE_AGENT_BASE_URL } = import.meta.env
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
@@ -87,14 +87,15 @@ export const useAgentStore = defineStore('agent', () => {
 
 
    const agentScript = computed(() => {
-      
-      linkTest.value = `<start-sintia id=${agentActive?.value?.id} userId=${agentActive.value?.user?.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
-      return `<start-sintia id=${agentActive?.value?.id} userId=${agentActive?.value?.user?.id}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
-   })
+    
+      const agentBaseUrl = VITE_AGENT_BASE_URL
 
-   const getLink = (agentID:string, userID:string) => {
-         return `<start-sintia id=${agentID} userId=${userID}></start-sintia> <script src='https://startagent.netlify.app/script.js' defer></script>`
-   }
+      console.log('agentBaseUrl',agentBaseUrl)
+
+      linkTest.value = `<start-sintia id=${agentActive?.value?.id} userId=${agentActive.value?.user?.id}></start-sintia> <script src='${agentBaseUrl}script.js' defer></script>`;
+      
+      return `<start-sintia id=${agentActive?.value?.id} userId=${agentActive?.value?.user?.id}></start-sintia> <script src='${agentBaseUrl}script.js' defer></script>`;
+   })
 
    // on update
    const cloneAgentUpdated = () => {
@@ -295,8 +296,7 @@ export const useAgentStore = defineStore('agent', () => {
       updateAgent,
       createAgent,
       deleteAgent,
-      isLoading,
-      getLink,
+      isLoading, 
       updateAgentPicture,
       hasAgentResponse,
       getAgentById,
