@@ -1,15 +1,15 @@
 // apiAuth.ts
 
 import axios, { AxiosInstance } from 'axios';
-const { VITE_LOCAL_BASE_URL } = import.meta.env
 
+const { VITE_LOCAL_BASE_URL, VITE_BASE_URL} = import.meta.env
+const isDevelopment = import.meta.env.MODE === 'development'
 
 // Crie uma instância do axios
 const api: AxiosInstance = axios.create({
-   baseURL:VITE_LOCAL_BASE_URL
+   baseURL: isDevelopment ? VITE_LOCAL_BASE_URL : VITE_BASE_URL,
 
 });
-
 
 
 api.interceptors.request.use(async config => {
