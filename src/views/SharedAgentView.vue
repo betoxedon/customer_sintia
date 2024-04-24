@@ -63,7 +63,7 @@
    })
 
    const welcomeMessage = computed(() => {
-      
+
       if (agentStore.agentActive?.welcome_message) {
          return agentStore.agentActive?.welcome_message
       }      
@@ -209,8 +209,8 @@
                   
                      <!--message.type == bot -->
                      <div 
-                     v-if="message.type == 'bot'"  style="max-width:100%"
-                     class=" message-ballon col-span-full grid grid-cols-[min-content_77%] gap-x-2"> 
+                        v-if="message.type == 'bot'"  style="max-width:100%"
+                        class=" message-ballon col-span-full grid grid-cols-[min-content_77%] gap-x-2"> 
                         
                         <div
                            class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
@@ -222,16 +222,19 @@
                         </div>      
                         
                         
-                        <div> 
+                        <div class="mb-[22px]"> 
 
-                        <span
-                           class="break-words  mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
-                           :style="backgroundColor">
-                           {{ message.content }}                           
-                        </span>       
-                        <div class="flex  justify-end">
+                           <span
+                              class="break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                              :style="backgroundColor">
+                              {{ message.content }}                           
+                           </span> 
+
+                        <div class="flex justify-end" v-if="message.id">
 
                            <button 
+                              :disabled="message.rating === true"
+                              v-if="message.rating !== false || message.rating === true"
                               @click="rateMessage(true, message.id)"
                               :class="{active: message.rating === true}"
                               class="btn-raiting btn-like">
@@ -239,6 +242,8 @@
                            </button>
 
                            <button
+                              :disabled="message.rating === false"
+                              v-if="message.rating !== true || message.rating === false"
                               :class="{active: message.rating === false}"
                               @click="rateMessage(false, message.id)"
                               class="btn-raiting btn-unlike">
@@ -247,10 +252,10 @@
                         </div>
 
                         <!--Sources-->       
-                        <div class="flex gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
+                        <div class="flex mt-4  gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
                            v-if="message.sources && message.sources.length > 0 && message.sources[0] != '' " >
                               <span>Sources: </span>
-                              <a :href="source" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
+                              <a :href="source" target="_blank" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
                                  <MonoLink class="h-4 w-4" />
                                  <span >
                                     <span>{{ truncateText(source,20) }}</span> 
@@ -265,9 +270,9 @@
                   
                      <!--message.type == user -->
                      <div  v-if="message.type == 'user'"
-                     class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 my-[10px]">
+                     class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
                         <span
-                           class="break-words relative mb-[10px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
+                           class="break-words relative mb-[22px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
                            {{ message.content }}
                         </span>
                      </div>
@@ -366,12 +371,14 @@
 }
 
 .btn-like:hover{
-   color: #029dfe;  
+   color: #28a52d;  
 }
 
 .btn-like.active{
-   color: #029dfe;  
+   color: #28a52d;  
 }
+
+
 .btn-unlike:hover{
    color: #ff0000;
 }
