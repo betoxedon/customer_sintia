@@ -71,22 +71,22 @@ export const actionResetPasswordFirebase = async (email: Email) => {
 //    }
 // }
 
-export const actionGetUserByUidFirestore = async (uid: string) => {
-   const q = query(collection(firestore, 'users'), where('uid', '==', uid))
-   const querySnapshot = await getDocs(q)
-   const doc = querySnapshot.docs[0]
-   if (!doc) return
-   const docData = doc.data()
-   const docId = doc.id
-   const docUpdated = { ...docData, docId }
-   return docUpdated
-}
+// export const actionGetUserByUidFirestore = async (uid: string) => {
+//    const q = query(collection(firestore, 'users'), where('uid', '==', uid))
+//    const querySnapshot = await getDocs(q)
+//    const doc = querySnapshot.docs[0]
+//    if (!doc) return
+//    const docData = doc.data()
+//    const docId = doc.id
+//    const docUpdated = { ...docData, docId }
+//    return docUpdated
+// }
 
-export const actionGetUserByDocIdFirestore = async (docId: string) => {
-   const docRef = doc(firestore, 'users', docId)
-   const docSnap = await getDoc(docRef)
-   return docSnap.data()
-}
+// export const actionGetUserByDocIdFirestore = async (docId: string) => {
+//    const docRef = doc(firestore, 'users', docId)
+//    const docSnap = await getDoc(docRef)
+//    return docSnap.data()
+// }
 
 //* agent
 export const actionCreateAgentFirestore = async (agentInitial: AgentInitial) => {

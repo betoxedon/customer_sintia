@@ -2,16 +2,19 @@
    import { initialFormUserSchema } from '@/models/userModel'
    import { ref } from 'vue'
    import FieldForm from '@/components/forms/FieldForm.vue'
-   import userApi from '@/services/userServiceApi'
+   // import userApi from '@/services/userServiceApi'
+   import { useUserStore } from '@/stores/userStore'
 
    import { useRouter } from 'vue-router'
    import { useInterfaceStore } from '@/stores/interfaceStore'
    import { useForm } from 'vee-validate'
    import { toTypedSchema } from '@vee-validate/zod'
+
    const router = useRouter()
    const interfaceStore = useInterfaceStore()
    const currentYear = ref(new Date().getFullYear())
    const showBtnLoading = ref(false)
+   const userStore = useUserStore()
 
    const validationSchema = toTypedSchema(initialFormUserSchema)
    const form = useForm({
@@ -30,11 +33,11 @@
 
       showBtnLoading.value = true
 
-      await userApi.createUser(form)
+      await userStore.signup(form)      
          .then(()=>{
             interfaceStore.notificationMessage = `Conta criada com sucesso`
             interfaceStore.notificationType = 'success'
-            interfaceStore.showNotification = true
+            interfaceStore.showNotification = true           
             router.push({ name: 'dashboard' })
 
          }).catch((error) =>{

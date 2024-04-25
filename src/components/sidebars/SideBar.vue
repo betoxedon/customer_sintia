@@ -71,7 +71,7 @@ const onSignOut = () => {
                     </template>
                 </SideBarItem>
 
-                <SideBarItem to="/planos" icon="planos " text="Plano" :is_expanded="is_expanded">
+                <SideBarItem class="" to="/planos" icon="planos " text="Plano" :is_expanded="is_expanded">
                     <template #icon>
                         <MonoBox
                             />
@@ -226,7 +226,7 @@ aside.is-expanded {
     position: relative;
     right: auto;
     left: auto;
-    z-index: 999;
+    z-index: 90;
     background: #4f8aff;
     border-radius: 4px;
     display: flex;

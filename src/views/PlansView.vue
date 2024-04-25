@@ -6,9 +6,9 @@
    import { onMounted, ref } from 'vue'
    import { Plan } from '@/models/planModel'
    import { setNowUtcUnix, setPlanExpiresUtcUnix } from '@/utils'
-   import {
-      getActivePlanFirestore,   
-   } from '@/services/handleFirebaseFirestore'
+   // import {
+   //    getActivePlanFirestore,   
+   // } from '@/services/handleFirebaseFirestore'
    import { useUserStore } from '@/stores/userStore'
    import { usePlanStore } from '@/stores/planStore'
    import { useAgentStore } from '@/stores/agentStore'
@@ -42,8 +42,8 @@
          userStore.user.addDaysToPlanAt = setNowUtcUnix()
          //const userParsed = updateUserSchema.parse(userStore.user)
          //await updateUserFirestore(userParsed)
-         const planId = useUserStore().user.planId
-         await getActivePlanFirestore(planId as string)
+         // const planId = useUserStore().user.planId
+         // await getActivePlanFirestore(planId as string)
       }
    }
 
@@ -66,7 +66,7 @@
             <span class="container-inner page_title">Planos</span>
          </div>
 
-         <div class="main-core" style="display:flex; flex-direction:column; justify-content: center;">
+         <div v-if="plansSorted.length>0" class="main-core" style="display:flex; flex-direction:column; justify-content: center;">
             <div
                class="container-inner gap-y-3">
                <div class="tips col-span-full mx-auto flex w-full flex-col pt-5 text-lg justify-center">
@@ -96,7 +96,13 @@
             </div>
          </div>
 
-         <div class="main-bottom">
+         <div v-else class="main-core" style="display:flex; flex-direction:column; justify-content: center;">
+            <span>
+               Planos ainda não disponíveis
+            </span>
+         </div>
+
+         <div class=" hidden main-bottom">
             <div class="container-inner">
                <ul
                   class="flex list-inside list-disc flex-col gap-y-3 px-4 py-4 leading-none">

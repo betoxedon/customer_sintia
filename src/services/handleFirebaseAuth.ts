@@ -65,7 +65,7 @@ export const signOutFirebase = async () => {
    resetUserStore()
 }
 
-export const getVerificationFirebase = async () => {
+export const getVerificationFirebase = async () => {   
    await actionGetVerificationFirebase()
    await signOutFirebase()
 }

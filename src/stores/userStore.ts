@@ -1,10 +1,10 @@
-import { User, UpdateUser,Credential } from '@/models/userModel'
+import { User, UpdateUser,Credential,InitialFormUser } from '@/models/userModel'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import userApi from '@/services/userServiceApi'
 import Axios from 'axios'
 const { VITE_LOCAL_BASE_URL } = import.meta.env
-
+// import { useInterfaceStore } from '@/stores/interfaceStore';
 import { userSchema } from '@/models/userModel'
 import { setInitialStore } from '@/services/handleStore'
 import type { ImageFile } from '@/models/agentModel'
@@ -21,9 +21,8 @@ export const useUserStore = defineStore('user', () => {
       user.value = {} as User
    }
 
-   const setAuthUser = async (token:String) => {
+   const setAuthUser = async (token:String) => {     
      
-      
       const axiosLoggedIn = Axios.create({
          baseURL: `${VITE_LOCAL_BASE_URL}`,
          headers: {
@@ -33,10 +32,14 @@ export const useUserStore = defineStore('user', () => {
        return axiosLoggedIn.get('users/me').then(async (res) => {
          const user = res.data;
          const userParsed = userSchema.parse(user);
-         update(userParsed);
-         localStorage.setItem('uid', JSON.stringify(user.id));
 
-         await setInitialStore(userParsed);               
+         update(userParsed);
+
+         localStorage.setItem('uid', JSON.stringify(user.id));
+         localStorage.setItem('apiToken', JSON.stringify({ token: user.token }));
+                  
+         await setInitialStore(userParsed);
+                       
        }).catch((error) => {
          console.error(error);
          throw error;
@@ -51,8 +54,7 @@ export const useUserStore = defineStore('user', () => {
              username: payload.email, // Altera email para username
              password: payload.password // Mantém a senha inalterada
          };
-         
-         
+                  
          const res = await userApi.signin(modifiedPayload);
 
          localStorage.setItem('apiToken', JSON.stringify({ token: res.data.token }));
@@ -66,6 +68,17 @@ export const useUserStore = defineStore('user', () => {
             throw error;
       }
    }
+
+   const signup = async (payload: InitialFormUser) => {
+      try {
+        const res = await userApi.createUser(payload);
+        await setAuthUser(res.data.token);
+        return res;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    };
 
    const getUserById = async (userId:number) =>{
       
@@ -103,6 +116,7 @@ export const useUserStore = defineStore('user', () => {
       login,
       setAuthUser,
       getUserById,
-      updateUserPicture
+      updateUserPicture,
+      signup
    }
 })

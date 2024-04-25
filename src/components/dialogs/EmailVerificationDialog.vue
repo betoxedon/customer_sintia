@@ -58,7 +58,14 @@
             </div>
 
             <div class="section-core grid-cols-1">
-               <p>Peça um link para verificar seu endereço de e-mail.</p>
+               <p>
+                  Enviamos um link de verificação para seu endereço de e-mail. Por favor, verifique sua caixa de entrada.
+               </p>
+               <p>
+                  Se você não recebeu o e-mail, clique no botão abaixo para
+                  pedir um novo link.
+               </p>
+               
             </div>
 
             <div class="section-bottom">

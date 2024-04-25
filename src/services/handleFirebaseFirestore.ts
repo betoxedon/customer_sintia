@@ -1,15 +1,15 @@
 
-import { userSchema } from '@/models/userModel'
-import { planSchema } from '@/models/planModel'
-import { useUserStore } from '@/stores/userStore'
-import { usePlanStore } from '@/stores/planStore'
+// import { userSchema } from '@/models/userModel'
+// // import { planSchema } from '@/models/planModel'
+// import { useUserStore } from '@/stores/userStore'
+// import { usePlanStore } from '@/stores/planStore'
 
-import {  
-   actionGetUserByUidFirestore,
-   actionGetUserByDocIdFirestore, 
-   actionGetPlansFirestore,
-   actionGetActivePlanFirestore,
-} from '@/services/actions/firebase'
+// import {  
+//    actionGetUserByUidFirestore,
+//    actionGetUserByDocIdFirestore, 
+//    // actionGetPlansFirestore,
+//    // actionGetActivePlanFirestore,
+// } from '@/services/actions/firebase'
 
 //* user
 // export const createUserFirestore = async (initialUser: InitialUser) => {
@@ -31,42 +31,43 @@ import {
 //    }
 // }
 
-export const getUserByUidFirestore = async (uid: string) => {
-   const res = await actionGetUserByUidFirestore(uid)
-   if (!res) return
-   const user = userSchema.parse(res)
-   useUserStore().update(user)
-   return user
-}
 
-export const getUserByDocIdFirestore = async (docId: string) => {
-   const res = await actionGetUserByDocIdFirestore(docId)
-   const user = userSchema.parse(res)
-   useUserStore().update(user)
-}
+// export const getUserByUidFirestore = async (uid: string) => {
+//    const res = await actionGetUserByUidFirestore(uid)
+//    if (!res) return
+//    const user = userSchema.parse(res)
+//    useUserStore().update(user)
+//    return user
+// }
+
+// export const getUserByDocIdFirestore = async (docId: string) => {
+//    const res = await actionGetUserByDocIdFirestore(docId)
+//    const user = userSchema.parse(res)
+//    useUserStore().update(user)
+// }
 
 
-//* plan
+// //* plan
 
-export const getPlansFirestore = async () => {
-   const response = await actionGetPlansFirestore()
-   response.forEach((item) => {
-      const plan = planSchema.parse(item)
-      plan.features.maxMonthlyMessagesToLocaleString =
-         plan.features.maxMonthlyMessages.toLocaleString('pt-BR')
-      usePlanStore().plans.push(plan)
-   })
-}
+// export const getPlansFirestore = async () => {
+//    const response = await actionGetPlansFirestore()
+//    response.forEach((item) => {
+//       const plan = planSchema.parse(item)
+//       plan.features.maxMonthlyMessagesToLocaleString =
+//          plan.features.maxMonthlyMessages.toLocaleString('pt-BR')
+//       usePlanStore().plans.push(plan)
+//    })
+// }
 
-export const getActivePlanFirestore = async (planId: string | null) => {
-   if (!planId) return
-   try {
-      const response = await actionGetActivePlanFirestore(planId)
-      if (response) {
-         const plan = planSchema.parse(response)
-         usePlanStore().planActive = plan
-      }
-   } catch (error) {
-      console.error()
-   }
-}
+// export const getActivePlanFirestore = async (planId: string | null) => {
+//    if (!planId) return
+//    try {
+//       const response = await actionGetActivePlanFirestore(planId)
+//       if (response) {
+//          const plan = planSchema.parse(response)
+//          usePlanStore().planActive = plan
+//       }
+//    } catch (error) {
+//       console.error()
+//    }
+// }

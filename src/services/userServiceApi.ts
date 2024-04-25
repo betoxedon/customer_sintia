@@ -4,11 +4,12 @@ import apiAuth from './apiAuth';
 import { User,InitialFormUser,ApiCredetial } from '@/models/userModel';
 import { ImageFile} from '@/models/agentModel';
 
+
 export default {
 
     createUser(payload:InitialFormUser){
         return apiAuth.post('users/', payload) 
-        .then(res => {
+        .then(res => {           
             return res;
         })
         .catch(error => {
