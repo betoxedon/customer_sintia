@@ -226,7 +226,7 @@ aside.is-expanded {
     position: relative;
     right: auto;
     left: auto;
-    z-index: 90;
+    z-index: 10;
     background: #4f8aff;
     border-radius: 4px;
     display: flex;
