@@ -3,12 +3,14 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import userApi from '@/services/userServiceApi'
 import Axios from 'axios'
-const { VITE_LOCAL_BASE_URL } = import.meta.env
+
+const { VITE_LOCAL_BASE_URL, VITE_BASE_URL} = import.meta.env
+
 // import { useInterfaceStore } from '@/stores/interfaceStore';
 import { userSchema } from '@/models/userModel'
 import { setInitialStore } from '@/services/handleStore'
 import type { ImageFile } from '@/models/agentModel'
-
+const isDevelopment = import.meta.env.MODE === 'development'
 
 export const useUserStore = defineStore('user', () => {
    const user = ref({} as User)   
@@ -24,11 +26,13 @@ export const useUserStore = defineStore('user', () => {
    const setAuthUser = async (token:String) => {     
      
       const axiosLoggedIn = Axios.create({
-         baseURL: `${VITE_LOCAL_BASE_URL}`,
+         baseURL: isDevelopment ? VITE_LOCAL_BASE_URL : VITE_BASE_URL,
+         
          headers: {
            Authorization: `Token ${token}`
          }
        })
+              
        return axiosLoggedIn.get('users/me').then(async (res) => {
          const user = res.data;
          const userParsed = userSchema.parse(user);
@@ -71,7 +75,7 @@ export const useUserStore = defineStore('user', () => {
 
    const signup = async (payload: InitialFormUser) => {
       try {
-        const res = await userApi.createUser(payload);
+        const res = await userApi.createUser(payload);       
         await setAuthUser(res.data.token);
         return res;
       } catch (error) {
