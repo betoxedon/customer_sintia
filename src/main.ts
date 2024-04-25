@@ -3,6 +3,8 @@ import '@/assets/styles/tailwind.css'
 import '@/assets/styles/additional.css'
 import '@/assets/styles/tabs.css'
 
+import VueMarkdown from 'vue-markdown-render'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from '@/App.vue'
@@ -39,4 +41,5 @@ for (const path in modules) {
 }
 app.component('tabs', Tabs)
 app.component('tab', Tab)
+app.component('VueMarkdown', VueMarkdown)
 app.mount('#app')

@@ -24,6 +24,10 @@
 .page_title{
    color: #4f8aff;
 }
+.bot_message a{
+   font-weight: bold !important;
+   text-decoration: underline !important;
+}
 
 /* animation */
 @keyframes showIn {

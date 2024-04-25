@@ -225,9 +225,14 @@
                         <div class="mb-[22px]"> 
 
                            <span
-                              class="break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
-                              :style="backgroundColor">
-                              {{ message.content }}                           
+                              class="bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                              :style="backgroundColor">                           
+                              <vue-markdown 
+                              :source="message.content" 
+                              :options="{breaks: true, linkify: true, typographer: true}">
+                              >
+                              
+                              </vue-markdown>                    
                            </span> 
 
                         <div class="flex justify-end" v-if="message.id">
@@ -362,6 +367,8 @@
 </template>
 
 <style scoped>
+
+
 
 .btn-raiting{
    border-radius: 50%;
