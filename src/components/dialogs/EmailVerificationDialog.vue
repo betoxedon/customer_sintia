@@ -1,9 +1,10 @@
 <script setup lang="ts">
    import { ref } from 'vue'
-   import {
-      getVerificationFirebase,
+   import {    
       signOutFirebase,
    } from '@/services/handleFirebaseAuth'
+
+
    import { useRouter } from 'vue-router'
    import { useUserStore } from '@/stores/userStore'
    import { useInterfaceStore } from '@/stores/interfaceStore'
@@ -15,26 +16,25 @@
    const currentUserEmail = userStore.user?.email
 
    const onSubmit = async () => {
-      await getVerificationFirebase()
-         .then(async () => {
+      showBtnLoading.value = true
+      await userStore.EmailVerification()
+
+         .then(async () => {            
+            await signOutFirebase()  
             interfaceStore.notificationMessage = `Link de verificação enviado para ${currentUserEmail}. Por favor, verifique sua caixa de entrada.`
             interfaceStore.notificationType = 'success'
-            interfaceStore.showNotification = true
-            userStore.user.email_verified = true
-            interfaceStore.resetDialog()
+            interfaceStore.showNotification = true  
             router.push({ name: 'signIn' })
+            interfaceStore.resetDialog()         
+            
          })
-         .catch((error) => {
-            if (error.code === 'auth/too-many-requests') {
-               interfaceStore.notificationMessage =
-                  'Aguarde alguns minutos e tente novamente.'
-               interfaceStore.notificationType = 'alert'
-            } else {
-               const errorCode = error.code ? error.code : 'desconhecido'
-               interfaceStore.notificationMessage = `Erro [${errorCode}]. Por favor, tente novamente`
-               interfaceStore.notificationType = 'alert'
-            }
+         .catch((error) => {                 
+            interfaceStore.notificationMessage = `${error}`
+            interfaceStore.notificationType = 'alert'            
             interfaceStore.showNotification = true
+         })
+         .finally(() => {
+            showBtnLoading.value = false
          })
    }
 

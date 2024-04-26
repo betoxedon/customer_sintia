@@ -23,7 +23,7 @@
 <style scoped>
 .aside {
    /* width: 100%; */
-   max-width: 100%;
+   max-width: 360px;
    height: 100%;
    background-color: var(--color-surface-10);
    border-left: 1px solid var(--color-surface-20);

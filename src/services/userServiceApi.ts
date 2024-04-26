@@ -111,4 +111,15 @@ export default {
             });
     },
 
+    //Email Verification
+    sendEmailVerification(){
+        return apiAuth.get('users/send_verification_email/') 
+        .then(res => {
+            return res;
+        })
+        .catch(error => {
+            throw error;
+        });
+    },
+
 }

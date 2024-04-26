@@ -39,9 +39,9 @@
          class="pointer-events-none flex w-full items-center gap-x-2 rounded-full bg-white px-5 py-2 drop-shadow-md"
          :class="screenSideClasses">
          <div class="flex w-full items-center justify-between gap-x-3">
-            <div class="flex min-h-[48px] select-none items-center justify-center">
-               <span :style="fontFamily">
-                  {{ agentStore.agentActive.welcome_message }}
+            <div class="flex min-h-[48px] select-none items-center justify-center ">
+               <span :style="fontFamily" class="truncate-wrap w-200">
+                  {{ agentStore.agentActive.hello_message || 'Olá!👋 Como posso te ajudar?'}}
                </span>
             </div>
          </div>
@@ -60,3 +60,13 @@
       </div>
    </div>
 </template>
+
+<style>
+.w-200 {
+   width: 220px;
+}
+.truncate-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;    
+}
+</style>

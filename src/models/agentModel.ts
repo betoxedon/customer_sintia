@@ -92,9 +92,14 @@
    const welcomeMessageSchema = z
       .string()
       .min(3)
-      .max(40)
+      .max(200)
       .default('Olá!👋 Como posso te ajudar?')
 
+      const olaMessageSchema = z
+      .string()
+      .min(3)
+      .max(40)
+      .default('Olá!👋 Como posso te ajudar?')
 
    const colorStyleSchema = z.string().max(255).default('')
 
@@ -130,6 +135,7 @@
       id: idSchema,
       //userId: userIdSchema,
       welcome_message: welcomeMessageSchema,
+      hello_message: olaMessageSchema,
       color: colorStyleSchema,
       font: fontFamilyStyleSchema,
       side: screenSideStyleSchema,

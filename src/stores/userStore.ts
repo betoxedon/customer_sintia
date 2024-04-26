@@ -113,6 +113,19 @@ export const useUserStore = defineStore('user', () => {
 
    }
 
+   const EmailVerification = async () => {
+
+      try {
+         if (!user.value.id) throw new Error('Usuário não autenticado');
+         if (user.value.email_verified) throw new Error('Email já verificado');
+         await userApi.sendEmailVerification();
+         return true;
+      } catch (error) {
+         console.error(error);
+         throw error;
+      }
+   }
+
    return {
       user,
       update,
@@ -121,6 +134,7 @@ export const useUserStore = defineStore('user', () => {
       setAuthUser,
       getUserById,
       updateUserPicture,
-      signup
+      signup,
+      EmailVerification
    }
 })

@@ -340,7 +340,7 @@
                   <span
                      class="text-center"
                      :style="fontFamily">
-                     {{ welcomeMessage }}
+                     {{ agentStore.agentActive.hello_message || 'Olá!👋 Como posso te ajudar?'}}
                   </span>
                </div>
             </div>
@@ -367,8 +367,6 @@
 </template>
 
 <style scoped>
-
-
 
 .btn-raiting{
    border-radius: 50%;
