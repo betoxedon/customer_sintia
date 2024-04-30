@@ -13,6 +13,8 @@
    const showChatBalloon = ref(true)
    const showDialog = ref(false)
    const body = ref(document.body)
+   const links = ref<NodeListOf<Element>>()
+
    
    const today = new Date().toLocaleString('pt-BR', {
       day: '2-digit',
@@ -77,6 +79,7 @@
      
       
       nextTick(() => {
+         addLinkTarget() 
          scrollMessage() 
          const inputElement = document.querySelector('input')
          if (!inputElement) return
@@ -106,6 +109,7 @@
          await chatStore.sendMessage(chatStore.currentMessage)
 
           nextTick(() => {
+            addLinkTarget()
             scrollMessage()      
          }) 
          
@@ -125,22 +129,34 @@
    }
 
    onMounted( () => {           
-          
+      console.log('mounted')
       body.value.style.backgroundColor = '#0f172a'
       body.value.style.overflow = 'hidden'
       const agentId = route.params.chatbotId as string
       const userId =  route.params.userId as string
 
       agentStore.getAgentById(agentId,userId).then(() =>{
-         showAvatar.value = true
+         showAvatar.value = true              
          agentStore.sharedAgent = true  
-         chatStore.startSession(agentId)
-         
+         chatStore.startSession(agentId)          
       }).catch(error => {
          console.log(error)            
      });       
        
    })
+
+   const addLinkTarget = () => {
+      console.log('addLinkTarget')
+      scrollElement.value = document.getElementById('messages_list') as HTMLElement   
+      links.value = scrollElement.value?.querySelectorAll('.bot_message_markdown p a') as NodeListOf<Element>  
+
+      links.value?.forEach((link) => {         
+         nextTick(() => {
+            link.setAttribute('rel', 'noopener noreferrer')
+            link.setAttribute('target', '_blank');
+         })         
+      }) 
+   }
    
 </script>
 
@@ -224,16 +240,17 @@
                         
                         <div class="mb-[22px]"> 
 
-                           <span
-                              class="bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
-                              :style="backgroundColor">                           
+                         
+                                                   
                               <vue-markdown 
-                              :source="message.content" 
-                              :options="{breaks: true, linkify: true, typographer: true}">
+                              class="bot_message_markdown bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                               :source="message.content"
+                               :style="backgroundColor"                               
+                              :options="{breaks: true, linkify: true, typographer: false, html:true,xhtmlOut:true}">
                               >
                               
                               </vue-markdown>                    
-                           </span> 
+                          
 
                         <div class="flex justify-end" v-if="message.id">
 
@@ -367,6 +384,8 @@
 </template>
 
 <style scoped>
+
+
 
 .btn-raiting{
    border-radius: 50%;

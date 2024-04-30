@@ -28,6 +28,25 @@
    font-weight: bold !important;
    text-decoration: underline !important;
 }
+.bot_message_markdown{   
+   display: flex;
+   flex-direction: column;
+   gap: 0.75rem;
+}
+
+.bot_message_markdown p {
+   margin-bottom: 0.5rem !important;
+}
+
+.bot_message_markdown li {
+   margin-bottom: 0.5rem !important; 
+}
+
+.bot_message_markdown a {
+   color: #ffffff !important;
+   font-weight: bold !important;
+   text-decoration: underline !important;   
+}
 
 /* animation */
 @keyframes showIn {

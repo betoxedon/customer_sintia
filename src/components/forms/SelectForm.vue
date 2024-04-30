@@ -111,13 +111,13 @@ watch(() => valueSelected.value, (newValue, oldValue) => {
             
             <ListboxOption as="template" v-for="option in options" :key="option.id" :value="option" v-slot="{ active, selected }">
               
-               <li :class="[active ? 'bg-indigo-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+               <li :class="[active ? 'bg-slate-200 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                 
                   <div class="flex items-center">
                   <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">{{ option.name }}</span>
                 </div>
 
-                <span v-if="selected || value && option?.id == value?.id" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                <span v-if="selected || value && option?.id == value?.id" :class="[active ? 'text-indigo-600' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                   <CheckIcon class="h-5 w-5" aria-hidden="true" />
                 </span>
 

@@ -2,9 +2,7 @@ import '@/assets/styles/responsive.css'
 import '@/assets/styles/tailwind.css'
 import '@/assets/styles/additional.css'
 import '@/assets/styles/tabs.css'
-
 import VueMarkdown from 'vue-markdown-render'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from '@/App.vue'
@@ -14,6 +12,13 @@ import { zodI18nMap } from 'zod-i18n-map'
 import translation from 'zod-i18n-map/locales/pt/zod.json'
 import router from '@/router'
 import {Tabs, Tab} from 'vue3-tabs-component';
+
+import markdownit from 'markdown-it'
+
+const md = markdownit()
+
+md.set({ breaks: true, linkify: true, typographer: true, html:true, xhtmlOut:true })
+md.linkify.set({ fuzzyLink: false, fuzzyEmail: false})
 
 const pinia = createPinia()
 i18next.init({
@@ -42,4 +47,5 @@ for (const path in modules) {
 app.component('tabs', Tabs)
 app.component('tab', Tab)
 app.component('VueMarkdown', VueMarkdown)
+   
 app.mount('#app')
