@@ -12,6 +12,10 @@ export const useChatStore = defineStore('chat', () => {
     const sessionActive = ref()
     const isLoading = ref(false)
     const currentMessage = ref('')
+    const currentUrlAudio = ref('') //variavel que armazena o audio gravado
+    const currentAudioFile = ref()
+    //variavel que verifica se foi gravado em audio
+    const isAudioRecorded = ref(false)
 
     const startSession = async (botId:string) => {
 
@@ -62,28 +66,77 @@ export const useChatStore = defineStore('chat', () => {
         }
 
         try {
-            // Adiciona a mensagem enviada à sessão ativa
+            // Adiciona a mensagem enviada à sessão ativa            
 
-            sessionActive.value.messages.push({ type: 'user', content: currentMessage.value })
+            sessionActive.value.messages.push({ 
+                type: 'user',
+                 content: currentMessage.value, 
+                 audio_file:currentUrlAudio.value })
 
             currentMessage.value = '' 
-            const response = await messageApi.createMessage(sessionActive.value.id, request)
-    
+            currentUrlAudio.value = '' //reseta a variavel de audio gravado
             
-            sessionActive.value.messages.push(
-                {   id: response.data.id,
-                    type: 'bot', 
-                    content: response.data.response,
-                    sources:response.data?.sources.split(', ') || []
-                }
-            )
 
+           
+            const response = await messageApi.createMessage(sessionActive.value.id, request, currentAudioFile.value)
+           
+            currentAudioFile.value = ''
+            
+            //para cada quebra de linha, adicionar uma nova mensagem
+
+            //nesses casos a font só é adicionada na ultima mensagem e quando o conteudo é vazio a mensagem não é adicionada
+
+            // const responseArray = response.data.response.split('\n\n')
+            
+            // for (let i = 0; i < responseArray.length; i++) {
+            //     if (responseArray[i] != ''){
+                    
+            //         if (i == responseArray.length - 1){ //se for a ultima mensagem
+            //             sessionActive.value.messages.push(
+            //                 {   id: response.data.id,
+            //                     type: 'bot', 
+            //                     content: responseArray[i],
+            //                     sources:response.data?.sources.split(', ') || []
+            //                 }
+            //             )
+            //         }
+            //         else{
+
+            //             sessionActive.value.messages.push(
+            //                 {   id: response.data.id,
+            //                     type: 'bot', 
+            //                     content: responseArray[i],
+                                
+            //                 }
+            //             )
+            //         }
+            //     }
+            // }
+           
+            //adidionar request_file no ultimo elemento da mensagem da sessão
+            if (response.data.request_file){
+                sessionActive.value.messages[sessionActive.value.messages.length - 1].audio_file = response.data.request_file
+            }
+
+            //adiciona a resposta do bot na sessão ativa
+             sessionActive.value.messages.push(
+                 {   id: response.data.id,
+                     type: 'bot', 
+                     content: response.data.response,
+                     sources:response.data?.sources.split(', ') || [],
+                     audio_file:response.data?.audio_file || null,
+                     is_audio_recorder:isAudioRecorded.value
+                 }
+            )
+            
+            
             // Atualiza a sessão ativa no localStorage
             localStorage.setItem('currentSession', JSON.stringify(sessionActive.value))
         } catch (error) {
             console.error('Erro ao enviar mensagem:', error)
             // Tratar o erro conforme necessário
         }
+        isAudioRecorded.value = false //reseta a variavel de audio gravado
     }
 
     const updateMessages = async () => {
@@ -131,6 +184,9 @@ export const useChatStore = defineStore('chat', () => {
         updateMessages,
         isLoading,
         currentMessage,
-        rateMessage
+        currentUrlAudio,
+        currentAudioFile,
+        rateMessage,
+        isAudioRecorded
      }
   })

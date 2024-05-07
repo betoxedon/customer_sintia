@@ -17,7 +17,7 @@
       validationSchema: toTypedSchema(agentSchema),
       initialValues: agentStore.agentActive,
    })
-
+   
    resetForm({
       values: agentStore.agentActive,
    })
@@ -64,7 +64,13 @@
    })
 
    watch(
-      () => [values.name,values.hello_message, values.welcome_message,values.audio_response, values.prompt],
+      () => [values.name,
+            values.hello_message, 
+            values.welcome_message,
+            values.audio_response, 
+            values.prompt,
+            values.audio_response_type
+         ],
       () => {
          agentStore.agentActive.name = values.name
         // agentStore.agentActive.identifier = values.identifier
@@ -72,6 +78,7 @@
          agentStore.agentActive.audio_response = values.audio_response
          agentStore.agentActive.prompt = values.prompt
          agentStore.agentActive.hello_message = values.hello_message
+         agentStore.agentActive.audio_response_type = values.audio_response_type
 
          
 
@@ -106,6 +113,26 @@
          confirmCancelForm()
       }
    })
+
+   type Tab = {
+      tab: {
+         name: string
+      }
+   }
+   
+   const tabChanged = (tab: Tab) => {
+      const name = tab?.tab.name
+
+      if (name === 'Geral') {
+         agentStore.tabActive = 'Geral'
+      
+      }
+      else if (name === 'Customização') {
+         agentStore.tabActive = 'Customização' 
+      }        
+   }
+
+
 </script>
 
 <template>
@@ -122,20 +149,14 @@
             <span class="text-lg font-medium">Editar chatbot</span>
          </div>
         
-         <tabs cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
+         <tabs @changed="tabChanged" cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
                <tab name="Geral">
                   <FieldsCreateAgent :errors="errors" />
                </tab>   
 
                <tab name="Customização">                 
                   <FieldsUpdateAgent :errors="errors" />
-               </tab>    
-               
-               <!--<tab name="Dominios" class="hidden">                 
-                  dominios
-               </tab>  
-
-               -->
+               </tab>                  
          </tabs>
 
 

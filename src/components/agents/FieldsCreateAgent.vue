@@ -131,6 +131,15 @@
          placeholder="Permitir respostas de áudio"
          @update:modelValue="voiceResponse = $event"
          />
+
+      <SelectForm
+         v-if="voiceResponse || (agentStore.agentActive && agentStore.agentActive.audio_response)"
+         class="col-span-full maxw:col-span-6 mt-6"
+         :options="agentStore.voiceResponse"
+         labelField="Periodicidade de resposta em audio"
+         nameField="audio_response_type"
+         :errorsMessage="errors"
+         />
                
       <SelectForm
          v-if="voiceResponse || (agentStore.agentActive && agentStore.agentActive.audio_response)"

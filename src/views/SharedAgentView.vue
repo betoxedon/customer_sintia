@@ -3,6 +3,83 @@
    import { useAgentStore } from '@/stores/agentStore'
    import {useChatStore} from '@/stores/chatStore'
    import { useRoute } from 'vue-router'
+   import { useSpeechRecognition } from '@vueuse/core'
+   import AudioPlayer from '@/components/player/AudioPlayer.vue' 
+      
+   //audio recognition
+   const transcript = ref('')
+   const audioRecorded = ref('')
+   const audioFile = ref<File>()
+
+   const isRecording = ref(false)  
+   
+   const speech = useSpeechRecognition({
+      continuous: true,
+      lang: 'pt-BR',
+   })
+
+
+   function start() {     
+      speech.result.value = ''      
+      speech.start()
+      startRecording();
+     
+   }
+
+   const { isListening, isSupported, result } = speech
+
+   function stop() {
+      transcript.value = result.value     
+      chatStore.currentMessage = transcript.value
+      chatStore.isAudioRecorded = true
+      speech.stop()
+      stopRecording();
+     
+      
+   }
+
+   let mediaRecorder: MediaRecorder | null;
+
+   function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+         .then(function onSuccess(stream) {
+            mediaRecorder = new MediaRecorder(stream);
+            const chunks: BlobPart[] = [];
+            mediaRecorder.start();
+            mediaRecorder.addEventListener('dataavailable', function onDataAvailable(event) {
+            chunks.push(event.data);
+            });
+            mediaRecorder.addEventListener('stop', function onStop() {
+            const blob = new Blob(chunks, { type: 'audio/wav; codecs=opus' });
+            audioFile.value = new File([blob], 'audio_recording.wav', { type: 'audio/wav; codecs=opus' });  
+
+            chatStore.currentAudioFile = audioFile.value         
+            const audioUrl = URL.createObjectURL(blob);            
+            const audioElement = new Audio(audioUrl);                         
+            audioRecorded.value = audioUrl
+            chatStore.currentUrlAudio = audioRecorded.value
+            audioElement.controls = true;
+            document.body.appendChild(audioElement);
+            });
+         })
+         .catch(function onError(err) {
+            console.log('The following error occurred:', err);
+         });
+   }
+
+   // Função para parar a gravação de áudio
+   async function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.addEventListener('stop', async () => {
+            // Chama sendMessage após o evento 'stop'
+            await sendMessage();
+        });
+        // Para a gravação
+        await mediaRecorder.stop();
+    }
+   }
+
+
 
    const agentStore = useAgentStore()
    const chatStore = useChatStore()
@@ -97,14 +174,16 @@
       scrollElement.value.scrollTop = scrollElement.value?.scrollHeight
    }
 
-   const sendMessage = async() => {             
-
+   const sendMessage = async() => {         
+      
+    
       if (chatStore.currentMessage) {
          chatStore.isLoading = true  
 
          nextTick(() => {
             scrollMessage()      
          })
+        
 
          await chatStore.sendMessage(chatStore.currentMessage)
 
@@ -128,8 +207,8 @@
       chatStore.rateMessage(rate, messageId)
    }
 
-   onMounted( () => {           
-      console.log('mounted')
+   onMounted( () => {         
+            
       body.value.style.backgroundColor = '#0f172a'
       body.value.style.overflow = 'hidden'
       const agentId = route.params.chatbotId as string
@@ -146,7 +225,7 @@
    })
 
    const addLinkTarget = () => {
-      console.log('addLinkTarget')
+      
       scrollElement.value = document.getElementById('messages_list') as HTMLElement   
       links.value = scrollElement.value?.querySelectorAll('.bot_message_markdown p a') as NodeListOf<Element>  
 
@@ -157,13 +236,38 @@
          })         
       }) 
    }
-   
+
+   const showTextVersion = (is_audio_recorder:boolean) => {
+
+      // se o bot não tiver permissão para responder com áudio exibe a versão em texto
+
+      if (!agentStore.agentActive.audio_response) {
+         return true;
+      }
+
+      // se o bot tiver permissão para responder com áudio apenas para perguntas com áudio e a pergunta não for um áudio
+
+      if (
+         agentStore.agentActive.audio_response && 
+         agentStore.agentActive.audio_response_type?.name === 'Áudio apenas para perguntas com áudio' && 
+         !is_audio_recorder
+      ) {
+         return true;
+      }
+      //caso contrário exibe a versão em áudio sempre que houver
+
+      return false;
+   }
+
 </script>
 
 <template>
+ 
    <div
+   
       class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[326px]"
       :class="screenSideClass">
+      
       <div v-show="showDialog" class="chat-main grid content-end">
          <div
             class="grid w-full grid-rows-[min-content_minmax(0px,_480px)] overflow-hidden rounded-xl"
@@ -200,8 +304,8 @@
                   <span
                      class="col-span-2 mb-4 mt-1 place-self-center rounded-lg bg-slate-400 px-4 py-0.5 text-white">
                      {{ today }}
-                  </span>
-
+                  </span>          
+                  
                   
                   <div  class="col-span-full grid grid-cols-[min-content_77%] gap-x-2">
                      
@@ -238,18 +342,24 @@
                         </div>      
                         
                         
-                        <div class="mb-[22px]"> 
-
-                         
+                        <div class="mb-[22px]">                          
                                                    
                               <vue-markdown 
+                              v-if="showTextVersion(message.is_audio_recorder)"                                                    
                               class="bot_message_markdown bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                                :source="message.content"
                                :style="backgroundColor"                               
                               :options="{breaks: true, linkify: true, typographer: false, html:true,xhtmlOut:true}">
                               >
-                              
-                              </vue-markdown>                    
+                              </vue-markdown>      
+
+                              <AudioPlayer 
+                              class="audio_controlls" 
+                              :backgroundColor="agentStore.agentActive?.color"
+                              color="#ffffff"
+                              :audioSource="message.audio_file" v-else />                 
+
+                              <!-- <audio  class="audio_controlls" v-else :src="message.audio_file" controls></audio> -->
                           
 
                         <div class="flex justify-end" v-if="message.id">
@@ -293,10 +403,19 @@
                      <!--message.type == user -->
                      <div  v-if="message.type == 'user'"
                      class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
-                        <span
+                        
+                        <span v-if="message.audio_file == ''"
                            class="break-words relative mb-[22px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
                            {{ message.content }}
                         </span>
+
+                        <!-- <audio  class="audio_controlls user" v-else :src="message.audio_file" controls></audio> -->
+                        <AudioPlayer 
+                              class="audio_controlls" 
+                              backgroundColor="#e7e9f1"
+                              :color="agentStore.agentActive?.color"
+                              :audioSource="message.audio_file" v-else />     
+
                      </div>
 
                   </div>
@@ -330,6 +449,17 @@
                   <input @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" style="font-size: 16px;"
                      class=":focus:ring-2 block h-[40px] w-full rounded-l-lg border-0  pl-3 pr-2 text-base ring-0 placeholder:text-base placeholder:font-normal focus:border-0 focus:outline-0"
                      placeholder="Digite sua mensagem..." />
+                 
+                  <button v-if="isSupported && !isListening" class="audio_btn mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg" >
+                     <MonoMicrophone class="h-5 text-slate-500" 
+                     :class="{ 'cursor-not-allowed text-red-500': isRecording }" @click="start"
+                     />
+                  </button>
+
+                  <button v-if="isSupported && isListening" class="audio_btn mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg" >
+                     <MonoStop class="h-5 text-slate-500" @click="stop"
+                     />                      
+                  </button>
 
                   <button  @click.stop="sendMessage" :style="backgroundColor" :disabled="!chatStore.currentMessage || chatStore.isLoading"
                      class="mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg">
@@ -385,6 +515,83 @@
 
 <style scoped>
 
+.audio_controlls::-webkit-media-controls-panel {
+   background-color: rgb(83, 108, 188);
+}
+
+.audio_controlls::-webkit-media-controls-play-button {
+  background-color: #effbff;
+  border-radius: 50%;
+}
+
+.audio_controlls::-webkit-media-controls-play-button:hover {
+  background-color: rgb(178, 178, 178);
+}
+
+.audio_controlls::-webkit-media-controls-current-time-display {
+  color: #fff;
+  font-weight: 500;
+}
+
+.audio_controlls::-webkit-media-controls-time-remaining-display {
+  color: #fff;
+  font-weight: 500;
+}
+
+
+audio::-webkit-media-controls-volume-slider {
+  display: none !important;
+}
+
+audio::-webkit-media-controls-mute-button {
+  display: none !important;
+}
+
+
+.audio_controlls::-webkit-media-controls-timeline{
+   min-width: 5rem;   
+   color: #fff;
+   border-radius: 0.5rem;
+
+}
+
+.audio_controlls{
+   width: 100%;
+   margin-top: 10px;
+}
+
+.audio_controlls.user{
+   margin-top: 10px;
+   margin-bottom: 10px;
+   display: flex;
+   flex-direction: row-reverse;
+}
+
+.audio_controlls.user::-webkit-media-controls-panel {
+   background-color: #e7e9f1;
+   
+}
+
+.audio_controlls.user::-webkit-media-controls-play-button {
+  background-color:  #536cbc;
+  border-radius: 50%;
+  justify-self: end;
+  justify-content: end;
+  justify-items: end;
+  float: right;
+}
+.audio_controlls.user::-webkit-media-controls-play-button:hover {
+  background-color:#4f73eb
+}
+
+.audio_controlls.user::-webkit-media-controls-current-time-display {
+  color:  rgb(11, 64, 255);
+  font-weight: 500;
+}
+.audio_controlls.user::-webkit-media-controls-time-remaining-display {
+  color:  rgb(11, 64, 255);
+  font-weight: 500;
+}
 
 
 .btn-raiting{

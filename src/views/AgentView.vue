@@ -113,7 +113,7 @@
          </div>
       </div>
 
-      <AsideAgent v-if="agentStore.updatingAgent"/>
+      <AsideAgent v-if="agentStore.updatingAgent && agentStore.tabActive =='Customização'"/>
    </main>
 </template>
 

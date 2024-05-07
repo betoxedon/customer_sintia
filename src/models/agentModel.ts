@@ -56,7 +56,14 @@
 
 
    const audio_responseSchema = z.boolean().default(false)
-      
+
+       
+   const audio_responseTypeSchema = z.object({
+      name: z.string(),
+      id: z.number(),
+      }
+   ).optional()
+
 
    const temperatureSchema = z.number().min(0.0).max(1.0).default(0.3)
 
@@ -72,6 +79,7 @@
       name: nicknameSchema,
       temperature:temperatureSchema,
       audio_response:audio_responseSchema,
+      audio_response_type:audio_responseTypeSchema,
       material_core:materialCoreSchema,
       model:modelSchema,
       tone:toneSchema,

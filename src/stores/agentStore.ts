@@ -13,6 +13,7 @@ import { useCustomizableStore } from '@/stores/customizableStore'
 export const useAgentStore = defineStore('agent', () => {
    const creatingAgent = ref<boolean>(false)
    const updatingAgent = ref<boolean>(false)
+   const tabActive = ref<string>('geral')
    const sharedAgent = ref<boolean>(false)
 
    const allowedForms = computed(() => {
@@ -84,7 +85,7 @@ export const useAgentStore = defineStore('agent', () => {
 
    const keys = ref([])
 
-
+   const voiceResponse = ref([])
 
    const agentScript = computed(() => {
     
@@ -137,6 +138,7 @@ export const useAgentStore = defineStore('agent', () => {
          types.value = res.types
          searches.value = res.search
          keys.value = res.api_keys
+         voiceResponse.value = res.audio_response_preferences
          
          useCustomizableStore().fontFamilies = res.fonts
          useCustomizableStore().colors = res.colors
@@ -184,6 +186,7 @@ export const useAgentStore = defineStore('agent', () => {
          type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
+         audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,
          
          material_core: typeof data.material_core !== 'undefined' ? (Array.isArray(data.material_core) ? data.material_core.join(',') : data.material_core) : ''
 
@@ -215,6 +218,7 @@ export const useAgentStore = defineStore('agent', () => {
          type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
+         audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,
 
          // Verifica se material_core não é indefinido antes de tratá-lo
          material_core: typeof data.material_core !== 'undefined' ? 
@@ -294,12 +298,14 @@ export const useAgentStore = defineStore('agent', () => {
       getDatas,
       getAgents,
       updateAgent,
+      tabActive,
       createAgent,
       deleteAgent,
       isLoading, 
       updateAgentPicture,
       hasAgentResponse,
       getAgentById,
-      sharedAgent
+      sharedAgent,
+      voiceResponse
    }
 })
