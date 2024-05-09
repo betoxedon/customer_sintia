@@ -385,7 +385,7 @@
                         </div>
 
                         <!--Sources-->       
-                        <div class="flex mt-4  gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
+                        <div class="flex mt-4 gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
                            v-if="message.sources && message.sources.length > 0 && message.sources[0] != '' " >
                               <span>Sources: </span>
                               <a :href="source" target="_blank" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
@@ -406,7 +406,7 @@
                         class="mb-[22px] col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
                         
                            <span v-if="message.audio_file == ''"
-                              class="break-words relative mb-[22px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
+                              class="break-words relative  grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
                               {{ message.content }}
                            </span>
 
@@ -516,85 +516,6 @@
 </template>
 
 <style scoped>
-
-.audio_controlls::-webkit-media-controls-panel {
-   background-color: rgb(83, 108, 188);
-}
-
-.audio_controlls::-webkit-media-controls-play-button {
-  background-color: #effbff;
-  border-radius: 50%;
-}
-
-.audio_controlls::-webkit-media-controls-play-button:hover {
-  background-color: rgb(178, 178, 178);
-}
-
-.audio_controlls::-webkit-media-controls-current-time-display {
-  color: #fff;
-  font-weight: 500;
-}
-
-.audio_controlls::-webkit-media-controls-time-remaining-display {
-  color: #fff;
-  font-weight: 500;
-}
-
-
-audio::-webkit-media-controls-volume-slider {
-  display: none !important;
-}
-
-audio::-webkit-media-controls-mute-button {
-  display: none !important;
-}
-
-
-.audio_controlls::-webkit-media-controls-timeline{
-   min-width: 5rem;   
-   color: #fff;
-   border-radius: 0.5rem;
-
-}
-
-.audio_controlls{
-   width: 100%;
-   margin-top: 10px;
-}
-
-.audio_controlls.user{
-   margin-top: 10px;
-   margin-bottom: 10px;
-   display: flex;
-   flex-direction: row-reverse;
-}
-
-.audio_controlls.user::-webkit-media-controls-panel {
-   background-color: #e7e9f1;
-   
-}
-
-.audio_controlls.user::-webkit-media-controls-play-button {
-  background-color:  #536cbc;
-  border-radius: 50%;
-  justify-self: end;
-  justify-content: end;
-  justify-items: end;
-  float: right;
-}
-.audio_controlls.user::-webkit-media-controls-play-button:hover {
-  background-color:#4f73eb
-}
-
-.audio_controlls.user::-webkit-media-controls-current-time-display {
-  color:  rgb(11, 64, 255);
-  font-weight: 500;
-}
-.audio_controlls.user::-webkit-media-controls-time-remaining-display {
-  color:  rgb(11, 64, 255);
-  font-weight: 500;
-}
-
 
 .btn-raiting{
    border-radius: 50%;
