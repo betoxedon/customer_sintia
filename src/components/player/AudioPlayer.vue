@@ -44,7 +44,8 @@ return min + ':' + ((sec<10) ? ('0' + sec) : sec);
 const props = defineProps({
     audioSource: String,
     backgroundColor: String,
-    color: String
+    color: String,
+    type: String
 })
 
 // const audioSource = ref('https://s3-us-west-2.amazonaws.com/s.cdpn.io/355309/Swing_Jazz_Drum.mp3')
@@ -320,7 +321,8 @@ onUnmounted(() => {
 
 <template>
     <div class="holder">
-      <div class="audio green-audio-player" ref="audioPlayer" :class="{ 'disabled' : !isSourceAvailable }"
+      <div class="audio green-audio-player rounded-2xl" ref="audioPlayer" 
+      :class="{ 'disabled' : !isSourceAvailable, 'rounded-tl-none': type == 'bot', 'rounded-tr-none': type == 'user'}"
         :style="{ backgroundColor : backgroundColor, color : color}"
       >
 
@@ -409,9 +411,9 @@ onUnmounted(() => {
 
     .holder {
         display: flex;
-        flex-direction: column;
-        align-items: center; 
-        margin-bottom: 15px;
+        /* flex-direction: column; */
+        align-items: center;        
+        justify-content: end;
     }
 
     .audio.green-audio-player {
@@ -423,8 +425,7 @@ onUnmounted(() => {
         justify-content: space-between;
         align-items: center;
         padding-left: 16px;
-        padding-right: 16px;
-        border-radius: 8px;
+        padding-right: 16px;        
         gap: 8px;
         user-select: none;
         -webkit-user-select: none;

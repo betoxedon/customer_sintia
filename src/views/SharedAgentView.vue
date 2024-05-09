@@ -328,12 +328,12 @@
                   <div v-for="message in chatStore?.sessionActive?.messages" :key="message">
                   
                      <!--message.type == bot -->
-                     <div 
-                        v-if="message.type == 'bot'"  style="max-width:100%"
-                        class=" message-ballon col-span-full grid grid-cols-[min-content_77%] gap-x-2"> 
+                     <div v-if="message.type == 'bot'"  style="max-width:100%"
+                        class="mb-[22px] message-ballon col-span-full grid grid-cols-[min-content_77%] gap-x-2"> 
                         
+                        <!-- BOT PICTURE-->
                         <div
-                           class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
+                           class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
                            <img
                               v-if="agentStore.agentActive.image_file"
                               :src="agentStore.agentActive.image_file"
@@ -342,26 +342,27 @@
                         </div>      
                         
                         
-                        <div class="mb-[22px]">                          
+                        <div class="">                          
                                                    
                               <vue-markdown 
-                              v-if="showTextVersion(message.is_audio_recorder)"                                                    
-                              class="bot_message_markdown bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
-                               :source="message.content"
-                               :style="backgroundColor"                               
-                              :options="{breaks: true, linkify: true, typographer: false, html:true,xhtmlOut:true}">
-                              >
+                                 v-if="showTextVersion(message.is_audio_recorder)"                                                    
+                                 class="bot_message_markdown bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                                 :source="message.content"
+                                 :style="backgroundColor"                               
+                                 :options="{breaks: true, linkify: true, typographer: false, html:true,xhtmlOut:true}">
+                                 >
                               </vue-markdown>      
 
                               <AudioPlayer 
                               class="audio_controlls" 
+                              type="bot"
                               :backgroundColor="agentStore.agentActive?.color"
                               color="#ffffff"
                               :audioSource="message.audio_file" v-else />                 
 
                               <!-- <audio  class="audio_controlls" v-else :src="message.audio_file" controls></audio> -->
                           
-
+                        <!--Rating Message buttons-->
                         <div class="flex justify-end" v-if="message.id">
 
                            <button 
@@ -402,16 +403,17 @@
                   
                      <!--message.type == user -->
                      <div  v-if="message.type == 'user'"
-                     class="col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
+                        class="mb-[22px] col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
                         
-                        <span v-if="message.audio_file == ''"
-                           class="break-words relative mb-[22px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
-                           {{ message.content }}
-                        </span>
+                           <span v-if="message.audio_file == ''"
+                              class="break-words relative mb-[22px] grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
+                              {{ message.content }}
+                           </span>
 
-                        <!-- <audio  class="audio_controlls user" v-else :src="message.audio_file" controls></audio> -->
-                        <AudioPlayer 
+                           <!-- <audio  class="audio_controlls user" v-else :src="message.audio_file" controls></audio> -->
+                           <AudioPlayer 
                               class="audio_controlls" 
+                              type="user"
                               backgroundColor="#e7e9f1"
                               :color="agentStore.agentActive?.color"
                               :audioSource="message.audio_file" v-else />     
