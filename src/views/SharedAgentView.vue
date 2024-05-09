@@ -46,20 +46,28 @@
             mediaRecorder = new MediaRecorder(stream);
             const chunks: BlobPart[] = [];
             mediaRecorder.start();
+
+            const startTime = Date.now(); // Início da gravação
+            
             mediaRecorder.addEventListener('dataavailable', function onDataAvailable(event) {
             chunks.push(event.data);
             });
+
             mediaRecorder.addEventListener('stop', function onStop() {
+
+            const stopTime = Date.now(); // Fim da gravação
+            chatStore.durationRecorded = (stopTime - startTime) / 1000; // Duração da gravação em segundos
+
             const blob = new Blob(chunks, { type: 'audio/wav; codecs=opus' });
             audioFile.value = new File([blob], 'audio_recording.wav', { type: 'audio/wav; codecs=opus' });  
 
             chatStore.currentAudioFile = audioFile.value         
             const audioUrl = URL.createObjectURL(blob);            
-            const audioElement = new Audio(audioUrl);                         
+            //const audioElement = new Audio(audioUrl);                         
             audioRecorded.value = audioUrl
             chatStore.currentUrlAudio = audioRecorded.value
-            audioElement.controls = true;
-            document.body.appendChild(audioElement);
+            //audioElement.controls = true;
+            //document.body.appendChild(audioElement);
             });
          })
          .catch(function onError(err) {
@@ -358,6 +366,7 @@
                               type="bot"
                               :backgroundColor="agentStore.agentActive?.color"
                               color="#ffffff"
+                              :duration="message.duration"
                               :audioSource="message.audio_file" v-else />                 
 
                               <!-- <audio  class="audio_controlls" v-else :src="message.audio_file" controls></audio> -->
@@ -415,6 +424,7 @@
                               class="audio_controlls" 
                               type="user"
                               backgroundColor="#e7e9f1"
+                              :duration="message.duration"
                               :color="agentStore.agentActive?.color"
                               :audioSource="message.audio_file" v-else />     
 

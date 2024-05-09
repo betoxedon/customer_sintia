@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted,watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted,watch, nextTick, computed } from 'vue'
 const isLoading = ref(false)
 const isPlaying = ref(false)
 const showVolumeControls = ref(false)
@@ -13,6 +13,7 @@ const pin = ref<HTMLElement | null>(null);
 const volumePin = ref<HTMLElement | null>(null);
 const audioPlayer = ref(null);
 const audio = ref<HTMLAudioElement | null>(null);
+const durationTime = ref();
 
 const volumeControls = ref(null);
 const volumeProgress = ref<HTMLElement | null>(null);
@@ -45,16 +46,29 @@ const props = defineProps({
     audioSource: String,
     backgroundColor: String,
     color: String,
-    type: String
+    type: String,
+    duration: Number
 })
 
 // const audioSource = ref('https://s3-us-west-2.amazonaws.com/s.cdpn.io/355309/Swing_Jazz_Drum.mp3')
 
+const duration = computed(() => {
+        if (audio.value) {
+            const duration = audio.value.duration;
+            if (!isNaN(duration)) {
+                return formatT(duration);
+            }
+        }             
+        const duration = Number(audio.value?.duration)|| Number(props.duration)
+        durationTime.value = duration;
+        return formatT(duration);
+    }); 
 
 const updateProgress = () => {
     if (audio.value) {
         const current = audio.value.currentTime;
-        const duration = audio.value.duration;                
+
+        const duration =  durationTime.value || audio.value.duration;             
      
         if (duration && !isNaN(duration)) { // Verificar se a duration é válida
             const percent = (current / duration) * 100;
@@ -210,7 +224,7 @@ const inRange = (event:MouseEvent) => {
 const rewind = (event:MouseEvent) => {
   if (audio.value && inRange(event)) {
     const coefficient = getCoefficient(event);
-    const duration = audio.value.duration;
+    const duration =  durationTime.value || audio.value.duration;   
     audio.value.currentTime = duration * coefficient;
   }
 };
@@ -359,9 +373,9 @@ onUnmounted(() => {
                 </div>
             </div>
             <span  
-              v-if="totalTime !== 'Infinity:NaN'"
+              v-if="duration !== 'Infinity:NaN'"
               :style="{ color : color }"           
-              class="total-time">{{ totalTime }}
+              class="total-time">{{ duration }}
             </span>
             <span v-else
               :style="{ color : color }"           
@@ -410,10 +424,9 @@ onUnmounted(() => {
   }
 
     .holder {
-        display: flex;
-        /* flex-direction: column; */
+        display: flex;      
         align-items: center;        
-        justify-content: end;
+        justify-content: flex-end;
     }
 
     .audio.green-audio-player {
