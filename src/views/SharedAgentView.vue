@@ -318,7 +318,7 @@
                   <div  class="col-span-full grid grid-cols-[min-content_77%] gap-x-2">
                      
                      <div
-                        class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
+                        class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-white">
                         <img
                            v-if="agentStore.agentActive.image_file"
                            :src="agentStore.agentActive.image_file"
