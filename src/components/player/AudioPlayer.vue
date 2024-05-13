@@ -1,6 +1,16 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted,watch, nextTick, computed } from 'vue'
+import { ref,Ref, onMounted, onUnmounted,watch, nextTick, computed } from 'vue'
+
+
 const isLoading = ref(false)
+
+//
+const loadingAudioData = ref(false);
+const waitingToLoad = ref(false);
+const loadedAudioData = ref(false);
+const audioData: Ref<AudioBuffer | null> = ref(null);
+const audioContext = new AudioContext();
+
 const isPlaying = ref(false)
 const showVolumeControls = ref(false)
 
@@ -285,6 +295,9 @@ watch(() => props.audioSource, () => {
 });
 
 onMounted(() => {  
+
+    getAudioData(props.audioSource as string);
+
     isSourceAvailable.value = false;
     audio.value = document.querySelector('audio') as HTMLAudioElement;
     isSourceAvailable.value = true;
@@ -330,19 +343,68 @@ onUnmounted(() => {
     }
 });
 
+function getAudioData(url: string) {
+        loadingAudioData.value = true;
+        fetch(url)
+        .then((res) => {
+             return res.blob().then((raw) => {
+                if (!res.headers?.get('Content-Type')?.includes('audio/')) {
+                    throw new Error('Invalid audio type');
+                }
+                return raw;
+            });
+        })
+        .then((bl) => {
+            waitingToLoad.value = false;
+            const src = URL.createObjectURL(bl);
 
+            if (audio.value){
+              audio.value.src = src;
+            }             
+
+            const fileReader = new FileReader();
+            fileReader.onloadend = () => {
+                audioContext.decodeAudioData(
+                    fileReader.result as ArrayBuffer,
+                    (bufferData) => {
+                        audioData.value = bufferData;
+                        setTimeout(() => {
+                            loadingAudioData.value = false;
+                            loadedAudioData.value = true;                            
+                        }, 1000);
+                    },
+                    (err) => {
+                        loadingAudioData.value = false;
+                        throw err;
+                    }
+                );
+            };
+            fileReader.readAsArrayBuffer(bl);
+        })
+        .catch((err) => {
+            loadingAudioData.value = false;
+            throw err;
+        });
+    }
 </script>
 
 <template>
     <div class="holder">
       <div class="audio green-audio-player rounded-2xl" ref="audioPlayer" 
-      :class="{ 'disabled' : !isSourceAvailable, 'rounded-tl-none': type == 'bot', 'rounded-tr-none': type == 'user'}"
+      :class="{ 'disabled' : !isSourceAvailable || isLoading || loadingAudioData, 'rounded-tl-none': type == 'bot', 'rounded-tr-none': type == 'user'}"
         :style="{ backgroundColor : backgroundColor, color : color}"
       >
 
         <!-- Loading -->
-        <div class="loading" v-if="isLoading">
-          <div class="spinner"></div>          
+        <div class="loading" v-if="isLoading || loadingAudioData">
+             
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+            style="background: rgba(255, 255, 255, 0); display: block; shape-rendering: auto;" 
+            width="34px" height="34px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+              <circle cx="50" cy="50" fill="none" stroke="#ffffff" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+              </circle>
+          </svg>      
         </div>
 
         <!-- Play/Pause -->
@@ -449,12 +511,9 @@ onUnmounted(() => {
         cursor: pointer;
        
     }
-    .audio.green-audio-player .play-pause-btn svg, .audio.green-audio-player .volume-btn svg {
-        
+    .audio.green-audio-player .play-pause-btn svg, .audio.green-audio-player .volume-btn svg {        
         height: 18px;
     }	
-
-
 
 
     .audio.green-audio-player .spinner {

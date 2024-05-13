@@ -118,10 +118,7 @@
 </template>
 
 <style>
-.loading{
-   font-size: 52px;
-   width: 82px;   
-}
+
 .bg-primary-30 {
    background: #4f8aff;
 }
