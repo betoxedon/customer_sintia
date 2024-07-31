@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, onUnmounted,onMounted} from 'vue';
+  import { useRouter } from 'vue-router';
 
   const active = ref(false);
   const activeMenu =ref<HTMLElement | null>(null);
@@ -10,9 +11,11 @@
 
     identify: {
         type: Object,
-        required:true
-    },
+        required:true,
+    }
   })
+
+  const router = useRouter();
 
   const toggleMenu = () => {
     active.value = !active.value;
@@ -49,6 +52,10 @@
   const deleteAgent = ()=>{
     emit('deleteAgent')
   }
+
+  const trainChatbot = () => {
+    router.push({ name: 'training', params: { id: props.identify.id } });
+  };
 
   onMounted(() => {
     
@@ -94,6 +101,12 @@ onUnmounted(() => {
             >
           </div>
 
+          <div class="menu-item">
+            <a @click="trainChatbot" href="#" class="block px-4 py-2 flex gap-1 items-center">
+              <MonoTraining  class="text-sm" style="width: 16px" />
+              Adicionar materiais 
+            </a>
+          </div>
           <div class="menu-item">
             <a @click.stop="shareAgent()" href="#" class="block px-4 py-2 flex gap-1 items-center"
               ><MonoShare class="text-sm" style="width:16px" /> Compartilhar chatbot</a

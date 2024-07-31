@@ -1,245 +1,198 @@
 <script setup lang="ts">
-   import DrawerDefault from '@/drawer/DrawerDefault.vue'
-   import AsidePlan from '@/drawer/AsidePlan.vue'
-   // import { setColorStyle } from '@/utils'
-   // import { useAgentStore } from '@/stores/agentStore'
-   // import { useInterfaceStore } from '@/stores/interfaceStore'
-   // const agentStore = useAgentStore()
-   // const interfaceStore = useInterfaceStore()
+ 
+   import SideBar from '@/components/sidebars/SideBar.vue'
+   import {  ref,onMounted} from 'vue'
+   import { useRouter } from 'vue-router'
+   import MaterialForm from '@/components/forms/MaterialForm.vue'
+   import { materiaStore } from '@/stores/materialStore'
+   import { useUserStore } from '@/stores/userStore'
+   import { useAgentStore } from '@/stores/agentStore'
+
+   const usematerialStore = materiaStore()
+   const agentStore = useAgentStore()
+   const userStore = useUserStore()
+   const router = useRouter()
+   const botId = ref<string>('')
+   console
+
+   onMounted(() => {
+      const params = router.currentRoute.value.params
+
+      if (! userStore.user) {
+         router.push({ name: 'login' })
+      }
+
+      if (params.id) {
+         console.log('id', params.id)
+         botId.value = params.id as string
+      }
+
+      else if (params.id === undefined) {
+         console.log('id', params.id)
+         router.push({ name: 'agent' })
+      }
+
+      if (botId.value) {
+         agentStore.getAgentById(botId.value, userStore.user.id.toString()).then(() => {
+            console.log('agent', agentStore.agentActive)
+         }).catch((error) => {
+            console.log('error', error)
+            router.push({ name: 'agent' })
+            
+         })
+         //usematerialStore.getMaterials(botId.value)
+      }
+   })
+
+  
 </script>
 
 <template>
-   <main class="main">
-      <DrawerDefault />
+   <main class="main_home">
+      <SideBar />     
 
-      <!-- <div class="main-inner grid-rows-[min-content_1fr]">
+      <div class="main-inner ">
+
          <div class="main-top">
-            <span class="container-inner">Treinamento</span>
+            <div class="title">
+               <a href="/agente" class="back">
+               <ion-icon name="arrow-back-outline"></ion-icon>
+               
+               </a>
+            <span class="container-inner page_title">Materiais</span>
+            </div>
          </div>
 
-         <div class="main-core">
-            <div v-if="agentStore.agents.length" class="container-inner">
-               <div class="col-span-full mx-auto mb-6 grid w-full gap-y-3">
-                  <div class="grid gap-y-4 rounded-xl">
-                     <div
-                        class="grid grid-cols-2 rounded-xl bg-white/70 px-8 pb-6 pt-4">
-                        <div class="flex flex-col gap-y-2">
-                           <span class="font-semibold">Enviar treino</span>
-                           <div class="flex gap-x-3">
-                              <div
-                                 class="btn w-28 rounded-md bg-primary-30 py-1"
-                                 @click="
-                                    interfaceStore.showDialogTrainingAiByWebsite = true
-                                 ">
-                                 <MonoGlobe class="h-5 pt-[2px] text-white" />
-                                 <span class="text-white">Website</span>
-                              </div>
+         
 
-                              <div class="btn w-28 rounded-md bg-primary-30 py-1">
-                                 <MonoFile class="h-5 pt-[2px] text-white" />
-                                 <span class="text-white">Arquivo</span>
-                              </div>
+         <div class="main-core gap-y-12">
 
-                              <div class="btn w-28 rounded-md bg-primary-30 py-1">
-                                 <MonoUpdate class="h-5 pt-[2px] text-white" />
-                                 <span class="text-white">Texto</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+            <div class="flex justify-center items-center w-full" v-if="agentStore.isLoading">
+               <AnimLoadingBtn class="text-primary-30 h-[36px]" />
+            </div>
 
-                     <table
-                        class="w-full table-auto border-separate border-spacing-x-3 border-spacing-y-4 rounded-xl border-2 border-slate-100 bg-surface-30">
+            <div class="bot-detail" v-if="agentStore.agentActive && !agentStore.isLoading">
+               <span class="text-lg font-medium">Informações do bot</span>
+               <div class="bot-info p-3">
+                  
+                  <div class="mt-4">
+                     <img v-if="agentStore.agentActive.image_file && agentStore.agentActive.image_file !== 'null'" 
+                     class="h-14 w-14 rounded-full"
+                     :src="agentStore.agentActive.image_file"
+                     alt="bot avatar">
+                     <MonoLogo v-else class="h-7 text-blue-300 bg-white-700" />
+                  </div>
+                  <div>
+                     <span class="text-lg font-medium">{{ agentStore.agentActive.name }}</span>
+                     <span>{{ agentStore.agentActive?.type?.name }}</span>
+                  </div>
+                 
+               </div>
+
+            </div>
+
+
+            <!--Adicinonar novo material-->
+            <MaterialForm  :botId="botId" v-if="!agentStore.isLoading"/>
+
+            <!--lista materiais do bot-->
+            <div class="materials py-4" v-if="!agentStore.isLoading">
+
+               
+                  
+                  <span class="text-lg font-medium">Materiais do bot</span>
+
+                  <div class="overflow-x-auto">
+                     <table class="min-w-full bg-white border border-gray-300">
                         <thead>
                            <tr>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Chatbot
-                                 </span>
-                              </th>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Tipo
-                                 </span>
-                              </th>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Caracteres
-                                 </span>
-                              </th>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Status
-                                 </span>
-                              </th>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Data
-                                 </span>
-                              </th>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Retreinar
-                                 </span>
-                              </th>
-                              <th>
-                                 <span
-                                    class="rounded-md bg-primary-5 px-3 py-2 font-normal">
-                                    Apagar
-                                 </span>
-                              </th>
+                              <th class="px-4 py-2 border-b">Material</th>
+                              <th class="px-4 py-2 border-b">Tipo</th>
+                              <th class="px-4 py-2 border-b">Status</th>
+                              <th class="px-4 py-2 border-b">Ações</th>
                            </tr>
                         </thead>
+                        <tbody>
+                           <tr 
+                              v-for="material in usematerialStore.materias"
+                              :key="material.id"
+                           >
+                        
+                              <td class="px-4 py-2 border-b text-center">{{ material?.url }}</td>
+                              <td class="px-4 py-2 border-b text-center">
+                                 <span v-if="material.type == 'application/pdf' ">
+                                    PDF
+                                 </span>
+                                 <span v-else-if="material.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ">
+                                    Docx 
+                                 </span>
+                                 <span v-else-if="material.type == 'text/html'">
+                                    HTML
+                                 </span>
+                              </td>
+                              <td class="px-4 py-2 border-b text-center">
+                                 <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Enviado</span>
+                              </td>
+      
+                              <td class="px-4 py-2 border-b text-center">
+                                 <!--Delete-->
+                                 <button class="text-red-500 hover:underline">
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                 </button>
 
-                        <tbody class="text-center">
-                           <tr v-if="agentStore.agents.length>=2"> 
-                              <td 
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div class="flex grow items-center gap-x-2 px-3">
-                                    <span
-                                       class="flex aspect-square w-14 items-center justify-center overflow-hidden rounded-full border-2 border-white"
-                                       :style="
-                                          setColorStyle(agentStore.agents[1].colorId)
-                                       ">
-                                       <img
-                                          v-if="agentStore.agents[1].imageUrl"
-                                          :src="agentStore.agents[1].imageUrl"
-                                          class="object-cover" />
+                                 <!--Edit-->
+                                 <button class="text-blue-500 hover:underline">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                 </button>
 
-                                       <MonoLogo v-else class="h-10 text-white" />
-                                    </span>
-
-                                    <span
-                                       class="truncate font-normal !text-onsurface-30/80">
-                                       {{ agentStore.agents[1].name }}
                                  
-                                    </span>
-                                 </div>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <span>Arquivo</span>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <span class="px-3 text-right">925</span>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div
-                                    class="btn btn-success mx-auto h-8 shrink-0 rounded-md px-2 py-1">
-                                    <span>Treinado</span>
-                                 </div>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <span>10/01/2024</span>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div
-                                    class="btn mx-auto h-8 max-w-12 shrink-0 rounded-md border border-primary-30 bg-primary-5 px-2 py-1">
-                                    <MonoTraining class="h-5 text-primary-30" />
-                                 </div>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div
-                                    class="btn mx-auto h-8 max-w-12 shrink-0 rounded-md bg-error px-2 py-1">
-                                    <MonoTrash class="h-5 text-white" />
-                                 </div>
                               </td>
                            </tr>
-                           <tr>
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div class="flex grow items-center gap-x-2 px-3">
-                                    <span
-                                       class="flex aspect-square w-14 items-center justify-center overflow-hidden rounded-full"
-                                       >
-                                       <img
-                                          v-if="agentStore.agents[0].imageUrl"
-                                          :src="agentStore.agents[0].imageUrl"
-                                          class="object-cover" />
-
-                                       <MonoLogo v-else class="h-10 text-white" />
-                                    </span>
-
-                                    <span
-                                       class="truncate font-normal !text-onsurface-30/80">
-                                       {{ agentStore.agents[0].name }}                                        
-                                    </span>
-                                 </div>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <span>Website</span>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <span class="px-3 text-right">5.302</span>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div
-                                    class="btn btn-warning mx-auto h-8 shrink-0 rounded-md px-2 py-1">
-                                    <span>Treinando</span>
-                                 </div>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <span>10/01/2024</span>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div
-                                    class="btn btn-disabled mx-auto h-8 max-w-12 shrink-0 rounded-md border border-primary-20/80 bg-white !px-2 py-1">
-                                    <MonoTraining class="h-5 text-primary-30" />
-                                 </div>
-                              </td>
-
-                              <td
-                                 class="border-b border-dotted border-primary-20 pb-4">
-                                 <div
-                                    class="btn mx-auto h-8 max-w-12 shrink-0 rounded-md bg-error px-2 py-1">
-                                    <MonoTrash class="h-5 text-white" />
-                                 </div>
+                           <tr v-if="usematerialStore.materias.length == 0">
+                              <td class="px-4 py-2 border-b text-center" colspan="4">
+                                 Nenhum material cadastrado
                               </td>
                            </tr>
                         </tbody>
                      </table>
                   </div>
-               </div>
+               
             </div>
 
-            <div v-else class="container-inner">
-               <span
-                  class="grid cursor-pointer grid-cols-[37px_1fr] rounded-lg bg-white/70 px-5 py-3">
-                  <MonoAlert class="-mt-[2px] h-[25px] text-primary-30" />
-                  Primeiro crie um chatbot, para poder enviar o material de
-                  treinamento
-               </span>
-            </div>
          </div>
-      </div> -->
-
-      <AsidePlan />
+      </div> 
    </main>
 </template>
+
+<style scoped>
+
+.materials {
+   padding: 20px;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+div.title {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 20px;
+}
+.back {
+   display: flex;
+   gap: 10px;
+   align-items: center;
+   color: #1a365d;
+   text-decoration: none;
+   background-color: #f0f4f8;
+   padding: 10px;
+   border-radius: 8px;
+}
+
+.bot-info {
+   display: flex;
+   gap: 20px;
+   align-items: center;
+}
+</style>

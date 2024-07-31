@@ -120,7 +120,7 @@
       
       </div>
 
-      <FactoryForm v-if="agentStore.agentActive " :initialCount="agentStore.agentActive && agentStore.agentActive.material_core ? agentStore.agentActive.material_core.length : 0" :initialValues="agentStore.agentActive && agentStore.agentActive.material_core ? agentStore.agentActive.material_core : []" placeholder="Ex: jusbrasil.com.br"  nameField="material_core" labelField="Domínios de pesquisa"  class="col-span-full maxw:col-span-6" :limit="3" :errorsMessage="errors"/>
+      <FactoryForm  v-if="agentStore.agentActive " :initialCount="agentStore.agentActive && agentStore.agentActive.material_core ? agentStore.agentActive.material_core.length : 0" :initialValues="agentStore.agentActive && agentStore.agentActive.material_core ? agentStore.agentActive.material_core : []" placeholder="Ex: jusbrasil.com.br"  nameField="material_core" labelField="Domínios de pesquisa"  class="col-span-full maxw:col-span-6" :limit="3" :errorsMessage="errors"/>
       
       <CheckboxForm
          class="col-span-full maxw:col-span-6"

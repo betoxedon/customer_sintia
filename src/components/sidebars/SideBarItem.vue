@@ -33,7 +33,10 @@ const hoved = ref(false)
     <router-link 
         @mouseenter="hoved = true"
       @mouseleave="hoved = false"
-    :to="to" class="button flex gap-2" :class="{ active: $route.path === to, is_expanded:!is_expanded }">
+    :to="to" class="button flex gap-2" :class="{ 
+        active: $route.path === to || $route.path.split('/')[1] === to.split('/')[1],
+         is_expanded:!is_expanded 
+         }">
         <slot name="icon"></slot>
         <span class="text" v-if="is_expanded">{{text}}</span>
     </router-link> 

@@ -65,7 +65,7 @@
 
 
 <template>
-    <div class="flex flex-col">        
+    <div class="flex flex-col hidden">        
         
       <div v-if="labelField" class="label col-span-full mb-3">
          <span>{{ labelField }}</span>

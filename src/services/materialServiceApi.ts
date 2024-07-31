@@ -1,0 +1,77 @@
+
+import apiAuth from './apiAuth';
+
+export default {
+
+        getMaterials(){
+            return apiAuth.get('materials/') 
+            .then(res => {
+                return res;
+            })
+            .catch(error => {
+                throw error;
+            });
+        },
+    
+        createMaterial(botId: string, type:string, value:string | File){
+
+            const fomdata = new FormData();
+            const typeName = type
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                //onUploadProgress: progressEvent => console.log(progressEvent.loaded)
+
+            };
+
+            fomdata.append('type', type);
+            fomdata.append(typeName, value);
+
+            if (value !== null && value !== undefined && typeof value === 'object'){           
+                config.headers = {              
+                    'Content-Type': 'multipart/form-data'           
+                };    
+            }
+        
+            console.log(config)
+            console.log(fomdata)
+            return apiAuth.post(`/chatbots/${botId}/add_material/`, fomdata, config) 
+            .then(res => {
+                return res;
+            })
+            .catch(error => {
+                throw error;
+            });
+        },
+        
+        updateMaterial(id:number, type:string, value:string){
+            
+            const payload = {
+                id:id,
+                type:type,
+                value:value
+            }
+    
+            return apiAuth.put('materials/', payload) 
+            .then(res => {
+                return res;
+            })
+            .catch(error => {
+                throw error;
+            });
+        },
+    
+        deleteMaterial(id:number){
+            return apiAuth.delete(`materials/${id}`) 
+            .then(res => {
+                return res;
+            })
+            .catch(error => {
+                throw error;
+            });
+        }
+
+
+}

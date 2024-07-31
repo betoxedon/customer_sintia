@@ -154,7 +154,7 @@ export const useAgentStore = defineStore('agent', () => {
    const getAgents = () =>{
       isLoading.value= true
       agentApi.getChatbots().then(res =>{
-         agents.value = res
+         agents.value = res.results
          isLoading.value= false         
       }).catch(error => {
          throw error;
@@ -162,12 +162,15 @@ export const useAgentStore = defineStore('agent', () => {
    }
 
    const getAgentById = (id:string, userId:string) => {     
+      isLoading.value= true
       return agentApi.getChatbotById(id, userId)
           .then(res => {
+               isLoading.value= false
               agentActive.value = res      
               return res        
           })
           .catch(error => {
+               isLoading.value= false
               throw error;
           });
    }

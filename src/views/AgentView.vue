@@ -52,8 +52,17 @@
 
 
       <div class="main-inner grid-rows-[min-content_1fr_min-content]" >
-         <div class="main-top flex items-center" >
-            <span class="container-inner page_title">Chatbots</span>
+         <div class="main-top flex items-center justify-between	" >
+
+            <div class="title">
+
+               <a href="/agente" class="back" v-if="agentStore.creatingAgent || agentStore.updatingAgent">
+                  <ion-icon name="arrow-back-outline"></ion-icon>
+               </a>
+
+               <span class="container-inner page_title">Chatbots</span>
+
+            </div>
 
             <div
                class="btn flex items-center gap-2 rounded-lg bg-primary-30 hover:opacity-90 text-white p-2 items-center"
@@ -121,5 +130,21 @@
 
 .bg-primary-30 {
    background: #4f8aff;
+}
+div.title {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 20px;
+}
+.back {
+   display: flex;
+   gap: 10px;
+   align-items: center;
+   color: #1a365d;
+   text-decoration: none;
+   background-color: #f0f4f8;
+   padding: 10px;
+   border-radius: 8px;
 }
 </style>

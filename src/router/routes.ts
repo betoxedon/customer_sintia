@@ -44,7 +44,7 @@ export const routes = [
             },
          },
          {
-            path: 'treinamento',
+            path: 'agente/:id/treinar/',
             component: TrainingView,
             name: 'training',
             meta: {
