@@ -21,12 +21,12 @@ import {
    query,
    where,
    //- storage
-   storage,
-   ref,
-   uploadBytes,
+   //storage,
+   //ref,
+   //uploadBytes,
 } from '@/services/configs/firebase-config'
 
-import { useAgentStore } from '@/stores/agentStore'
+//import { useAgentStore } from '@/stores/agentStore'
 
 //- auth
 export const actionCreateAuthFirebase = async (authUser: Credential) => {
@@ -151,23 +151,23 @@ export const actionGetCustomizablesFirestore = async () => {
 
 //- storage
 export const actionUploadAgentImageStorage = async (
-   email: string,
-   imageFile: File,
+   //email: string,
+   //imageFile: File,
 ) => {
-   const agentId = useAgentStore().agentActive.id
-   const logoRef = `/agents/${email}/${agentId}/image`
-   const pathRef = ref(storage, logoRef)
-   const uploadResult = await uploadBytes(pathRef, imageFile)
-   return uploadResult
+   //const agentId = useAgentStore().agentActive.id
+   //const logoRef = `/agents/${email}/${agentId}/image`
+   //const pathRef = ref(storage, logoRef)
+   //const uploadResult = await uploadBytes(pathRef, imageFile)
+   //return uploadResult
 }
 
 export const actionUploadUserImageStorage = async (
-   email: string,
-   imageFile: File,
+   //email: string,
+   //imageFile: File,
 ) => {
-   const userId = auth.currentUser?.uid
-   const logoRef = `/users/${email}/${userId}/image`
-   const pathRef = ref(storage, logoRef)
-   const uploadResult = await uploadBytes(pathRef, imageFile)
-   return uploadResult
+   //const userId = auth.currentUser?.uid
+   //const logoRef = `/users/${email}/${userId}/image`
+   //const pathRef = ref(storage, logoRef)
+   //const uploadResult = await uploadBytes(pathRef, imageFile)
+   //return uploadResult
 }

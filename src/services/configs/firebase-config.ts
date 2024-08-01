@@ -23,7 +23,7 @@ import {
    deleteDoc,
 } from 'firebase/firestore'
 
-import { getStorage, ref, uploadBytes } from 'firebase/storage'
+//import { getStorage, ref, uploadBytes } from 'firebase/storage'
 
 const {
    VITE_FIREBASE_API_KEY,
@@ -46,7 +46,7 @@ const config = {
 const app = initializeApp(config)
 const auth = getAuth(app)
 const firestore = getFirestore(app)
-const storage = getStorage()
+//const storage = getStorage()
 
 export {
    //- auth
@@ -69,7 +69,7 @@ export {
    updateDoc,
    deleteDoc,
    //- storage
-   storage,
-   ref,
-   uploadBytes,
+   //storage,
+   //ref,
+   //uploadBytes,
 }
