@@ -7,13 +7,16 @@
    import { materiaStore } from '@/stores/materialStore'
    import { useUserStore } from '@/stores/userStore'
    import { useAgentStore } from '@/stores/agentStore'
+   import {setDataConfirmation} from '@/utils'
+
 
    const usematerialStore = materiaStore()
    const agentStore = useAgentStore()
    const userStore = useUserStore()
    const router = useRouter()
    const botId = ref<string>('')
-   console
+   const isLoadingMaterial = ref<boolean>(false)
+
 
    onMounted(() => {
       const params = router.currentRoute.value.params
@@ -40,9 +43,38 @@
             router.push({ name: 'agent' })
             
          })
-         //usematerialStore.getMaterials(botId.value)
+         isLoadingMaterial.value = true
+         usematerialStore.getMaterias(botId.value).then(() => {
+            console.log('materias', usematerialStore.materias)
+            isLoadingMaterial.value = false
+         }).catch((error) => {
+            console.log('error', error)
+            isLoadingMaterial.value = false
+         })
       }
    })
+
+   const deleteMaterial = (url: string) => {
+
+      console.log('delete', url)
+      setDataConfirmation({
+          action: 'handleDeleteMaterial',
+          param: url,
+          param2: botId.value,
+          message: 'Tem certeza que deseja apagar o material?',
+       })
+
+      
+   }
+
+   const deleteAllMaterials = () => {
+      console.log('delete all')
+      setDataConfirmation({
+          action: 'handleDeleteAllMaterials',
+          param: botId.value,
+          message: 'Tem certeza que deseja apagar todos os materiais?',
+       })
+   }
 
   
 </script>
@@ -67,11 +99,11 @@
 
          <div class="main-core gap-y-12">
 
-            <div class="flex justify-center items-center w-full" v-if="agentStore.isLoading">
+            <div class="flex justify-center items-center w-full" v-if="agentStore.isLoading || isLoadingMaterial">
                <AnimLoadingBtn class="text-primary-30 h-[36px]" />
             </div>
 
-            <div class="bot-detail" v-if="agentStore.agentActive && !agentStore.isLoading">
+            <div class="bot-detail" v-if="agentStore.agentActive && !agentStore.isLoading && !isLoadingMaterial">
                <span class="text-lg font-medium">Informações do bot</span>
                <div class="bot-info p-3">
                   
@@ -93,20 +125,36 @@
 
 
             <!--Adicinonar novo material-->
-            <MaterialForm  :botId="botId" v-if="!agentStore.isLoading"/>
+            <MaterialForm  :botId="botId" v-if="!agentStore.isLoading && !isLoadingMaterial"/>
 
             <!--lista materiais do bot-->
-            <div class="materials py-4" v-if="!agentStore.isLoading">
+            <div class="materials py-4" v-if="!agentStore.isLoading  && !isLoadingMaterial">
 
                
+                  <div class="flex justify-between items-center"> 
+
                   
-                  <span class="text-lg font-medium">Materiais do bot</span>
+                     <span class="text-lg font-medium">Materiais do bot</span>
+
+                     <button @click="deleteAllMaterials"class="flex bg-red-500 items-center p-2 gap-2 rounded	justify-center text-white hover:bg-red-700">
+                        <ion-icon name="trash-outline"></ion-icon>
+                        Deletar todos
+                     </button>
+
+                  </div>
 
                   <div class="overflow-x-auto">
-                     <table class="min-w-full bg-white border border-gray-300">
+                     <div class="max-h-80 overflow-y-auto materials-content">
+                     <div class="flex materials-loading justify-center items-center w-full" v-if="usematerialStore.isLoading">
+                        <AnimLoadingBtn class="text-primary-30 h-[36px]" />
+                     </div>
+                     <table class="material-table min-w-full bg-white border border-gray-300"
+                     :style="{ opacity: usematerialStore.isLoading ? 0.5 : 1 }"
+                     >
                         <thead>
                            <tr>
-                              <th class="px-4 py-2 border-b">Material</th>
+                              <th class="px-4 py-2 border-b">#</th>
+                              <th class="px-4 py-2 border-b">Url</th>
                               <th class="px-4 py-2 border-b">Tipo</th>
                               <th class="px-4 py-2 border-b">Status</th>
                               <th class="px-4 py-2 border-b">Ações</th>
@@ -114,10 +162,10 @@
                         </thead>
                         <tbody>
                            <tr 
-                              v-for="material in usematerialStore.materias"
+                              v-for="(material, index) in usematerialStore.materias"
                               :key="material.id"
                            >
-                        
+                              <td class="px-4 py-2 border-b text-center">{{ index + 1 }}</td>
                               <td class="px-4 py-2 border-b text-center">{{ material?.url }}</td>
                               <td class="px-4 py-2 border-b text-center">
                                  <span v-if="material.type == 'application/pdf' ">
@@ -136,25 +184,28 @@
       
                               <td class="px-4 py-2 border-b text-center">
                                  <!--Delete-->
-                                 <button class="text-red-500 hover:underline">
+                                 <button class="text-red-500 hover:underline"
+                                    @click="deleteMaterial(material.url)"
+                                 >
                                     <ion-icon name="trash-outline"></ion-icon>
                                  </button>
 
-                                 <!--Edit-->
+                                 <!-- Edit
                                  <button class="text-blue-500 hover:underline">
                                     <ion-icon name="create-outline"></ion-icon>
-                                 </button>
+                                 </button> -->
 
                                  
                               </td>
                            </tr>
                            <tr v-if="usematerialStore.materias.length == 0">
-                              <td class="px-4 py-2 border-b text-center" colspan="4">
+                              <td class="px-4 py-2 border-b text-center" colspan="5">
                                  Nenhum material cadastrado
                               </td>
                            </tr>
                         </tbody>
                      </table>
+                     </div>
                   </div>
                
             </div>
@@ -194,5 +245,30 @@ div.title {
    display: flex;
    gap: 20px;
    align-items: center;
+}
+
+table.material-table {
+   border-collapse: collapse;
+}
+table.material-table th {
+   
+   padding: 10px;
+   border-bottom: 1px solid #e2e8f0;
+   background-color: #f0f4f8;
+}
+table.material-table td {
+   padding: 10px;
+   border-bottom: 1px solid #e2e8f0;
+}
+table.material-table tr:last-child td {
+   border-bottom: none;
+}
+.materials-loading {
+   position: absolute;
+    z-index: 10;
+    top: 50%;
+}
+.materials-content {
+   position: relative;
 }
 </style>

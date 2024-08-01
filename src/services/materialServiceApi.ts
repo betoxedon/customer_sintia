@@ -3,10 +3,11 @@ import apiAuth from './apiAuth';
 
 export default {
 
-        getMaterials(){
-            return apiAuth.get('materials/') 
+        getMaterials(botId: string,){
+            return apiAuth.get(`/chatbots/${botId}/all_materials/`) 
             .then(res => {
-                return res;
+                console.log("materials", res.data)
+                return res.data;
             })
             .catch(error => {
                 throw error;
@@ -63,8 +64,18 @@ export default {
             });
         },
     
-        deleteMaterial(id:number){
-            return apiAuth.delete(`materials/${id}`) 
+        deleteMaterial(botId:string, url:string){
+            return apiAuth.delete(`/chatbots/${botId}/delete_material/`, {data: {url: url}}) 
+            .then(res => {
+                return res;
+            })
+            .catch(error => {
+                throw error;
+            });
+        },
+
+        deleteAllMaterials(botId:string){
+            return apiAuth.delete(`/chatbots/${botId}/delete_all_materials/`) 
             .then(res => {
                 return res;
             })

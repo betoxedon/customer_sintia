@@ -1,11 +1,12 @@
 import { ConfirmationData } from '@/models/globalModel'
 import { signOutFirebase } from '@/services/handleFirebaseAuth'
+import { materiaStore } from '@/stores/materialStore'
 
 import { useAgentStore } from '@/stores/agentStore'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 
 
-export const setDataConfirmation = (confirmationData: ConfirmationData): void => {
+export const setDataConfirmation = (confirmationData: ConfirmationData,): void => {
    useInterfaceStore().confirmationData = confirmationData
    useInterfaceStore().showDialogConfirmation = true
 }
@@ -31,9 +32,28 @@ export const resolveConfirmation = async () => {
       const id = confirmationData?.param as string
       //await deleteAgentFirestore(id)
       await useAgentStore().deleteAgent(id)
+      
       resetConfirmation()
       
    }
+
+   const handleDeleteMaterial = async () => {
+      const url = confirmationData?.param as string
+      const botId = confirmationData?.param2 as string
+      //await deleteMaterialFirestore(id)
+      materiaStore().deleteMaterial(botId,url)
+
+      resetConfirmation()
+   }
+
+   const handleDeleteAllMaterials = async () => {
+      const botId = confirmationData?.param as string
+
+      materiaStore().deleteAllMaterials(botId)
+
+      resetConfirmation()
+   }
+   
 
    const handleSignOut = () => {
       signOutFirebase()
@@ -45,5 +65,11 @@ export const resolveConfirmation = async () => {
       await handleDeleteAgent()
    } else if (action === 'handleSignOut') {
       await handleSignOut()
+   }
+   else if (action === 'handleDeleteMaterial') {
+      await handleDeleteMaterial()
+   }
+   else if (action === 'handleDeleteAllMaterials') {
+      await handleDeleteAllMaterials()
    }
 }
