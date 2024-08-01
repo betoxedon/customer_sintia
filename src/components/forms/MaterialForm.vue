@@ -42,11 +42,12 @@ const isdragging = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 const state = ref('default'); // default, loading, error, success
 
-const triggerFileInput = () => {
-  if (fileInput.value) {
-    fileInput.value.click();
-  }
-};
+// const triggerFileInput = (event: Event) => {
+ 
+//   if (event.type === 'click' && fileInput.value) {
+//     fileInput.value.click();
+//   }
+// };
 
 const getIconFromSelectedType = computed(() => {
   const selected = mediaTypes.value.find(type => type.value === selectedType.value);
@@ -68,9 +69,18 @@ const selectType = (type: string) => {
 
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement;
+  console.log('handleFileUpload - target:', target);
   if (target.files) {
     file.value = target.files[0];
   }
+};
+const handleFileDrop = (event: DragEvent) => {
+  event.preventDefault();
+  const target = event.dataTransfer;
+  if (target?.files) {
+    file.value = target.files[0];
+  }
+  isdragging.value = false;
 };
 
 const handleSubmit = () => {
@@ -185,21 +195,30 @@ const stateClass = computed(() => {
       </div>
 
 
-      <div v-else :class="['file-upload', stateClass]" @click="triggerFileInput" @dragover.prevent="isdragging = true" @dragleave="isdragging = false" @dragenter.prevent @drop.prevent="handleFileUpload">
+      <div v-else :class="['file-upload', stateClass] "
+        @dragover.prevent="isdragging = true" 
+        @dragleave="isdragging = false" 
+        @dragenter.prevent 
+        @drop.prevent="handleFileDrop">
         
         <label for="file-upload" class="file-upload-label">
-          <ion-icon name="cloud-upload-outline"></ion-icon> Clique ou arraste e solte um arquivo aqui para enviar
-        </label>
-        <input ref="fileInput" style="display: none" type="file" id="file-upload" class="file-upload-input" @change="handleFileUpload" :accept="fileAccept" multiple />
-        <span>
+          <ion-icon name="cloud-upload-outline"></ion-icon> 
+          <span class="label_dark">
+            Clique ou arraste e solte um arquivo aqui para enviar
+          </span>
+       
+          <span class="label_light">
           Arraste e solte seu arquivo 
           <span class="flex-types">
             {{ selectedType }}
           </span>
           aqui ou clique para selecioná-lo.
         </span>
-        <div v-if="file" class="mt-2 p-2 bg-gray-100 rounded">
-          <span>{{ file.name }}</span>
+        </label>
+        <input ref="fileInput" style="display: none" type="file" id="file-upload" class="file-upload-input" @change="handleFileUpload" :accept="fileAccept" multiple />
+        
+        <div v-if="file" class="mt-2 p-2 m-2 bg-gray-100 rounded">
+          <span class="">{{ file.name }}</span>
         </div>
       </div>
     </div>
@@ -290,20 +309,33 @@ const stateClass = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
   border: 2px dashed #ccc;
   border-radius: 5px;
   width: 100%;
   text-align: center;
   cursor: pointer;
+
 }
 .file-upload-label {
+  margin: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
+.label_light, .flex-types {
+  font-size: 12px;
+  color: #3d3d3d;
+}
+.label_dark {
+  font-size: 16px;
+  color: #000000;
+  font-weight: 500;
+}
+
 .file-upload-label  ion-icon {
   font-size: 40px;
   color: #ccc;
