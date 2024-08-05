@@ -80,7 +80,7 @@
           action: 'handleDeleteFileMaterial',
           param3: urls,
           param2: botId.value,
-          message: 'Tem certeza que deseja apagar o material?',
+          message: 'Tem certeza que deseja apagar o arquivo?',
        })
 
    }
