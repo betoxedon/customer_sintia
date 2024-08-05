@@ -130,6 +130,31 @@ export const materiaStore = defineStore('material', () => {
         }
     }
 
+    const deleteFileMaterial = async (botId: string, urls:Array<string>) => {
+        console.log(urls);  // Verifique o array de URLs gerado
+        try {
+            isLoading.value = true
+            const res = await materialApi.deleteFileMaterial(botId,urls)
+            console.log('res:', res)
+            materias.value  = materias.value.filter(material => !urls.includes(material.url));
+
+            useInterfaceStore().notificationMessage = `Materiais deletados com sucesso!`
+            useInterfaceStore().notificationType = 'success'
+            useInterfaceStore().showNotification = true
+
+            //await getMaterias(botId)
+            isLoading.value = false
+        } catch (error) {
+            console.error('Erro ao deletar todas as materias:', error)
+            isLoading.value = false
+            useInterfaceStore().notificationMessage = `Erro ao deletar todos os materiais!`
+            useInterfaceStore().notificationType = 'error'
+            useInterfaceStore().showNotification = true
+            
+            throw error
+        }
+    }
+
 
     const $reset = () => {
         materias.value = []
@@ -142,7 +167,8 @@ export const materiaStore = defineStore('material', () => {
         getMaterias,
         createMaterial,
         deleteMaterial,
-        deleteAllMaterials
+        deleteAllMaterials,
+        deleteFileMaterial
     }
 
 })

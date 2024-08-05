@@ -82,7 +82,20 @@ export default {
             .catch(error => {
                 throw error;
             });
-        }
+        },
 
+        deleteFileMaterial(botId:string, urls:Array<string>){
+            
+            const data = {
+                'urls':urls
+            }
+            return apiAuth.post(`/chatbots/${botId}/delete_file/`,data)
+                .then(res =>{
+                    return res
+                })
+                .catch(error => {
+                    throw error
+                })
+        }
 
 }

@@ -54,10 +54,11 @@ export const userRolesSchema = z.record(z.boolean())
 export const confirmationDataSchema = z.object({
    message: z.string().min(5).max(100),
    action: z
-      .enum(['handleCancelForm', 'handleDeleteAgent', 'handleSignOut', 'handleDeleteMaterial', 'handleDeleteAllMaterials'])
+      .enum(['handleCancelForm', 'handleDeleteAgent', 'handleSignOut', 'handleDeleteMaterial', 'handleDeleteAllMaterials', 'handleDeleteFileMaterial'])
       .optional(),
    param: z.string().or(z.number()).optional(),
    param2: z.string().or(z.number()).optional(),
+   param3: z.array(z.string()).optional()
    
 })
 export type ImageUrl = z.infer<typeof imageUrlSchema>

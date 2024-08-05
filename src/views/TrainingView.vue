@@ -67,6 +67,24 @@
       
    }
 
+   const deleteFileMaterial = (url: string) => {
+      
+      const baseName = url.replace(/_\d+\.pdf$/, '');
+
+
+      const urls = usematerialStore.materias
+      .filter(material => material.url.startsWith(baseName)) 
+      .map(material => material.url);
+
+      setDataConfirmation({
+          action: 'handleDeleteFileMaterial',
+          param3: urls,
+          param2: botId.value,
+          message: 'Tem certeza que deseja apagar o material?',
+       })
+
+   }
+
    const deleteAllMaterials = () => {
       console.log('delete all')
       setDataConfirmation({
@@ -182,12 +200,22 @@
                                  <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Enviado</span>
                               </td>
       
-                              <td class="px-4 py-2 border-b text-center">
+                              <td class="px-4 py-2 border-b text-center actions">
                                  <!--Delete-->
                                  <button class="text-red-500 hover:underline"
                                     @click="deleteMaterial(material.url)"
                                  >
                                     <ion-icon name="trash-outline"></ion-icon>
+                                 </button>
+                                 <!--DELETE FILE-->
+
+                                 <button
+                                 v-if="material.type == 'application/pdf' || material.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' "
+                                     class="text-red-500 hover:underline"
+                                    @click="deleteFileMaterial(material.url)">
+                                    
+                                    <ion-icon name="close-circle-outline"></ion-icon>
+                                    
                                  </button>
 
                                  <!-- Edit
@@ -270,5 +298,19 @@ table.material-table tr:last-child td {
 }
 .materials-content {
    position: relative;
+}
+td.actions {
+   display: flex;
+   justify-content: center;
+}
+
+td.actions button{
+   padding: 12px;
+   display: flex;
+   border-radius: 50%;
+   
+}
+td.actions button:hover{
+   background-color: #ededed;
 }
 </style>

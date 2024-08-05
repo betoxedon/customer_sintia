@@ -54,6 +54,17 @@ export const resolveConfirmation = async () => {
       resetConfirmation()
    }
    
+   const handleDeleteFileMaterial = async () =>{
+      const botId = confirmationData?.param2 as string
+      const urls = confirmationData?.param3 as Array<string>
+
+      materiaStore().deleteFileMaterial(botId,urls)
+
+      resetConfirmation()
+
+
+
+   }
 
    const handleSignOut = () => {
       signOutFirebase()
@@ -71,5 +82,8 @@ export const resolveConfirmation = async () => {
    }
    else if (action === 'handleDeleteAllMaterials') {
       await handleDeleteAllMaterials()
+   }
+   else if (action === 'handleDeleteFileMaterial') {
+      await handleDeleteFileMaterial()
    }
 }
