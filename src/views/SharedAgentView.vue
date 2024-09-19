@@ -11,6 +11,40 @@
    const audioRecorded = ref('')
    const audioFile = ref<File>()
 
+   const imageFile = ref<File | null>(null)
+   const imageUrl = ref<string | null>(null);
+   const inputMessage = ref<HTMLInputElement | null>(null)
+
+   const handleFileChange = (event: Event) => {
+
+   const target = event.target as HTMLInputElement;
+   if (target.files && target.files[0]) {
+      imageFile.value = target.files[0];
+      chatStore.imageFile = imageFile.value
+      imageUrl.value = URL.createObjectURL(imageFile.value);
+   }
+
+   }
+   const fileInput = ref<HTMLInputElement | null>(null)
+
+   const triggerFileInput = () => {
+      if (fileInput.value) {
+         fileInput.value.click()
+      }
+   }
+
+   const getUlrImage = (image: File) => {
+      if (!image) return ''
+      return URL.createObjectURL(image) 
+   }
+
+   const auto_height = (element: EventTarget | null) => {
+  if (element instanceof HTMLTextAreaElement) {
+    element.style.height = 'auto';
+    element.style.height = element.scrollHeight + 'px';
+  }
+};
+
    const isRecording = ref(false)  
    
    const speech = useSpeechRecognition({
@@ -141,6 +175,14 @@
 
    const borderColor = computed(() => {     
          return 'border-color:'+ agentStore.agentActive?.color+';'  
+   })
+
+   const textareaHeight = computed(() => {
+      if (chatStore.currentMessage.length > 0) {
+         return 'max-content'
+         return 
+      }
+      return '40px'
    })
 
    const defaultFont = ref("font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'")
@@ -417,6 +459,10 @@
                            <span v-if="message.audio_file == ''"
                               class="break-words relative  grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
                               {{ message.content }}
+
+                              <div v-if="message.image_file" class="mt-3">
+                                 <img  :src="getUlrImage(message.image_file)" class="w-64 h-64 object-cover rounded-2xl" />
+                              </div>
                            </span>
 
                            <!-- <audio  class="audio_controlls user" v-else :src="message.audio_file" controls></audio> -->
@@ -456,27 +502,71 @@
                
 
                <div
-                  class="mx-2 mt-5 z-20 flex items-center overflow-hidden rounded-lg border-on
+                  class="mx-2 mt-5 z-20 flex flex-col items-center overflow-hidden rounded-lg border-on
                     has-[:focus]:ring-2 has-[:focus]:ring-primary-40" :style="borderColor" >
-                  <input @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" style="font-size: 16px;"
-                     class=":focus:ring-2 block h-[40px] w-full rounded-l-lg border-0  pl-3 pr-2 text-base ring-0 placeholder:text-base placeholder:font-normal focus:border-0 focus:outline-0"
-                     placeholder="Digite sua mensagem..." />
+
+
+                  <div v-if="chatStore.imageFile" class="imageselected">
+
+                     <button class="close-btn">
+                        <MonoClose class="h-4 w-4 text-red" @click="chatStore.imageFile = null" />
+                     </button>
+
+                     <img :src="getUlrImage(chatStore.imageFile)" alt="Selected Image" class="mt-4 ImageFileSelected" />
+                  
+                  </div>
+
+                  
+                  <div class="flex items-end py-1  w-full"> 
+
+                     <button 
+                        v-if="agentStore.agentActive?.model?.name == 'GPT 4 128k'"
+                        @click="triggerFileInput"
+                        class="audio_btn flex h-[36px] ms-3 shrink-0 items-center justify-center rounded-lg">
+                        <MonoAddFile class="text-slate-500" />
+                        <input class="hidden" ref="fileInput" type="file" @change="handleFileChange" accept="image/*" />
+                     </button>
+                        
+                     <div class="flex min-w-0 flex-1 flex-col">                        
+                        
+                        <textarea @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" 
+                           :style="{ height: textareaHeight }" 
+                           rows="1"
+                           @input="auto_height($event.target)"  
+                           ref="inputMessage"                          
+                           class="msg_input  block w-full rounded-l-lg border-0 ring-0 
+                           pl-3 pr-2 text-base ring-0 placeholder:text-base placeholder:font-normal 
+                           focus:border-0 focus:outline-0 focus:ring-0 "
+                           placeholder="Digite sua mensagem..." 
+                           >
+                        </textarea>
+                     </div>
+                        
+                        <div class="flex mr-3  gap-2 items-end"> 
+                     
+                        
                  
-                  <button v-if="isSupported && !isListening" class="audio_btn mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg" >
-                     <MonoMicrophone class="h-5 text-slate-500" 
-                     :class="{ 'cursor-not-allowed text-red-500': isRecording }" @click="start"
-                     />
-                  </button>
+                        <button v-if="isSupported && !isListening" 
+                           class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
+                           <MonoMicrophone class="h-5 text-slate-500" 
+                           :class="{ 'cursor-not-allowed text-red-500': isRecording }" @click="start"
+                           />
+                        </button>
 
-                  <button v-if="isSupported && isListening" class="audio_btn mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg" >
-                     <MonoStop class="h-5 text-slate-500" @click="stop"
-                     />                      
-                  </button>
+                        <button v-if="isSupported && isListening"
+                         class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
+                           <MonoStop class="h-5 text-slate-500" @click="stop"
+                           />                      
+                        </button>
 
-                  <button  @click.stop="sendMessage" :style="backgroundColor" :disabled="!chatStore.currentMessage || chatStore.isLoading"
-                     class="mr-[2px] flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg">
-                     <MonoSend class="h-5 text-white" />
-                  </button>
+                        <button  @click.stop="sendMessage" :style="backgroundColor" :disabled="!chatStore.currentMessage || chatStore.isLoading"
+                           class="flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg">
+                           <MonoSend class="h-5 text-white" />
+                        </button>
+
+                     </div>
+
+                     </div>
                </div>
             </div>
 
@@ -526,6 +616,40 @@
 </template>
 
 <style scoped>
+
+div.imageselected {
+   position: relative;
+   width: 100%;  
+   overflow: hidden;
+   border-radius: 0.375rem;
+   display: flex;
+   justify-content: flex-start;
+}
+
+div.imageselected button.close-btn {
+   position: absolute;
+   top: 0.5rem;
+   left: 5.5rem;
+   z-index: 1;
+   background-color: rgba(255, 255, 255, 0.8);
+   border-radius: 50%;
+   padding: 0.25rem;
+   cursor: pointer;
+   transition: color 0.2s;
+}
+
+.ImageFileSelected {
+   width: 75px;
+   margin-inline-start: 0.75rem;
+   max-height: 75px;
+   object-fit: contain;
+}
+
+textarea.msg_input {
+   resize: none;    
+   max-height: 25dvh;
+   min-height: 40px;
+}
 
 .btn-raiting{
    border-radius: 50%;

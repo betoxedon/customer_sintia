@@ -4,7 +4,7 @@ import apiAuth from './apiAuth';
 
 export default {
 
-    createMessage(session:number, message:string, request_file:File){
+    createMessage(session:number, message:string, request_file:File,image_file:File){
 
         const formData = new FormData()
         formData.append('request', message)     
@@ -15,6 +15,15 @@ export default {
                 'Content-Type': 'application/json'
             }
         };
+
+        console.log('image_file', image_file)
+
+        if (image_file !== null && image_file !== undefined && typeof image_file === 'object'){           
+            formData.append('image_file', image_file, image_file.name)
+            config.headers = {              
+                    'Content-Type': 'multipart/form-data'           
+            };    
+        }
 
         if (request_file !== null && request_file !== undefined && typeof request_file === 'object'){           
             formData.append('request_file', request_file, request_file.name)

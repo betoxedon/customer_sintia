@@ -12,6 +12,7 @@ export const useChatStore = defineStore('chat', () => {
     const sessionActive = ref()
     const isLoading = ref(false)
     const currentMessage = ref('')
+    const imageFile = ref()
     const currentUrlAudio = ref('') //variavel que armazena o audio gravado
     const currentAudioFile = ref()
     //variavel que verifica se foi gravado em audio
@@ -74,15 +75,23 @@ export const useChatStore = defineStore('chat', () => {
                 type: 'user',
                 content: currentMessage.value, 
                 audio_file:currentUrlAudio.value,
-                duration:durationRecorded.value 
+                duration:durationRecorded.value,
+                image_file:imageFile.value
                 })
 
             currentMessage.value = '' 
             currentUrlAudio.value = '' //reseta a variavel de audio gravado
-            
 
-           
-            const response = await messageApi.createMessage(sessionActive.value.id, request, currentAudioFile.value)
+            const __imageFile = imageFile.value
+
+            imageFile.value = null
+            
+            const response = await messageApi.createMessage(
+                sessionActive.value.id, 
+                request, 
+                currentAudioFile.value,
+                __imageFile
+            )
            
             currentAudioFile.value = ''
             
@@ -194,6 +203,7 @@ export const useChatStore = defineStore('chat', () => {
         rateMessage,
         isAudioRecorded,
         durationAudio,
-        durationRecorded
+        durationRecorded,
+        imageFile
      }
   })
