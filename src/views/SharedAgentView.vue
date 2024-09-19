@@ -33,9 +33,9 @@
       }
    }
 
-   const getUlrImage = (image: File) => {
-      if (!image) return ''
-      return URL.createObjectURL(image) 
+   const getUlrImage = (image: File | null) => {
+      if (!image || !(image instanceof File)) return ''
+      return URL.createObjectURL(image)
    }
 
    const auto_height = (element: EventTarget | null) => {
@@ -459,10 +459,12 @@
                            <span v-if="message.audio_file == ''"
                               class="break-words relative  grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
                               {{ message.content }}
-
+                             
+                            
                               <div v-if="message.image_file" class="mt-3">
                                  <img  :src="getUlrImage(message.image_file)" class="w-64 h-64 object-cover rounded-2xl" />
                               </div>
+                              
                            </span>
 
                            <!-- <audio  class="audio_controlls user" v-else :src="message.audio_file" controls></audio> -->
@@ -501,8 +503,7 @@
                </div>
                
 
-               <div
-                  class="mx-2 mt-5 z-20 flex flex-col items-center overflow-hidden rounded-lg border-on
+               <div class="mx-2 mt-5 z-20 flex flex-col items-center overflow-hidden rounded-lg border-on
                     has-[:focus]:ring-2 has-[:focus]:ring-primary-40" :style="borderColor" >
 
 
@@ -541,11 +542,9 @@
                            >
                         </textarea>
                      </div>
-                        
-                        <div class="flex mr-3  gap-2 items-end"> 
                      
-                        
-                 
+                     <div class="flex mr-3  gap-2 items-end"> 
+                  
                         <button v-if="isSupported && !isListening" 
                            class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
                            <MonoMicrophone class="h-5 text-slate-500" 
@@ -554,7 +553,7 @@
                         </button>
 
                         <button v-if="isSupported && isListening"
-                         class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
+                        class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
                            <MonoStop class="h-5 text-slate-500" @click="stop"
                            />                      
                         </button>
@@ -566,16 +565,16 @@
 
                      </div>
 
-                     </div>
+                  </div>
                </div>
+            
+               
+
             </div>
-
-
-
          </div>
-
       </div>
 
+      <!--SHOW AVATAR-->
       <div
          v-if="showAvatar"
          class="flex min-h-[56px] flex-nowrap items-end gap-x-3 overflow-hidden p-[3px]"
