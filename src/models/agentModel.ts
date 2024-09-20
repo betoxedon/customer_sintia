@@ -36,7 +36,7 @@
       name: z.string(),
       id: z.number(),
       
-   });
+   }).optional()
 
    const toneSchema = z.object({
       name: z.string(),
@@ -51,7 +51,7 @@
    ).optional()
 
 
-   const promptSchema = z.string().min(5).max(1000)
+   const promptSchema = z.string().min(5).max(7500)
 
 
 

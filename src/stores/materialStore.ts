@@ -6,11 +6,16 @@ import { useInterfaceStore } from '@/stores/interfaceStore'
 
 
 
-interface Materia {
+
+export interface Material {
     id: number,
     name: string,
     url: string,
+    urls: string[],
     type: string,
+    size:string,
+    multiple:boolean,
+    timestamp:string,
     value: string,
 }
 
@@ -22,7 +27,7 @@ interface Materia {
 
 export const materiaStore = defineStore('material', () => {
 
-    const materias = ref<Materia[]>([])
+    const materias = ref<Material[]>([])
     const isLoading = ref(false)
 
     const getMaterias = async (botId: string,) => {
@@ -30,15 +35,17 @@ export const materiaStore = defineStore('material', () => {
             isLoading.value = true
             const res = await materialApi.getMaterials(botId)
             console.log('STATUS:', res.status)
-            console.log('RES:', res.response)
-            
-            if (res.response && res.response.status === 400) {
-                materias.value = [];
-            } else if (res.status === 200) {
-                materias.value = res.response;
-            } else {
-                materias.value = [];
-            }
+            console.log('RES:', res)
+
+            materias.value = res;
+
+            // if (res.response && res.response.status === 400) {
+            //     materias.value = [];
+            // } else if (res.status === 200) {
+            //     materias.value = res;
+            // } else {
+            //     materias.value = [];
+            // }
             isLoading.value = false
             
         } catch (error) {
@@ -87,7 +94,7 @@ export const materiaStore = defineStore('material', () => {
             console.log('res:', res)
 
             materias.value.forEach((materia, index) => {
-                if (materia.url === url) {
+                if (materia.urls.includes(url)) {
                     materias.value.splice(index, 1)
                 }
             })
@@ -136,7 +143,9 @@ export const materiaStore = defineStore('material', () => {
             isLoading.value = true
             const res = await materialApi.deleteFileMaterial(botId,urls)
             console.log('res:', res)
-            materias.value  = materias.value.filter(material => !urls.includes(material.url));
+            
+            //materias.value  = materias.value.filter(material => !urls.includes(material.url));
+            materias.value = materias.value.filter(m => m.urls !== urls)
 
             useInterfaceStore().notificationMessage = `Materiais deletados com sucesso!`
             useInterfaceStore().notificationType = 'success'

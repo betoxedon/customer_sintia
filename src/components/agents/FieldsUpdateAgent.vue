@@ -39,7 +39,7 @@
          
       <TextAreaForm
          class="col-span-full maxw:col-span-6"
-         labelField="Edite a mensagem de boas-vindas"
+         labelField="Mensagem de boas-vindas"
          nameField="welcome_message"
          :placeholder="agentStore.agentActive.welcome_message"
          :errorsMessage="errors" />
@@ -47,7 +47,7 @@
        
          <FieldForm
          class="col-span-full maxw:col-span-6"
-         labelField="Edite a mensagem de saudação"
+         labelField="Mensagem de saudação"
          nameField="hello_message"
          :placeholder="agentStore.agentActive.hello_message"
          :errorsMessage="errors" />

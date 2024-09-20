@@ -43,7 +43,8 @@ export const resolveConfirmation = async () => {
       //await deleteMaterialFirestore(id)
       materiaStore().deleteMaterial(botId,url)
 
-      resetConfirmation()
+      useInterfaceStore().showDialogConfirmation = false
+      useInterfaceStore().confirmationData = undefined
    }
 
    const handleDeleteAllMaterials = async () => {
@@ -51,7 +52,8 @@ export const resolveConfirmation = async () => {
 
       materiaStore().deleteAllMaterials(botId)
 
-      resetConfirmation()
+      useInterfaceStore().showDialogConfirmation = false
+      useInterfaceStore().confirmationData = undefined
    }
    
    const handleDeleteFileMaterial = async () =>{
@@ -60,7 +62,8 @@ export const resolveConfirmation = async () => {
 
       materiaStore().deleteFileMaterial(botId,urls)
 
-      resetConfirmation()
+      useInterfaceStore().showDialogConfirmation = false
+      useInterfaceStore().confirmationData = undefined
 
 
 

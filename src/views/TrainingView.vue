@@ -4,7 +4,7 @@
    import {  ref,onMounted} from 'vue'
    import { useRouter } from 'vue-router'
    import MaterialForm from '@/components/forms/MaterialForm.vue'
-   import { materiaStore } from '@/stores/materialStore'
+   import { Material, materiaStore } from '@/stores/materialStore'
    import { useUserStore } from '@/stores/userStore'
    import { useAgentStore } from '@/stores/agentStore'
    import {setDataConfirmation} from '@/utils'
@@ -54,27 +54,35 @@
       }
    })
 
-   const deleteMaterial = (url: string) => {
+   const deleteMaterial = (urls: string[], material:Material) => {
 
-      console.log('delete', url)
-      setDataConfirmation({
-          action: 'handleDeleteMaterial',
-          param: url,
-          param2: botId.value,
-          message: 'Tem certeza que deseja apagar o material?',
-       })
+      console.log('delete', urls)
+
+      if(material && material?.multiple){
+         deleteFileMaterial(material?.urls)
+      }
+      else{
+
+         setDataConfirmation({
+            action: 'handleDeleteMaterial',
+            param: urls[0],
+            param2: botId.value,
+            message: 'Tem certeza que deseja apagar o material?',
+         })
+
+      }
 
       
    }
 
-   const deleteFileMaterial = (url: string) => {
+   const deleteFileMaterial = (urls: string[]) => {
       
-      const baseName = url.replace(/_\d+\.pdf$/, '');
+      // const baseName = url.replace(/_\d+\.pdf$/, '');
+      console.log('urls', urls)
 
-
-      const urls = usematerialStore.materias
-      .filter(material => material.url.startsWith(baseName)) 
-      .map(material => material.url);
+      // const urls = usematerialStore.materias
+      // .filter(material => material.url.startsWith(baseName)) 
+      // .map(material => material.url);
 
       setDataConfirmation({
           action: 'handleDeleteFileMaterial',
@@ -172,19 +180,22 @@
                         <thead>
                            <tr>
                               <th class="px-4 py-2 border-b">#</th>
-                              <th class="px-4 py-2 border-b">Url</th>
+                              <th class="px-4 py-2 border-b">Nome</th>
                               <th class="px-4 py-2 border-b">Tipo</th>
+                              <th class="px-4 py-2 border-b">Tamanho</th>
+                              <th class="px-4 py-2 border-b">Data</th>
                               <th class="px-4 py-2 border-b">Status</th>
                               <th class="px-4 py-2 border-b">Ações</th>
                            </tr>
                         </thead>
+                      
                         <tbody>
                            <tr 
                               v-for="(material, index) in usematerialStore.materias"
                               :key="material.id"
                            >
                               <td class="px-4 py-2 border-b text-center">{{ index + 1 }}</td>
-                              <td class="px-4 py-2 border-b text-center">{{ material?.url }}</td>
+                              <td class="px-4 py-2 border-b text-center">{{ material?.name }}</td>
                               <td class="px-4 py-2 border-b text-center">
                                  <span v-if="material.type == 'application/pdf' ">
                                     PDF
@@ -196,6 +207,11 @@
                                     HTML
                                  </span>
                               </td>
+
+                              <td class="px-4 py-2 border-b text-center">{{ material?.size }}</td>
+
+                              <td class="px-4 py-2 border-b text-center">{{ material?.timestamp }}</td>
+
                               <td class="px-4 py-2 border-b text-center">
                                  <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Enviado</span>
                               </td>
@@ -203,20 +219,20 @@
                               <td class="px-4 py-2 border-b text-center actions">
                                  <!--Delete-->
                                  <button class="text-red-500 hover:underline"
-                                    @click="deleteMaterial(material.url)"
+                                    @click="deleteMaterial(material.urls, material)"
                                  >
                                     <ion-icon name="trash-outline"></ion-icon>
                                  </button>
                                  <!--DELETE FILE-->
 
-                                 <button
-                                 v-if="material.type == 'application/pdf' || material.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' "
-                                     class="text-red-500 hover:underline"
-                                    @click="deleteFileMaterial(material.url)">
-                                    
-                                    <ion-icon name="close-circle-outline"></ion-icon>
-                                    
-                                 </button>
+                                 <!-- <button
+                                    v-if="material.type == 'application/pdf' || material.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' "
+                                       class="text-red-500 hover:underline"
+                                       @click="deleteFileMaterial(material.url)">
+                                       
+                                       <ion-icon name="close-circle-outline"></ion-icon>
+                                       
+                                 </button> -->
 
                                  <!-- Edit
                                  <button class="text-blue-500 hover:underline">

@@ -40,12 +40,20 @@
          :errorsMessage="errors" />
 
       <SelectForm
-      class="col-span-full maxw:col-span-6 w-full"
+      class="col-span-full maxw:col-span-6 w-full hidden"
       :options="agentStore.types"
       labelField="Tipo"
       nameField="type"
       :errorsMessage="errors"
       />
+
+      <SelectForm
+         class="col-span-full maxw:col-span-6 w-full"
+         :options="agentStore.models"
+         labelField="Modelo"
+         nameField="model"
+         :errorsMessage="errors"
+         />
         
 
       <FieldForm
@@ -59,13 +67,13 @@
    
       <TextAreaForm
          class="col-span-full maxw:col-span-6"
-         labelField="Propmpt"
+         labelField="Perfil do bot"
          nameField="prompt"
          placeholder="Ex: Você é um assistente de perguntas."
          :errorsMessage="errors"/>
 
       <SelectForm
-         class="col-span-full maxw:col-span-6"
+         class="col-span-full maxw:col-span-6 hidden"
          :options="agentStore.models"
          labelField="Modelo"
          nameField="model"
@@ -93,7 +101,7 @@
 
       <RangeForm 
          class="col-span-full maxw:col-span-6"
-         labelField="Temperatura"
+         labelField="Criatividade"
          nameField="temperature"
          :maxValue="1.0"
          :minValue="0.0"
@@ -136,7 +144,7 @@
          v-if="voiceResponse || (agentStore.agentActive && agentStore.agentActive.audio_response)"
          class="col-span-full maxw:col-span-6 mt-6"
          :options="agentStore.voiceResponse"
-         labelField="Periodicidade de resposta em audio"
+         labelField="Configuração de resposta em audio"
          nameField="audio_response_type"
          :errorsMessage="errors"
          />

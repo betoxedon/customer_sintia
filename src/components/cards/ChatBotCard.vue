@@ -69,7 +69,7 @@ const interfaceStore = useInterfaceStore()
                 <span class="font-normal !text-onsurface-30/80">
                 {{ item.name }}
                 </span>
-                <span class="truncate inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">{{ item.type.name }}</span>            
+                <span v-if="item?.type" class=" truncate inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">{{ item?.type?.name }}</span>            
             </div>
 
         </div>       

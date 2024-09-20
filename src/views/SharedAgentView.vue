@@ -315,7 +315,7 @@
  
    <div
    
-      class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[326px]"
+      class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[396px]"
       :class="screenSideClass">
       
       <div v-show="showDialog" class="chat-main grid content-end">
