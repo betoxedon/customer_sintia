@@ -295,6 +295,12 @@
          return true;
       }
 
+      //Se mesmo com o audio_response o audio_response_type tivr com valor = Sem resposta por audio, exibir versao de texto
+
+      if (agentStore.agentActive.audio_response_type?.name === 'Sem resposta por áudio'){
+         return true;
+      }
+
       // se o bot tiver permissão para responder com áudio apenas para perguntas com áudio e a pergunta não for um áudio
 
       if (
@@ -395,7 +401,7 @@
                         <div class="">                          
                                                    
                               <vue-markdown 
-                                 v-if="showTextVersion(message.is_audio_recorder)"                                                    
+                                 v-if="showTextVersion(message.is_audio_recorder) || !message.audio_file"                                                    
                                  class="bot_message_markdown bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                                  :source="message.content"
                                  :style="backgroundColor"                               

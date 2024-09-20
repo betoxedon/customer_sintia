@@ -389,7 +389,7 @@ function getAudioData(url: string) {
 </script>
 
 <template>
-    <div class="holder">
+    <div class="holder" :class="{'justify-end':  type !== 'bot'}">
       <div class="audio green-audio-player rounded-2xl" ref="audioPlayer" 
       :class="{ 'disabled' : !isSourceAvailable || isLoading || loadingAudioData, 'rounded-tl-none': type == 'bot', 'rounded-tr-none': type == 'user'}"
         :style="{ backgroundColor : backgroundColor, color : color}"
@@ -488,7 +488,7 @@ function getAudioData(url: string) {
     .holder {
         display: flex;      
         align-items: center;        
-        justify-content: flex-end;
+       
     }
 
     .audio.green-audio-player {
