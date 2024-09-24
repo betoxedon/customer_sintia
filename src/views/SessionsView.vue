@@ -146,7 +146,10 @@
                         <span class="text-white font-bold ">{{agentStore?.agentActive?.name}}</span>
                         </div>
 
-                        <span v-if="!agentStore.sessionActive">Selecione uma conversa para ver as mensagens</span>
+                        <div v-if="!agentStore.sessionActive" class=" h-full flex flex-col justify-center items-center gap-6 mt-3">
+                            <img src="../assets/../Img/select_conversation.svg" alt="selecione uma converesa" style="width: 333.53px;">
+                            <span class="font-semibold">Selecione uma conversa para ver as mensagens</span>
+                        </div>
 
                     
                         
@@ -179,8 +182,12 @@
                             </div>
 
                             <!--Sem mensagem ainda-->
-                            <div v-else>
-                                <span class="col-span-2 mb-4 mt-1 place-self-center rounded-lg bg-slate-400 px-4 py-0.5 text-whites">nenhum Mensagem </span>
+                            <div v-else class="h-full ">
+                                <div class="h-full flex flex-col justify-center items-center gap-3 mt-3">
+                                    <img src="../Img/no_messages.svg" alt="Nenhuma mensagem" style="width: 136px;">
+                                    <span class="col-span-2 mb-4 mt-1 place-self-center rounded-lg px-4 py-0.5 font-semibold">Nenhuma mensagem </span>
+
+                                </div>
                             </div>
                                     
 
