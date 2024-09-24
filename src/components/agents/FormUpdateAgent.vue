@@ -149,15 +149,15 @@
             <span class="text-lg font-medium">Editar chatbot</span>
          </div>
         
-         <tabs @changed="tabChanged" cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
-               <tab name="Geral">
+         <mytabs @changed="tabChanged" cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
+               <mytab name="Geral">
                   <FieldsCreateAgent :errors="errors" />
-               </tab>   
+               </mytab>   
 
-               <tab name="Customização">                 
+               <mytab name="Customização">                 
                   <FieldsUpdateAgent :errors="errors" />
-               </tab>                  
-         </tabs>
+               </mytab>                  
+         </mytabs>
 
 
          <div

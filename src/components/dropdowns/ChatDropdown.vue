@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, onUnmounted,onMounted} from 'vue';
   import { useRouter } from 'vue-router';
+import MonoChats from '../icons/MonoChats.vue';
 
   const active = ref(false);
   const activeMenu =ref<HTMLElement | null>(null);
@@ -57,6 +58,10 @@
     router.push({ name: 'training', params: { id: props.identify.id } });
   };
 
+  const seeHistory = () => {
+    router.push({ name: 'Conversations', params: { id: props.identify.id } });
+  };
+
   onMounted(() => {
     
     // Fecha outros menus quando clicado fora
@@ -102,11 +107,20 @@ onUnmounted(() => {
           </div>
 
           <div class="menu-item">
+            <a @click="seeHistory" href="#" class="block px-4 py-2 flex gap-1 items-center"
+              ><MonoChats class="text-sm" style="width:16px" /> Conversas</a
+            >
+          </div>
+
+          <div class="menu-item">
             <a @click="trainChatbot" href="#" class="block px-4 py-2 flex gap-1 items-center">
               <MonoTraining  class="text-sm" style="width: 16px" />
               Adicionar materiais 
             </a>
           </div>
+
+         
+
           <div class="menu-item">
             <a @click.stop="shareAgent()" href="#" class="block px-4 py-2 flex gap-1 items-center"
               ><MonoShare class="text-sm" style="width:16px" /> Compartilhar chatbot</a

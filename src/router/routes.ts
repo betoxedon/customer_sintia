@@ -13,6 +13,8 @@ import NeutralLayout from '@/layouts/NeutralLayout.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import SharedAgentView from '@/views/SharedAgentView.vue'
 
+import SessionsView from '@/views/SessionsView.vue'
+
 
 export const routes = [
    {
@@ -47,6 +49,14 @@ export const routes = [
             path: 'agente/:id/treinar/',
             component: TrainingView,
             name: 'training',
+            meta: {
+               rules: ['isAuthenticated'],
+            },
+         },
+         {
+            path: 'agente/:id/messages/',
+            component: SessionsView,
+            name: 'Conversations',
             meta: {
                rules: ['isAuthenticated'],
             },

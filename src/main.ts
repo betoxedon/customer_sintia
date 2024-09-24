@@ -11,6 +11,10 @@ import { z } from 'zod'
 import { zodI18nMap } from 'zod-i18n-map'
 import translation from 'zod-i18n-map/locales/pt/zod.json'
 import router from '@/router'
+
+import PrimeVue from 'primevue/config';
+import Aura from '@primevue/themes/aura';
+
 import {Tabs, Tab} from 'vue3-tabs-component';
 
 import markdownit from 'markdown-it'
@@ -44,8 +48,31 @@ for (const path in modules) {
       app.component(name, modules[path].default)
    }
 }
-app.component('tabs', Tabs)
-app.component('tab', Tab)
+app.use(PrimeVue, {
+   theme: {
+       preset: Aura,
+       options: {
+         prefix: 'p',
+         darkModeSelector: 'white',
+         cssLayer: false
+     }
+   },
+   locale: {
+      accept: 'Aceptar',
+      reject: 'Rechazar',
+      monthNames:['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort:['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      
+      dayName:['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+      dayNamesShort:['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      dayNamesMin:['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sá']
+      
+      //...
+  }
+});
+
+app.component('mytabs', Tabs)
+app.component('mytab', Tab)
 app.component('VueMarkdown', VueMarkdown)
    
 app.mount('#app')

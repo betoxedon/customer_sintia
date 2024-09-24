@@ -81,11 +81,11 @@
                   <MonoBot />
                   <span class="text-lg font-medium">Criar chatbot</span>
                </div>
-               <tabs class="">
-                  <tab name="Geral">
+               <mytabs class="">
+                  <mytab name="Geral">
                      <FieldsCreateAgent :errors="errors" />
-                  </tab>                  
-               </tabs>
+                  </mytab>                  
+               </mytabs>
 
                <div
                   class="col-span-full mx-auto my-8 grid w-full max-w-[500px] grid-cols-12 content-start justify-center gap-x-6 gap-y-3 maxw:my-12 maxw:grid-cols-[repeat(2,_220px)]">

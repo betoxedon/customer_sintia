@@ -29,6 +29,25 @@ export default {
                 throw error;
             });
     },
+    getSessions(botId:number,term?:string, start_date?: string, end_date?: string, page?: number){
+
+        return apiAuth.get(`chatbots/bot_session?id=${botId}&q=${term}&start_date=${start_date}&end_date=${end_date}&page=${page}`)
+        .then(res => {
+            console.log('getSessions | res', res)
+            if (res.data) {                    
+                return res.data;
+            } else {
+                throw new Error('Resposta da API vazia');
+            }
+        })
+        .catch(error => {
+            // Trate qualquer erro que ocorra durante a chamada à API
+            console.error(error);
+            throw error;
+        });
+
+    },
+
     updateAgent(payload:ApiUpdateAgent,chatId:number){
         return apiAuth.patch(`chatbots/${chatId}/`, payload)
             .then(res => {

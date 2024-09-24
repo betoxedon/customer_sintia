@@ -196,7 +196,7 @@
       language: string
       sources: number
       query: string
-      type: number 
+      //type: number 
    }
    export type ApiUpdateAgent = {    
       name: string
@@ -210,7 +210,7 @@
       language: string
       sources: number
       query: string
-      type: number  
+      //type: number  
       font: number
       side: number       
    }

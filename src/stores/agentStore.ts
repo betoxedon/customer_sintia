@@ -1,12 +1,13 @@
 import type { Agent,ImageFile,AgentInitial } from '@/models/agentModel'
 const { VITE_AGENT_BASE_URL } = import.meta.env
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-
+import { format } from 'date-fns'
 import agentApi from '@/services/agentServiceApi'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 
 import { useCustomizableStore } from '@/stores/customizableStore'
+import { SessionsList,Session } from '@/models/sessionModel'
 //import { agentInitialSchema, agentSchema } from '@/models/agentModel'
 
 
@@ -15,6 +16,21 @@ export const useAgentStore = defineStore('agent', () => {
    const updatingAgent = ref<boolean>(false)
    const tabActive = ref<string>('geral')
    const sharedAgent = ref<boolean>(false)
+   const sessions = ref<SessionsList[]>([])
+   const sessionActive = ref<Session>()
+
+   const filterParams = ref({
+      term: '',
+      start_date:'',
+      end_date:'',
+      pagination:1
+   })
+
+   const totalRecords = ref(0) // Total de registros retornados pela API
+   const rowsPerPage = ref(10) // Registros por página
+   const currentPage = ref(1) // Página atual
+   const nextPageUrl = ref('')
+   const prevPageUrl = ref('')
 
    const allowedForms = computed(() => {
       return creatingAgent.value || updatingAgent.value
@@ -98,6 +114,19 @@ export const useAgentStore = defineStore('agent', () => {
       return `<start-sintia id=${agentActive?.value?.id} userId=${agentActive?.value?.user?.id}></start-sintia> <script src='${agentBaseUrl}script.js' defer></script>`;
    })
 
+    // Formata a data antes de enviá-la à API
+    const formattedStartDate = computed(() => {
+      return filterParams.value.start_date 
+        ? format(new Date(filterParams.value.start_date), 'yyyy-MM-dd HH:mm:ss') 
+        : '';
+    })
+
+    const formattedEndDate  = computed(() => {
+      return filterParams.value.end_date 
+        ? format(new Date(filterParams.value.end_date), 'yyyy-MM-dd HH:mm:ss') 
+        : '';
+    })
+
    // on update
    const cloneAgentUpdated = () => {
       agents.value.some((agent) => {
@@ -127,6 +156,25 @@ export const useAgentStore = defineStore('agent', () => {
    const $reset = () => {
       partialReset()
       agents.value = []
+   }
+
+   const resetFilters = () => {
+
+      filterParams.value = {
+         term: '',
+         start_date:'',
+         end_date:'',
+         pagination: 1
+      }
+      currentPage.value = 1
+   }
+
+   const onPageChange = (event: { page: number }) =>{
+      console.log('onPageChange', event.page + 1)
+      currentPage.value = event.page + 1
+      filterParams.value.pagination = currentPage.value
+
+      getSessionsByBot(agentActive?.value?.id)
    }
 
    const getDatas = () => {
@@ -186,7 +234,7 @@ export const useAgentStore = defineStore('agent', () => {
          font: typeof data.font === 'object' ? data.font.id : data.font,
 
          model: typeof data.model === 'object' ? data.model.id : data.model,
-         type: typeof data.type === 'object' ? data.type.id : data.type,
+         //stype: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
          audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,
@@ -218,7 +266,7 @@ export const useAgentStore = defineStore('agent', () => {
          // font: typeof data?.font === 'object' ? data?.font.id : data?.font,
          
          model: typeof data.model === 'object' ? data.model.id : data.model,
-         type: typeof data.type === 'object' ? data.type.id : data.type,
+         //type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
          audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,
@@ -278,6 +326,51 @@ export const useAgentStore = defineStore('agent', () => {
 
    }
 
+   //history de converesas do bot
+
+   const getSessionsByBot = (id: number) => {
+
+      console.log('getSessionsByBot',id)
+
+      const startDate = formattedStartDate;
+      const endDate = formattedEndDate;
+
+      return agentApi.getSessions(id, filterParams.value.term, startDate.value, endDate.value, filterParams.value.pagination).then((res) =>{
+         console.log("res.data.results", res.results)
+         totalRecords.value = res?.count
+         nextPageUrl.value = res?.next
+         prevPageUrl.value = res?.previous; // Página anterior
+         sessions.value = res?.results
+         currentPage.value = 1
+      }).catch((error) => {
+         console.error(error);
+         throw error;
+       })
+   }
+
+   const selectSession = (sessionId: number) =>{
+      console.log(sessionId)
+      if(sessionId){sessionId
+         console.log(sessions.value.filter(session => session.id === sessionId)[0])
+         sessionActive.value = sessions.value.filter(session => session.id === sessionId)[0];
+      }
+
+   }
+
+   // Watch específico para mudanças em term, start_date e end_date
+   watch(
+      () => [filterParams.value.term, filterParams.value.start_date, filterParams.value.end_date],
+      () => {
+      // Resetar paginação quando algum filtro for alterado
+      filterParams.value.pagination = 1;
+   
+      // Chama o método para buscar sessões
+      getSessionsByBot(agentActive?.value.id);
+      },
+      { deep: true }
+   );
+
+   
 
    
 
@@ -309,6 +402,19 @@ export const useAgentStore = defineStore('agent', () => {
       hasAgentResponse,
       getAgentById,
       sharedAgent,
-      voiceResponse
+      voiceResponse,
+      sessions,
+      getSessionsByBot,
+      selectSession,
+      sessionActive,
+      filterParams,
+      resetFilters,
+      totalRecords,
+      rowsPerPage,
+      currentPage,
+      nextPageUrl,
+      prevPageUrl,
+      onPageChange
+      
    }
 })
