@@ -13,6 +13,12 @@
    const agentStore = useAgentStore()
    const interfaceStore = useInterfaceStore()
 
+   import Tabs from 'primevue/tabs';
+   import TabList from 'primevue/tablist';
+   import Tab from 'primevue/tab';
+   import TabPanels from 'primevue/tabpanels';
+   import TabPanel from 'primevue/tabpanel';
+
    const { handleSubmit, errors, meta } = useForm<AgentInitial>({
       validationSchema: toTypedSchema(agentInitialSchema),
    })
@@ -81,11 +87,24 @@
                   <MonoBot />
                   <span class="text-lg font-medium">Criar chatbot</span>
                </div>
-               <mytabs class="">
+
+               <mytabs class="hidden">
                   <mytab name="Geral">
                      <FieldsCreateAgent :errors="errors" />
                   </mytab>                  
                </mytabs>
+
+               <Tabs value="0" >
+            <TabList>
+               <Tab value="0" @click="agentStore.tabActive = 'Geral'">Geral</Tab>
+            </TabList>
+
+            <TabPanels >
+               <TabPanel value="0" class="px-8">
+                  <FieldsCreateAgent :errors="errors" />
+               </TabPanel>
+            </TabPanels>
+         </Tabs>
 
                <div
                   class="col-span-full mx-auto my-8 grid w-full max-w-[500px] grid-cols-12 content-start justify-center gap-x-6 gap-y-3 maxw:my-12 maxw:grid-cols-[repeat(2,_220px)]">

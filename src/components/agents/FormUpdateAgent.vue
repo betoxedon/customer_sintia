@@ -13,6 +13,12 @@
    const agentStore = useAgentStore()
    const interfaceStore = useInterfaceStore()
 
+   import Tabs from 'primevue/tabs';
+   import TabList from 'primevue/tablist';
+   import Tab from 'primevue/tab';
+   import TabPanels from 'primevue/tabpanels';
+   import TabPanel from 'primevue/tabpanel';
+
    const { values, errors, handleSubmit, meta, resetForm } = useForm<Agent>({
       validationSchema: toTypedSchema(agentSchema),
       initialValues: agentStore.agentActive,
@@ -149,7 +155,7 @@
             <span class="text-lg font-medium">Editar chatbot</span>
          </div>
         
-         <mytabs @changed="tabChanged" cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
+         <mytabs class="hidden" @changed="tabChanged" cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
                <mytab name="Geral">
                   <FieldsCreateAgent :errors="errors" />
                </mytab>   
@@ -158,6 +164,24 @@
                   <FieldsUpdateAgent :errors="errors" />
                </mytab>                  
          </mytabs>
+
+         <Tabs value="0" >
+            <TabList>
+               <Tab value="0" @click="agentStore.tabActive = 'Geral'">Geral</Tab>
+               <Tab value="1" @click="agentStore.tabActive = 'Customização'">Customização</Tab>
+            </TabList>
+
+            <TabPanels >
+               <TabPanel value="0" class="px-8">
+                  <FieldsCreateAgent :errors="errors" />
+               </TabPanel>
+
+               <TabPanel value="1" class="px-8">
+                  <FieldsUpdateAgent :errors="errors" />
+               </TabPanel>
+               
+            </TabPanels>
+         </Tabs>
 
 
          <div
