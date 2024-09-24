@@ -133,6 +133,8 @@
 
                         <div class="mt-2">
                             <Paginator :rows="agentStore.rowsPerPage" 
+                            :pageLinkSize="3" 
+                            template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
                             :totalRecords="agentStore.totalRecords" :rowsPerPageOptions="[10]"
                             @page="agentStore.onPageChange" ></Paginator>
                         </div>
