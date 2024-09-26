@@ -234,7 +234,7 @@ export const useAgentStore = defineStore('agent', () => {
          font: typeof data.font === 'object' ? data.font.id : data.font,
 
          model: typeof data.model === 'object' ? data.model.id : data.model,
-         //stype: typeof data.type === 'object' ? data.type.id : data.type,
+         type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
          audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,

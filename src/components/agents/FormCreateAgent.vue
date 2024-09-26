@@ -76,6 +76,7 @@
 <template>
    
    <div class="main-core">
+
             <span v-if="errors" class="text-red-500 flex flex-col gap-2">
                <span class="text-red-500" v-for="(errorMessage, fieldName) in errors" :key="fieldName">
                   Erro no campo {{ fieldName }}: {{ errorMessage }}
@@ -88,23 +89,18 @@
                   <span class="text-lg font-medium">Criar chatbot</span>
                </div>
 
-               <mytabs class="hidden">
-                  <mytab name="Geral">
-                     <FieldsCreateAgent :errors="errors" />
-                  </mytab>                  
-               </mytabs>
 
-               <Tabs value="0" >
-            <TabList>
-               <Tab value="0" @click="agentStore.tabActive = 'Geral'">Geral</Tab>
-            </TabList>
+               <Tabs value="0"  class="">
+                  <TabList>
+                     <Tab value="0" @click="agentStore.tabActive = 'Geral'">Geral</Tab>
+                  </TabList>
 
-            <TabPanels >
-               <TabPanel value="0" class="px-8">
-                  <FieldsCreateAgent :errors="errors" />
-               </TabPanel>
-            </TabPanels>
-         </Tabs>
+                  <TabPanels >
+                     <TabPanel value="0" class="px-8">
+                        <FieldsCreateAgent :errors="errors" />
+                     </TabPanel>
+                  </TabPanels>
+               </Tabs>
 
                <div
                   class="col-span-full mx-auto my-8 grid w-full max-w-[500px] grid-cols-12 content-start justify-center gap-x-6 gap-y-3 maxw:my-12 maxw:grid-cols-[repeat(2,_220px)]">

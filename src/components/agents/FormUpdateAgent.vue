@@ -155,16 +155,6 @@
             <span class="text-lg font-medium">Editar chatbot</span>
          </div>
         
-         <mytabs class="hidden" @changed="tabChanged" cache-lifetime="0" :options="{ useUrlFragment: false, defaultTabHash:'Geral' }">
-               <mytab name="Geral">
-                  <FieldsCreateAgent :errors="errors" />
-               </mytab>   
-
-               <mytab name="Customização">                 
-                  <FieldsUpdateAgent :errors="errors" />
-               </mytab>                  
-         </mytabs>
-
          <Tabs value="0" >
             <TabList>
                <Tab value="0" @click="agentStore.tabActive = 'Geral'">Geral</Tab>
@@ -182,7 +172,6 @@
                
             </TabPanels>
          </Tabs>
-
 
          <div
             class="col-span-full mx-auto my-8 grid w-full max-w-[500px] grid-cols-12 content-start justify-center gap-x-6 gap-y-3 maxw:my-12 maxw:grid-cols-[repeat(3,_220px)]">
