@@ -103,8 +103,5 @@ app.use(PrimeVue, {
 app.component('mytabs', Tabs)
 app.component('mytab', Tab)
 app.component('VueMarkdown', VueMarkdown)
-app.component('VueMarkdown', {
-   markdown: md
- });
-   
+
 app.mount('#app')

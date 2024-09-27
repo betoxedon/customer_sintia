@@ -223,9 +223,8 @@
                             <MonoLogo v-else class="h-14 w-14 text-slate-500" />
                     </div>      
                     
-                
+                   
                     <div class="bot-msg">      
-                        
                         <AudioPlayer 
                             v-if="message.audio_file"
                               class="audio_controlls"  
