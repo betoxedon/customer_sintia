@@ -56,7 +56,7 @@
 
 
    const audio_responseSchema = z.boolean().default(false)
-
+   const toolsSchema = z.boolean().default(false)
        
    const audio_responseTypeSchema = z.object({
       name: z.string(),
@@ -88,6 +88,7 @@
       language:languageSchema,
       sources:sourcesSchema,
       query:querySchema,
+      tools:toolsSchema,
       type:typeSchema   
    })
 
@@ -196,6 +197,7 @@
       language: string
       sources: number
       query: string
+      tools: boolean
       //type: number 
    }
    export type ApiUpdateAgent = {    
@@ -210,7 +212,8 @@
       language: string
       sources: number
       query: string
-      //type: number  
+      //type: number 
+      tools: boolean 
       font: number
       side: number       
    }

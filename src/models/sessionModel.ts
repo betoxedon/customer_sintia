@@ -5,6 +5,14 @@
    response: string
    session: number
    created_on?: string
+   rating?:boolean
+   request_file?: string
+   audio_file?: string
+   duration?: string
+   audio_file_duration?:number
+   sources?:string
+   image_file?: string
+
  }
 
  export type Session = {

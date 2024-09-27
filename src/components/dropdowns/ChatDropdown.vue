@@ -1,7 +1,11 @@
 <script setup lang="ts">
   import { ref, onUnmounted,onMounted} from 'vue';
-  import { useRouter } from 'vue-router';
-import MonoChats from '../icons/MonoChats.vue';
+ 
+  import MonoChats from '../icons/MonoChats.vue';
+  import { useAgentStore } from '@/stores/agentStore'
+
+  const agentStore = useAgentStore()
+
 
   const active = ref(false);
   const activeMenu =ref<HTMLElement | null>(null);
@@ -16,7 +20,7 @@ import MonoChats from '../icons/MonoChats.vue';
     }
   })
 
-  const router = useRouter();
+ 
 
   const toggleMenu = () => {
     active.value = !active.value;
@@ -39,6 +43,8 @@ import MonoChats from '../icons/MonoChats.vue';
 };
 
   const update = () => {
+    agentStore.tabActive = 'Geral'
+    agentStore.tabValueActive ='0'
     emit('UpdateAgent');
   };
 
@@ -55,11 +61,18 @@ import MonoChats from '../icons/MonoChats.vue';
   }
 
   const trainChatbot = () => {
-    router.push({ name: 'training', params: { id: props.identify.id } });
+    
+    agentStore.tabActive = 'Materiais'
+    agentStore.tabValueActive = '2'
+    emit('UpdateAgent');
+    //router.push({ name: 'training', params: { id: props.identify.id } });
   };
 
   const seeHistory = () => {
-    router.push({ name: 'Conversations', params: { id: props.identify.id } });
+    agentStore.tabActive = 'Conversas'
+    agentStore.tabValueActive ='3'
+    emit('UpdateAgent');
+    //router.push({ name: 'Conversations', params: { id: props.identify.id } });
   };
 
   onMounted(() => {
@@ -115,7 +128,7 @@ onUnmounted(() => {
           <div class="menu-item">
             <a @click="trainChatbot" href="#" class="block px-4 py-2 flex gap-1 items-center">
               <MonoTraining  class="text-sm" style="width: 16px" />
-              Adicionar materiais 
+              Base de conhecimento
             </a>
           </div>
 

@@ -5,7 +5,7 @@
    import { useRoute } from 'vue-router'
    import { useSpeechRecognition } from '@vueuse/core'
    import AudioPlayer from '@/components/player/AudioPlayer.vue' 
-      
+  
    //audio recognition
    const transcript = ref('')
    const audioRecorded = ref('')
@@ -277,7 +277,7 @@
    const addLinkTarget = () => {
       
       scrollElement.value = document.getElementById('messages_list') as HTMLElement   
-      links.value = scrollElement.value?.querySelectorAll('.bot_message_markdown p a') as NodeListOf<Element>  
+      links.value = scrollElement.value?.querySelectorAll('.bot_message_markdown a') as NodeListOf<Element>  
 
       links.value?.forEach((link) => {         
          nextTick(() => {
@@ -315,18 +315,30 @@
       return false;
    }
 
+   const markdownOptions = {
+      linkify: true,
+      typographer: true,
+      html: true,
+   };
+
+
+   import VueMarkdown from 'vue-markdown-render'
+   import MarkdownItAnchor from 'markdown-it-anchor'
+   //import markdownItAttrs from 'markdown-it-attrs'
+   const plugins = [MarkdownItAnchor];
+
 </script>
 
 <template>
  
    <div
    
-      class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[396px]"
+      class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[420px]"
       :class="screenSideClass">
       
       <div v-show="showDialog" class="chat-main grid content-end">
          <div
-            class="grid w-full grid-rows-[min-content_minmax(0px,_480px)] overflow-hidden rounded-xl"
+            class="grid w-full grid-rows-[min-content_minmax(0px,_570px)] overflow-hidden rounded-xl"
             :style="fontFamily">
             <div
                class="flex min-h-[74px] flex-col py-4 pl-5 pr-3"
@@ -360,8 +372,7 @@
                   <span
                      class="col-span-2 mb-4 mt-1 place-self-center rounded-lg bg-slate-400 px-4 py-0.5 text-white">
                      {{ today }}
-                  </span>          
-                  
+                  </span>         
                   
                   <div  class="col-span-full grid grid-cols-[min-content_77%] gap-x-2">
                      
@@ -404,8 +415,9 @@
                                  v-if="showTextVersion(message.is_audio_recorder) || !message.audio_file"                                                    
                                  class="bot_message_markdown bot_message break-words grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                                  :source="message.content"
-                                 :style="backgroundColor"                               
-                                 :options="{breaks: true, linkify: true, typographer: false, html:true,xhtmlOut:true}">
+                                 :style="backgroundColor" 
+                                 :plugins="plugins"                          
+                                 :options="markdownOptions">
                                  >
                               </vue-markdown>      
 

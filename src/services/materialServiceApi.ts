@@ -3,7 +3,7 @@ import apiAuth from './apiAuth';
 
 export default {
 
-        getMaterials(botId: string,){
+        getMaterials(botId: number){
             return apiAuth.get(`/chatbots/${botId}/all_materials/`) 
             .then(res => {
                 console.log("materials", res.data)
@@ -14,7 +14,7 @@ export default {
             });
         },
     
-        createMaterial(botId: string, type:string, value:string | File){
+        createMaterial(botId: number, type:string, value:string | File){
 
             const fomdata = new FormData();
             const typeName = type

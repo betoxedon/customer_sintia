@@ -56,7 +56,7 @@
 
             <div class="title">
 
-               <a href="/agente" class="back" v-if="agentStore.creatingAgent || agentStore.updatingAgent">
+               <a href="#" class="back" v-if="agentStore.creatingAgent || agentStore.updatingAgent" @click=" agentStore.partialReset()">
                   <ion-icon name="arrow-back-outline"></ion-icon>
                </a>
 

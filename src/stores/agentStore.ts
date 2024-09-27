@@ -14,7 +14,8 @@ import { SessionsList,Session } from '@/models/sessionModel'
 export const useAgentStore = defineStore('agent', () => {
    const creatingAgent = ref<boolean>(false)
    const updatingAgent = ref<boolean>(false)
-   const tabActive = ref<string>('geral')
+   const tabActive = ref<string>('Geral')
+   const tabValueActive = ref<string>("0")
    const sharedAgent = ref<boolean>(false)
    const sessions = ref<SessionsList[]>([])
    const sessionActive = ref<Session>()
@@ -150,6 +151,7 @@ export const useAgentStore = defineStore('agent', () => {
       updatingAgent.value = false
       docIdAgentSelected.value = undefined
       agentActive.value = {} as Agent
+      //tabActive.value = 'Geral'
       //getAgents()
    }
 
@@ -249,6 +251,8 @@ export const useAgentStore = defineStore('agent', () => {
       }
       
       agentApi.updateAgent(modifiedData,id).then((res)=>{
+         //agentActive.value = res.data
+         console.log("res.data", res)
          return res
       }).catch(error => {
          throw error;
@@ -395,6 +399,7 @@ export const useAgentStore = defineStore('agent', () => {
       getAgents,
       updateAgent,
       tabActive,
+      tabValueActive,
       createAgent,
       deleteAgent,
       isLoading, 

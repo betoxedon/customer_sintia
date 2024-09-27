@@ -3,6 +3,9 @@ import '@/assets/styles/tailwind.css'
 import '@/assets/styles/additional.css'
 import '@/assets/styles/tabs.css'
 import VueMarkdown from 'vue-markdown-render'
+import markdownItAnchor from 'markdown-it-anchor';
+
+//import VueMarkdown from 'vue-markdown'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from '@/App.vue'
@@ -24,6 +27,12 @@ const md = markdownit()
 
 md.set({ breaks: true, linkify: true, typographer: true, html:true, xhtmlOut:true })
 md.linkify.set({ fuzzyLink: false, fuzzyEmail: false})
+
+md.use(markdownItAnchor, {
+   permalink: true,
+   permalinkBefore: true,
+   permalinkSymbol: '🔗'
+ });
 
 const pinia = createPinia()
 i18next.init({
@@ -94,5 +103,8 @@ app.use(PrimeVue, {
 app.component('mytabs', Tabs)
 app.component('mytab', Tab)
 app.component('VueMarkdown', VueMarkdown)
+app.component('VueMarkdown', {
+   markdown: md
+ });
    
 app.mount('#app')

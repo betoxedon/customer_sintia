@@ -15,7 +15,7 @@ interface MediaType {
 
 const props = defineProps({
   botId: {
-    type: String,
+    type: Number,
     required: true,
   },
 });
@@ -92,7 +92,7 @@ const handleSubmit = () => {
     console.log('selectedType', selectedType.value)
     console.log('mediaInput', mediaInput.value)
     
-    useMaterialStore.createMaterial(props.botId,selectedType.value, mediaInput.value ).then((response) => {
+    useMaterialStore.createMaterial(Number(props.botId),selectedType.value, mediaInput.value ).then((response) => {
       console.log('response', response)
       resetState();
       loading.value = false;
@@ -112,7 +112,7 @@ const handleSubmit = () => {
   } else if (file.value) {
     console.log(`Enviando ${selectedType.value} arquivo:`, file.value)
     // Adicione lógica para enviar o arquivo para o endpoint correspondente
-    useMaterialStore.createMaterial(props.botId,selectedType.value, file.value ).then((response) => {
+    useMaterialStore.createMaterial(Number(props.botId),selectedType.value, file.value ).then((response) => {
       console.log('response', response)
       resetState();
       loading.value = false;

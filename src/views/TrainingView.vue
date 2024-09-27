@@ -44,7 +44,7 @@
             
          })
          isLoadingMaterial.value = true
-         usematerialStore.getMaterias(botId.value).then(() => {
+         usematerialStore.getMaterias(Number(botId.value)).then(() => {
             console.log('materias', usematerialStore.materias)
             isLoadingMaterial.value = false
          }).catch((error) => {
@@ -151,7 +151,7 @@
 
 
             <!--Adicinonar novo material-->
-            <MaterialForm  :botId="botId" v-if="!agentStore.isLoading && !isLoadingMaterial"/>
+            <MaterialForm  :botId="Number(botId)" v-if="!agentStore.isLoading && !isLoadingMaterial"/>
 
             <!--lista materiais do bot-->
             <div class="materials py-4" v-if="!agentStore.isLoading  && !isLoadingMaterial">

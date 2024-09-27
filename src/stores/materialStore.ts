@@ -30,7 +30,7 @@ export const materiaStore = defineStore('material', () => {
     const materias = ref<Material[]>([])
     const isLoading = ref(false)
 
-    const getMaterias = async (botId: string,) => {
+    const getMaterias = async (botId: number,) => {
         try {
             isLoading.value = true
             const res = await materialApi.getMaterials(botId)
@@ -55,7 +55,7 @@ export const materiaStore = defineStore('material', () => {
         }
     }
 
-    const createMaterial = async (botId: string, type: string, value: string | File) => {
+    const createMaterial = async (botId: number, type: string, value: string | File) => {
         console.log('botId:', botId)
         console.log('type:', type)
         console.log('value:', value)

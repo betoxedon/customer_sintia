@@ -33,10 +33,21 @@ const interfaceStore = useInterfaceStore()
 
    const onUpdateAgent = (agent: Agent) => {
       agentStore.partialReset()
+    
       agentStore.agentActive = agent
       agentStore.updatingAgent = true
       agentStore.creatingAgent = false
    }
+
+   const onUpdateAgentCard = (agent: Agent) => {
+        agentStore.partialReset()
+        agentStore.tabActive = 'Conversas'
+        agentStore.tabValueActive = '3'
+        agentStore.agentActive = agent
+        agentStore.updatingAgent = true
+        agentStore.creatingAgent = false
+   }
+
 
 
    const onshowDialogScript = (agent: Agent) => {
@@ -45,6 +56,7 @@ const interfaceStore = useInterfaceStore()
       interfaceStore.showDialogScript = true
       
    }
+   
    const onshowDialogShare = (agent: Agent) => {
       agentStore.partialReset()
       agentStore.agentActive = agent
@@ -54,7 +66,7 @@ const interfaceStore = useInterfaceStore()
 </script>
 
 <template>
-    <div class="my-bot bg-white p-3  rounded border-2 items-center shadow">
+    <div class="my-bot bg-white p-3  rounded border-2 items-center shadow" @click="onUpdateAgentCard(item as Agent)">
 
         <div class="flex justify-between items-center">
 
@@ -92,7 +104,12 @@ const interfaceStore = useInterfaceStore()
     min-width: 300px;
     min-height: 90px;
     justify-content: space-between;   
+    cursor: pointer;
     
+}
+.my-bot:hover{
+    background-color: #f4f4f4;
+
 }
 .shadow{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

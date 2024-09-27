@@ -10,3 +10,62 @@
     padding-inline:0px !important;
   }
 }
+
+/* Fundo, sombras, e dimensões gerais */
+.sintia-tw-bg-[white] {
+  background-color: white; /* Exemplo de cor de fundo */
+}
+.sintia-tw-shadow-xl {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Exemplo de sombra */
+}
+.sintia-tw-w-full {
+  width: 100%; /* Largura total */
+}
+.sintia-tw-h-full {
+  height: 100%; /* Altura total */
+}
+
+/* Respostas para diferentes tamanhos de tela */
+@media (min-width: 768px) { /* md */
+  .md\:sintia-tw-w-[420px] {
+      width: 420px;
+  }
+  .md\:sintia-tw-h-[680px] {
+      height: 680px;
+  }
+  .md\:sintia-tw-max-h-[80vh] {
+      max-height: 80vh;
+  }
+  .md\:short\:sintia-tw-w-[360px] {
+      width: 360px;
+  }
+}
+
+@media (min-width: 1536px) { /* 2xl */
+  .2xl\:sintia-tw-w-[440px] {
+      width: 440px;
+  }
+  .2xl\:sintia-tw-h-[712px] {
+      height: 712px;
+  }
+}
+
+@media (min-width: 1920px) { /* xxl */
+  .xxl\:sintia-tw-w-[600px] {
+      width: 600px;
+  }
+  .xxl\:sintia-tw-h-[970px] {
+      height: 970px;
+  }
+}
+
+/* Flexibilidade e arredondamento de bordas */
+.sintia-tw-flex {
+  display: flex;
+}
+.sintia-tw-flex-col {
+  flex-direction: column;
+}
+.md\:sintia-tw-rounded-2xl {
+  border-radius: 20px;
+}
