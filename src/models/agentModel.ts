@@ -57,7 +57,8 @@
 
    const audio_responseSchema = z.boolean().default(false)
    const toolsSchema = z.boolean().default(false)
-       
+   const availableSchema = z.boolean().optional()
+
    const audio_responseTypeSchema = z.object({
       name: z.string(),
       id: z.number(),
@@ -150,7 +151,8 @@
       side: screenSideStyleSchema,
       image_file: imageUrlSchema,
       allowedDomains: allowedDomainsSchema,
-      user:userSchema
+      user:userSchema,
+      available:availableSchema
 
    })
 

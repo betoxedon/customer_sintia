@@ -271,10 +271,10 @@
                     </div>
 
                         <!--Sources-->       
-                        <div class="flex mt-4 gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
+                        <div class="flex flex-col mt-4 gap-2 sources bg-white mb-[12px] overflow-x-auto"
                             v-if="message.sources && message.sources.length > 0 && message.sources[0] != '' " >
                             <span>Sources: </span>
-                            <a :href="source" target="_blank" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
+                            <a :href="source" target="_blank" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center max-w-[50%] rounded">
                                 <MonoLink class="h-4 w-4" />
                                 <span >
                                     <span>{{ truncateText(source,20) }}</span> 

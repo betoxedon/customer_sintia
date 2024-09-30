@@ -350,11 +350,19 @@
                         {{ agentStore.agentActive.name }}
                      </span>
 
-                     <div class="flex items-center gap-x-1">
+                     <div class="flex items-center gap-x-1" v-if="agentStore.agentActive.available">
                         <span
                            class="mb-[0.5px] h-[9px] w-[9px] rounded-full bg-[#02fe04]"></span>
                         <span class="text-sm font-medium text-white">Online</span>
                      </div>
+
+                     <div v-else class="flex items-center gap-x-1">
+                        <span
+                           class="mb-[0.5px] h-[9px] w-[9px] rounded-full bg-[#F4696B]"></span>
+                        <span class="text-sm font-medium text-white">Offline</span>
+
+                     </div>
+
                   </div>
 
                   <div class="absolute right-1 top-0 flex gap-x-2">
@@ -385,11 +393,20 @@
                         <MonoLogo v-else class="h-6 w-6 text-slate-500" />
                      </div>
 
-                     <span
+                     <span v-if="agentStore?.agentActive?.available"
                         class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                         :style="backgroundColor">
                         {{ welcomeMessage }}
                      </span>
+
+                     <span v-else
+                        class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
+                        :style="backgroundColor"
+                     >
+                     Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis. Por favor, tente novamente mais tarde. ⏳😊
+
+                     </span>
+
                   </div>
 
                   <div v-for="message in chatStore?.sessionActive?.messages" :key="message">
@@ -521,7 +538,7 @@
                </div>
                
 
-               <div class="mx-2 mt-5 z-20 flex flex-col items-center overflow-hidden rounded-lg border-on
+               <div v-if="agentStore.agentActive.available" class="mx-2 mt-5 z-20 flex flex-col items-center overflow-hidden rounded-lg border-on
                     has-[:focus]:ring-2 has-[:focus]:ring-primary-40" :style="borderColor" >
 
 
@@ -536,7 +553,7 @@
                   </div>
 
                   
-                  <div class="flex items-end py-1  w-full"> 
+                  <div class="flex items-end py-1 w-full"> 
 
                      <button 
                         v-if="agentStore.agentActive?.model?.name == 'GPT 4 128k'"
@@ -546,7 +563,9 @@
                         <input class="hidden" ref="fileInput" type="file" @change="handleFileChange" accept="image/*" />
                      </button>
                         
-                     <div class="flex min-w-0 flex-1 flex-col">                        
+                     <div class="flex min-w-0 flex-1 flex-col">    
+                       
+                        
                         
                         <textarea @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" 
                            :style="{ height: textareaHeight }" 
@@ -559,6 +578,7 @@
                            placeholder="Digite sua mensagem..." 
                            >
                         </textarea>
+
                      </div>
                      
                      <div class="flex mr-3  gap-2 items-end"> 
@@ -585,7 +605,12 @@
 
                   </div>
                </div>
-            
+
+               <div class="p-4">
+                  ⚠️ Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis.
+
+               </div>
+               
                
 
             </div>
@@ -603,11 +628,18 @@
             :class="chatBallonClass">
             <div class="flex w-full items-center justify-between gap-x-3">
                <div class="flex select-none items-center justify-center">
+                
                   <span
+                     v-if="agentStore.agentActive.available"
                      class="text-center"
                      :style="fontFamily">
-                     {{ agentStore.agentActive.hello_message || 'Olá!👋 Como posso te ajudar?'}}
+                     {{ agentStore.agentActive.hello_message || 'Olá!👋 Como posso te ajudar? kkß'}}
                   </span>
+
+                  <span v-else class="text-center" :style="fontFamily">
+                     ⚠️ Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis.
+                  </span>
+
                </div>
             </div>
 
