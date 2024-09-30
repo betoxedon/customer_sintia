@@ -4,7 +4,6 @@ import type { Agent } from '@/models/agentModel'
 
 import ChatDropdown from '@/components/dropdowns/ChatDropdown.vue'
 
-
 import {setDataConfirmation} from '@/utils'
 import { useInterfaceStore } from '@/stores/interfaceStore'
 import { useAgentStore } from '@/stores/agentStore'
@@ -66,7 +65,9 @@ const interfaceStore = useInterfaceStore()
 </script>
 
 <template>
-    <div class="my-bot bg-white p-3  rounded border-2 items-center shadow" @click="onUpdateAgentCard(item as Agent)">
+    <div class="my-bot bg-white p-3  rounded border-2 items-center  rounded-lg
+    transition hover:scale-[101%]  desk:col-span-6 maxw:col-span-4
+    " @click="onUpdateAgentCard(item as Agent)">
 
         <div class="flex justify-between items-center">
 
