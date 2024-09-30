@@ -393,19 +393,19 @@
                         <MonoLogo v-else class="h-6 w-6 text-slate-500" />
                      </div>
 
-                     <span v-if="agentStore?.agentActive?.available"
+                     <span 
                         class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                         :style="backgroundColor">
                         {{ welcomeMessage }}
                      </span>
 
-                     <span v-else
+                     <!-- <span v-else
                         class="mb-[22px] mt-3 grid place-self-start self-start rounded-2xl rounded-tl-none px-3 py-1.5 text-base text-white"
                         :style="backgroundColor"
                      >
                      Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis. Por favor, tente novamente mais tarde. ⏳😊
 
-                     </span>
+                     </span> -->
 
                   </div>
 
@@ -606,9 +606,8 @@
                   </div>
                </div>
 
-               <div class="p-4">
+               <div class="p-4" v-if="!agentStore.agentActive.available">
                   ⚠️ Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis.
-
                </div>
                
                
@@ -630,15 +629,14 @@
                <div class="flex select-none items-center justify-center">
                 
                   <span
-                     v-if="agentStore.agentActive.available"
                      class="text-center"
                      :style="fontFamily">
-                     {{ agentStore.agentActive.hello_message || 'Olá!👋 Como posso te ajudar? kkß'}}
+                     {{ agentStore.agentActive.hello_message || 'Olá!👋 Como posso te ajudar?'}}
                   </span>
 
-                  <span v-else class="text-center" :style="fontFamily">
+                  <!-- <span v-else class="text-center" :style="fontFamily">
                      ⚠️ Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis.
-                  </span>
+                  </span> -->
 
                </div>
             </div>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
+import { AxiosError } from 'axios';
 import messageApi from '@/services/messageServiceApi'
 import sessionApi from '@/services/sessionServiceApi'
 import { Session,SessionCreate } from '@/models/sessionModel'
@@ -147,12 +147,31 @@ export const useChatStore = defineStore('chat', () => {
             // Atualiza a sessão ativa no localStorage
             localStorage.setItem('currentSession', JSON.stringify(sessionActive.value))
         } catch (error) {
-            console.error('Erro ao enviar mensagem:', error)
-            // Tratar o erro conforme necessário
+            // Verifique se o erro é do tipo AxiosError, por exemplo
+            if (error instanceof AxiosError && error.response) {
+              const data_error = error.response.data as { error?: string };
+          
+              if (data_error?.error === 'Não há créditos suficientes') {
+                // Adiciona a resposta do bot na sessão ativa
+                sessionActive.value.messages.push({
+                  id: sessionActive.value.messages.length + 1,
+                  type: 'bot',
+                  content: 'Nos desculpe pelo inconveniente, mas no momento nossos serviços estão indisponíveis.',
+                  sources: [],
+                  audio_file: null,
+                  is_audio_recorder: isAudioRecorded.value,
+                  duration: 0,
+                });
+              }
+          
+              console.log(data_error);
+            } else {
+              console.error('Erro desconhecido:', error);
+            }
+          
+            console.error('Erro ao enviar mensagem:', error);
         }
-        isAudioRecorded.value = false //reseta a variavel de audio gravado
     }
-
     const updateMessages = async () => {
         if (!sessionActive.value) {
             console.error('Não há uma sessão ativa para atualizar as mensagens.')
