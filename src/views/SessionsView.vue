@@ -184,7 +184,7 @@
                             <!--Sem mensagem ainda-->
                             <div v-else class="h-full ">
                                 <div class="h-full flex flex-col justify-center items-center gap-3 mt-3">
-                                    <img src="../Img/no_messages.svg" alt="Nenhuma mensagem" style="width: 136px;">
+                                    <img src="@/assets/Img/no_messages.svg" alt="Nenhuma mensagem" style="width: 136px;">
                                     <span class="col-span-2 mb-4 mt-1 place-self-center rounded-lg px-4 py-0.5 font-semibold">Nenhuma mensagem </span>
 
                                 </div>
