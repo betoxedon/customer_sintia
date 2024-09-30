@@ -121,7 +121,9 @@
         </div>
 
         <div v-if="!agentStore.sessionActive" class=" h-full flex flex-col justify-center items-center gap-6 mt-3">
-            <img src="@/img/select_conversation.svg" alt="selecione uma converesa" style="width: 333.53px;">
+            <!-- <img src="@/img/select_conversation.svg" alt="selecione uma converesa" style="width: 333.53px;"> -->
+            <SelectecChat class="h-[333px]" style="width: 333.53px;"/>
+
             <span class="font-semibold">Selecione uma conversa para ver as mensagens</span>
         </div>
 
@@ -157,7 +159,9 @@
             <!--Sem mensagem ainda-->
             <div v-else class="h-full ">
                 <div class="h-full flex flex-col justify-center items-center gap-3 mt-3">
-                    <img src="@/img/no_messages.svg" alt="Nenhuma mensagem" style="width: 136px;">
+                    <!-- <img src="@/img/no_messages.svg" alt="Nenhuma mensagem" style="width: 136px;"> -->
+                    <NoMsg class="h-[136px]" style="width: 136px;"/>
+
                     <span class="col-span-2 mb-4 mt-1 place-self-center rounded-lg px-4 py-0.5 font-semibold">Nenhuma mensagem </span>
 
                 </div>
