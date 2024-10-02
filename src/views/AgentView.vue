@@ -54,7 +54,13 @@
       <div class="main-inner grid-rows-[min-content_1fr_min-content]" >
          <div class="main-top flex items-center justify-between	" >
 
-            <div class="title">
+            <div 
+            class=""
+            :class="{
+               'title-hidden':agentStore.updatingAgent,
+               'title':!agentStore.updatingAgent
+               }"
+            v-if="!agentStore.creatingAgent || !agentStore.updatingAgent" @click=" agentStore.partialReset()">
 
                <a href="#" class="back" v-if="agentStore.creatingAgent || agentStore.updatingAgent" @click=" agentStore.partialReset()">
                   <ion-icon name="arrow-back-outline"></ion-icon>
@@ -137,13 +143,16 @@ div.title {
    align-items: center;
    gap: 20px;
 }
+.title-hidden{
+   display: none;
+}
 .back {
    display: flex;
    gap: 10px;
    align-items: center;
    color: #1a365d;
    text-decoration: none;
-   background-color: #f0f4f8;
+   /* background-color: #f0f4f8; */
    padding: 10px;
    border-radius: 8px;
 }

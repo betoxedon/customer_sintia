@@ -12,6 +12,7 @@
    audio_file_duration?:number
    sources?:string
    image_file?: string
+   is_recording?:boolean
 
  }
 

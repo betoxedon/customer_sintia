@@ -244,6 +244,7 @@
          
       }     
       chatStore.isLoading = false
+      chatStore.isAudioRecorded = false
    }
 
    const truncateText = (text: string, length: number) => {
@@ -297,7 +298,7 @@
 
       //Se mesmo com o audio_response o audio_response_type tivr com valor = Sem resposta por audio, exibir versao de texto
 
-      if (agentStore.agentActive.audio_response_type?.name === 'Sem resposta por áudio'){
+      if (!agentStore.agentActive.audio_response_type){
          return true;
       }
 
@@ -447,7 +448,7 @@
                               :audioSource="message.audio_file" v-else />                 
 
                               <!-- <audio  class="audio_controlls" v-else :src="message.audio_file" controls></audio> -->
-                          
+                        
                         <!--Rating Message buttons-->
                         <div class="flex justify-end" v-if="message.id">
 

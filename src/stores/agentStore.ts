@@ -239,7 +239,7 @@ export const useAgentStore = defineStore('agent', () => {
          type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
-         audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,
+         audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type?.id : data.audio_response_type,
          
          material_core: typeof data.material_core !== 'undefined' ? (Array.isArray(data.material_core) ? data.material_core.join(',') : data.material_core) : ''
 
@@ -273,7 +273,8 @@ export const useAgentStore = defineStore('agent', () => {
          //type: typeof data.type === 'object' ? data.type.id : data.type,
          tone: typeof data.tone === 'object' ? data.tone.id : data.tone,
          voice: typeof data.voice === 'object' ? data.voice.id : data.voice,
-         audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type.id : data.audio_response_type,
+         
+         audio_response_type: typeof data.audio_response_type === 'object' ? data.audio_response_type?.id : data.audio_response_type,
 
          // Verifica se material_core não é indefinido antes de tratá-lo
          material_core: typeof data.material_core !== 'undefined' ? 

@@ -86,11 +86,14 @@ export const useChatStore = defineStore('chat', () => {
 
             imageFile.value = null
             
+            console.log(isAudioRecorded.value)
             const response = await messageApi.createMessage(
                 sessionActive.value.id, 
                 request, 
                 currentAudioFile.value,
-                __imageFile
+                __imageFile,
+                isAudioRecorded.value,
+                
             )
            
             currentAudioFile.value = ''
@@ -143,9 +146,9 @@ export const useChatStore = defineStore('chat', () => {
                  }
             )
             
-            
             // Atualiza a sessão ativa no localStorage
             localStorage.setItem('currentSession', JSON.stringify(sessionActive.value))
+            
         } catch (error) {
             // Verifique se o erro é do tipo AxiosError, por exemplo
             if (error instanceof AxiosError && error.response) {
@@ -159,7 +162,7 @@ export const useChatStore = defineStore('chat', () => {
                   content: 'Nos desculpe pelo inconveniente, mas no momento nossos serviços estão indisponíveis.',
                   sources: [],
                   audio_file: null,
-                  is_audio_recorder: isAudioRecorded.value,
+                  is_audio_recorder: false,
                   duration: 0,
                 });
               }
@@ -168,7 +171,15 @@ export const useChatStore = defineStore('chat', () => {
             } else {
               console.error('Erro desconhecido:', error);
             }
-          
+            sessionActive.value.messages.push({
+                id: 'error' + sessionActive.value.messages.length + 1 ,
+                type: 'bot',
+                content: 'Desculpe, ocorreu um problema ao processar sua solicitação. Por favor, tente novamente mais tarde.',
+                sources: [],
+                audio_file: null,
+                is_audio_recorder: false,
+                duration: 0,
+              });
             console.error('Erro ao enviar mensagem:', error);
         }
     }

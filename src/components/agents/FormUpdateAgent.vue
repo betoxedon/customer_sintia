@@ -63,7 +63,7 @@
    const onSubmit = handleSubmit(async (form: Agent) => {
       try {
          //await updateAgentFirestore(form as Agent)
-         await agentStore.updateAgent(form as Agent,agentStore.agentActive.id)
+         await agentStore.updateAgent(form as Agent,agentStore?.agentActive?.id)
 
          resetForm({
             values: agentStore.agentActive,
@@ -79,6 +79,7 @@
          interfaceStore.confirmationData = undefined
          interfaceStore.showNotification = true
       } catch (error) {
+         console.error(error)
          interfaceStore.notificationMessage = `Erro desconhecido. Por favor, tente novamente`
          interfaceStore.notificationType = 'alert'
          interfaceStore.showNotification = true
@@ -190,9 +191,15 @@
       <div
          class="container-inner grid-rows-auto  place-content-stretch content-start gap-y-3">
 
+         
+         
    
          <Tabs :value="agentStore?.tabValueActive" >
+            
             <TabList>
+               <a href="#" class="back" @click=" agentStore.partialReset()">
+                  <ion-icon name="arrow-back-outline"></ion-icon>
+               </a>
                <Tab value="0" @click="changeTab('Geral', '0')">Geral</Tab>
                <Tab value="1" @click="changeTab('Customização', '1')">Customização</Tab>
                <Tab value="2" @click="changeTab('Materiais', '2')">Base de conhecimento</Tab>
@@ -236,7 +243,8 @@
             <div class="col-span-full maxw:col-span-1">
                <div
                   class="btn btn-p bg-positive"
-                  :class="{ 'btn-disabled': !meta.dirty }"
+                 
+                  :class="{ 'btn-disabled': !meta.dirty || !meta.valid || agentStore.isLoading }"
                   @click="onSubmit()">
                   <MonoSave />
                   <AnimLoadingBtn  v-if="agentStore.isLoading"/>

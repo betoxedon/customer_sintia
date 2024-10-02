@@ -2,7 +2,7 @@
    import { setNowUtcUnix } from '@/utils'    
   
    const now = setNowUtcUnix()
-
+   
    // [file]
    const maxFileSize = 1000 * 1000 * 2
    const acceptedImageMimeTypes = ['image/jpeg', 'image/jpg', 'image/png']
@@ -53,15 +53,13 @@
 
    const promptSchema = z.string().min(5).max(7500)
 
-
-
    const audio_responseSchema = z.boolean().default(false)
    const toolsSchema = z.boolean().default(false)
    const availableSchema = z.boolean().optional()
 
    const audio_responseTypeSchema = z.object({
-      name: z.string(),
-      id: z.number(),
+      name: z.string().optional(),
+      id: z.number().optional(),
       }
    ).optional()
 
@@ -159,7 +157,16 @@
    const agentSchema = z.object({
       ...agentInitialSchema.shape,
       ...agentAdditionalSchema.shape,
-   })
+   }).refine((data) => {
+      // Se 'audio_response' for true, 'audio_response_type' não pode ser null ou undefined
+      if (data.audio_response && (data.audio_response_type === null || data.audio_response_type === undefined)) {
+         return false;
+      }
+      return true;
+   }, {
+      message: "audio_response_type é obrigatório quando audio_response for true",
+      path: ["audio_response_type"], // Define o caminho onde o erro será adicionado
+   });
 
    // [type]
    type ImageFile = z.infer<typeof imageFileSchema>

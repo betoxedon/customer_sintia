@@ -8,6 +8,7 @@
    import FactoryForm from '@/components/forms/FactoryForm.vue'
    import TextAreaForm from '@/components/forms/TextAreaForm.vue'
 
+   import { useField } from 'vee-validate'
    import { useAgentStore } from '@/stores/agentStore'
 
    const agentStore = useAgentStore()
@@ -20,8 +21,9 @@
       },
    })
 
-  
-   const voiceResponse = ref(false)
+   const { value } = useField('audio_response');
+   const voiceResponse = ref(value.value)
+   
    const useMYApiKey = ref(false)
 
 </script>
@@ -36,7 +38,6 @@
          labelField="Nome"
          nameField="name"
          placeholder="Nome do chatbot"
-         stringHandler="stringToCapital"
          :errorsMessage="errors" />
 
        
@@ -140,7 +141,7 @@
          nameField="tools"
          :errorsMessage="errors"
           placeholder="Habilitar pesquisa na web"
-      />
+         />
       </div>
 
       <CheckboxForm
@@ -148,10 +149,11 @@
          labelField="Resposta de audio"
          nameField="audio_response"
          :errorsMessage="errors"
-         :modelValue="voiceResponse"
          placeholder="Permitir respostas de áudio"
+         :modelValue="voiceResponse"
          @update:modelValue="voiceResponse = $event"
-         />
+      />
+      
 
       <SelectForm
          v-if="voiceResponse || (agentStore.agentActive && agentStore.agentActive.audio_response)"

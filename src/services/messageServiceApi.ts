@@ -4,11 +4,16 @@ import apiAuth from './apiAuth';
 
 export default {
 
-    createMessage(session:number, message:string, request_file:File,image_file:File){
+    createMessage(session:number, message:string, request_file:File,image_file:File, is_recording?:boolean){
 
         const formData = new FormData()
         formData.append('request', message)     
         formData.append('session', session.toString());
+        
+         // Converter o booleano para string 'true' ou 'false'
+        if (is_recording !== undefined) {
+            formData.append('is_recording', is_recording ? 'true' : 'false');
+        }
 
         const config = {
             headers: {

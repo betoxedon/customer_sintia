@@ -76,7 +76,7 @@
 <template>
    
    <div class="main-core">
-
+         
             <span v-if="errors" class="text-red-500 flex flex-col gap-2">
                <span class="text-red-500" v-for="(errorMessage, fieldName) in errors" :key="fieldName">
                   Erro no campo {{ fieldName }}: {{ errorMessage }}
