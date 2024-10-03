@@ -27,7 +27,6 @@
          labelField="Nome"
          nameField="name"
          placeholder="Nome do chatbot"
-         stringHandler="stringToCapital"
          :errorsMessage="errors" />
 
       <FieldForm
