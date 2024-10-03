@@ -86,9 +86,9 @@
 
 <template>
     
-    <div class="main-core my-container pt-0">
+    <div class="main-core my-container pt-0 ">
 
-        <div class="flex items-center h-screen p-8 max-h-[44rem] md:p-6">
+        <div class="flex items-center h-screen-80 p-8 md:p-6">
 
             <div class="w-screen h-full lg:w-1/3 p-6 rounded-3xl bg-white shadow-lg overflow-hidden flex flex-col" >
 
@@ -345,6 +345,10 @@
 </template>
 
 <style scoped>
+
+.h-screen-80{
+    height: 80vh;
+}
 
 .text-xxs{
     font-size: .75rem;

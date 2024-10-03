@@ -183,7 +183,8 @@
 
 <template>
    <div class="main-core">
-      <span v-if="errors && showBts " class="text-red-500 flex flex-col gap-2">
+      
+      <span v-if="errors && Object.keys(errors).length > 0 && showBts " class="text-red-500 flex flex-col gap-2">
          <span class="text-red-500" v-for="(errorMessage, fieldName) in errors" :key="fieldName">
             Erro no campo {{ fieldName }}: {{ errorMessage }}
          </span>
