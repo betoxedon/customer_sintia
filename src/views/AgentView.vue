@@ -37,6 +37,10 @@
       }
    })
 
+   const isHomeAgent = computed(() => {
+   
+      return !agentStore.creatingAgent && !agentStore.updatingAgent
+   })
    const onCreateAgent = () => {
       agentStore.partialReset()
       agentStore.creatingAgent = true
@@ -51,8 +55,10 @@
     
 
 
-      <div class="main-inner grid-rows-[min-content_1fr_min-content]" >
-         <div class="main-top flex items-center justify-between	" >
+      <div class="main-inner gap-y-0 grid-rows-[min-content_1fr_min-content]" >
+         <div class="main-top flex items-center justify-between" 
+         :class="{'h-0 p-0':!isHomeAgent}"
+         >
 
             <div 
             class=""

@@ -30,7 +30,7 @@
 
 <template>
    <div
-      class="col-span-full mx-auto   w-full  gap-x-3 gap-y-3 maxw:max-w-none maxw:gap-x-6">
+      class="col-span-full mx-auto w-full mt-5 gap-x-3 gap-y-3 maxw:max-w-none maxw:gap-x-6">
       
       <div class="flex gap-3"> 
       <FieldForm

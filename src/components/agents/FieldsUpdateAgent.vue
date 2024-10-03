@@ -21,7 +21,7 @@
 
 <template>
    <div
-      class="col-span-full mx-auto  w-full max-w-[500px] grid-cols-12 place-content-start justify-center gap-y-3 maxw:max-w-none maxw:gap-x-6">
+      class="col-span-full mx-auto mt-5   w-full max-w-[500px] grid-cols-12 place-content-start justify-center gap-y-3 maxw:max-w-none maxw:gap-x-6">
       <FieldForm
          class="col-span-full maxw:col-span-6 hidden"
          labelField="Nome"

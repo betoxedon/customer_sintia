@@ -88,7 +88,7 @@
     
     <div class="main-core my-container pt-0">
 
-        <div class="flex items-center h-screen p-8 max-h-[40rem] md:p-6">
+        <div class="flex items-center h-screen p-8 max-h-[44rem] md:p-6">
 
             <div class="w-screen h-full lg:w-1/3 p-6 rounded-3xl bg-white shadow-lg overflow-hidden flex flex-col" >
 
@@ -150,7 +150,7 @@
 
                 <div v-if="!agentStore.sessionActive" class=" h-full flex flex-col justify-center items-center gap-6 mt-3">
                     <!-- <img src="@/img/select_conversation.svg" alt="selecione uma converesa" style="width: 333.53px;"> -->
-                    <SelectecChat class="h-[333px]" style="width: 333.53px;"/>
+                    <SelectecChat class="h-[200px]" style="width: 200px;"/>
 
                     <span class="font-semibold">Selecione uma conversa para ver as mensagens</span>
                 </div>
