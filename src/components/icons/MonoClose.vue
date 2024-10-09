@@ -2,7 +2,7 @@
    <svg viewBox="0 0 24 24">
       <path
          fill="none"
-         stroke="currentColor"
+         stroke="#536cbc"
          stroke-linecap="round"
          stroke-linejoin="round"
          stroke-width="2"

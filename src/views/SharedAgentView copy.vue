@@ -3,127 +3,17 @@
    import { useAgentStore } from '@/stores/agentStore'
    import {useChatStore} from '@/stores/chatStore'
    import { useRoute } from 'vue-router'
-   //import { useSpeechRecognition } from '@vueuse/core'
+   import { useSpeechRecognition } from '@vueuse/core'
    import AudioPlayer from '@/components/player/AudioPlayer.vue' 
   
    //audio recognition
-   //const transcript = ref('')
+   const transcript = ref('')
    const audioRecorded = ref('')
-   //const iconsRecord = ref()
-   //const audioFile = ref<File>()
-   const showRecordsAudio = ref(false)
-   const showPlayer = ref(false)
+   const audioFile = ref<File>()
+
    const imageFile = ref<File | null>(null)
    const imageUrl = ref<string | null>(null);
    const inputMessage = ref<HTMLInputElement | null>(null)
-   const isRecording = ref(false)  
-   const is_Recording  = ref(false)
-   const is_Paused  = ref(false)
-   const bolinha = ref<HTMLElement | null>(null)
-
-   import { RecordsAudio, } from "vue-record-audio"
-
-   const base64ToBlob = (base64: string, type: string) => {
-      const byteCharacters = atob(base64.split(',')[1]); // Decodifica a string base64
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-         byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      return new Blob([byteArray], { type: type });
-   };
-
-   const saveRecord = async (data: any) => {
-      
-    // Acessar a string base64 do áudio
-    const audioBase64 = data.base64;
-
-    is_Recording.value = false
-    is_Paused.value = false
-    
-    // Verificar se a string base64 está presente
-    if (audioBase64) {
-        // Criar um Blob a partir da string base64
-        const audioBlob = base64ToBlob(audioBase64, 'audio/wav'); // Mude para 'audio/wav' se o áudio for WAV
-        const audioFile = new File([audioBlob], 'recording.wav', { type: 'audio/wav' }); // Crie um arquivo WAV
-
-        // Log do arquivo de áudio
-        console.log("Audio File:", audioFile);  
-
-        // Criar um URL para o Blob
-        const audioUrl = URL.createObjectURL(audioBlob);
-        audioRecorded.value = audioUrl;
-
-         chatStore.currentAudioFile = audioFile;
-         chatStore.currentUrlAudio = audioRecorded.value;
-         chatStore.durationRecorded = data.time; // Usando o tempo da gravação
-
-        // Enviar a mensagem com o arquivo de áudio
-        await sendMessage();
-    } else {   
-        console.error("No audio data found in the provided object.");
-    }
-};
-
-   const listenEventsRecord = (data:any)=>{
-      console.log("listen record",data)
-
-      if (!data.record && !data.false && !data.stop){
-         showRecordsAudio.value = false
-      }
-
-      // Atualiza o estado da gravação
-    if (data.record && !data.pause) {
-        is_Recording.value = true;  // Gravando
-        is_Paused.value = false;    // Não está pausado
-    } else if (data.pause && data.record) {
-        is_Recording.value = true;   // Gravando (mas pausado)
-        is_Paused.value = true;      // Está pausado
-    } else if (data.pause) {
-        is_Recording.value = false;   // Pausado
-        is_Paused.value = true;       // Está pausado
-    } else if (data.stop) {
-        is_Recording.value = false;   // Parado
-        is_Paused.value = false;      // Não está pausado
-    } else {
-        is_Recording.value = false;   // Qualquer outro estado que não seja gravação
-        is_Paused.value = false;      // Não está pausado
-    }
-
-    // Controle da bolinha
-    if (bolinha.value) {
-        if (is_Recording.value && !is_Paused.value) {
-            bolinha.value.classList.remove('hidden');  // Mostra a bolinha quando a gravação começa
-            bolinha.value.classList.add('piscando');   // Adiciona classe de piscar
-        } else if (is_Paused.value) {
-            bolinha.value.classList.remove('hidden');   // Mostra a bolinha quando está pausado
-            bolinha.value.classList.remove('piscando');     // Adiciona classe de piscar mesmo pausado
-        } else {
-            bolinha.value.classList.add('hidden');       // Oculta a bolinha quando a gravação para, pausa ou para
-            bolinha.value.classList.remove('piscando');  // Remove a classe de piscar
-        }
-        
-
-    } else {
-        console.error("A bolinha ainda não foi criada.");
-        createBall();
-        
-    }
-
-   }
-
-   const listenEventsPlayer = (data:any)=>{
-      console.log("listen player",data)
-   }
-
-   const stopRecordingPlay = (ControllerRecord: any) => {
-      console.log(ControllerRecord)
-      chatStore.isAudioRecorded = true
-      ControllerRecord.stopRecord();
-      scrollMessage() 
-      showPlayer.value = false;  // Esconde o player após a gravação
-      showRecordsAudio.value = false
-   };
 
    const handleFileChange = (event: Event) => {
 
@@ -155,77 +45,83 @@
   }
 };
 
-   // const speech = useSpeechRecognition({
-   //    continuous: true,
-   //    lang: 'pt-BR',
-   // })
+   const isRecording = ref(false)  
+   
+   const speech = useSpeechRecognition({
+      continuous: true,
+      lang: 'pt-BR',
+   })
 
 
-   // function start() {     
-   //    speech.result.value = ''      
-   //    speech.start()
-   //    startRecording();
-   // }
+   function start() {     
+      speech.result.value = ''      
+      speech.start()
+      startRecording();
+     
+   }
 
-   //const { isListening, isSupported, result } = speech
+   const { isListening, isSupported, result } = speech
 
-   // function stop() {
-   //    transcript.value = result.value     
-   //    chatStore.currentMessage = transcript.value
-   //    chatStore.isAudioRecorded = true
-   //    speech.stop()
-   //    stopRecording();
-   // }
+   function stop() {
+      transcript.value = result.value     
+      chatStore.currentMessage = transcript.value
+      chatStore.isAudioRecorded = true
+      speech.stop()
+      stopRecording();
+     
+      
+   }
 
-   //let mediaRecorder: MediaRecorder | null;
+   let mediaRecorder: MediaRecorder | null;
 
-   // function startRecording() {
-   //    navigator.mediaDevices.getUserMedia({ audio: true })
-   //       .then(function onSuccess(stream) {
-   //          mediaRecorder = new MediaRecorder(stream);
-   //          const chunks: BlobPart[] = [];
-   //          mediaRecorder.start();
+   function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+         .then(function onSuccess(stream) {
+            mediaRecorder = new MediaRecorder(stream);
+            const chunks: BlobPart[] = [];
+            mediaRecorder.start();
 
-   //          const startTime = Date.now(); // Início da gravação
+            const startTime = Date.now(); // Início da gravação
             
-   //          mediaRecorder.addEventListener('dataavailable', function onDataAvailable(event) {
-   //          chunks.push(event.data);
-   //          });
+            mediaRecorder.addEventListener('dataavailable', function onDataAvailable(event) {
+            chunks.push(event.data);
+            });
 
-   //          mediaRecorder.addEventListener('stop', function onStop() {
+            mediaRecorder.addEventListener('stop', function onStop() {
 
-   //          const stopTime = Date.now(); // Fim da gravação
-   //          chatStore.durationRecorded = (stopTime - startTime) / 1000; // Duração da gravação em segundos
+            const stopTime = Date.now(); // Fim da gravação
+            chatStore.durationRecorded = (stopTime - startTime) / 1000; // Duração da gravação em segundos
 
-   //          const blob = new Blob(chunks, { type: 'audio/wav; codecs=opus' });
-            
-   //          audioFile.value = new File([blob], 'audio_recording.wav', { type: 'audio/wav; codecs=opus' });  
+            const blob = new Blob(chunks, { type: 'audio/wav; codecs=opus' });
+            audioFile.value = new File([blob], 'audio_recording.wav', { type: 'audio/wav; codecs=opus' });  
 
-   //          chatStore.currentAudioFile = audioFile.value         
-   //          const audioUrl = URL.createObjectURL(blob);            
-   //          //const audioElement = new Audio(audioUrl);                         
-   //          audioRecorded.value = audioUrl
-   //          chatStore.currentUrlAudio = audioRecorded.value
-   //          //audioElement.controls = true;
-   //          //document.body.appendChild(audioElement);
-   //          });
-   //       })
-   //       .catch(function onError(err) {
-   //          console.log('The following error occurred:', err);
-   //       });
-   // }
+            chatStore.currentAudioFile = audioFile.value         
+            const audioUrl = URL.createObjectURL(blob);            
+            //const audioElement = new Audio(audioUrl);                         
+            audioRecorded.value = audioUrl
+            chatStore.currentUrlAudio = audioRecorded.value
+            //audioElement.controls = true;
+            //document.body.appendChild(audioElement);
+            });
+         })
+         .catch(function onError(err) {
+            console.log('The following error occurred:', err);
+         });
+   }
 
    // Função para parar a gravação de áudio
-   // async function stopRecording() {
-   //  if (mediaRecorder && mediaRecorder.state === 'recording') {
-   //      mediaRecorder.addEventListener('stop', async () => {
-   //          // Chama sendMessage após o evento 'stop'
-   //          await sendMessage();
-   //      });
-   //      // Para a gravação
-   //      await mediaRecorder.stop();
-   //  }
-   // }
+   async function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.addEventListener('stop', async () => {
+            // Chama sendMessage após o evento 'stop'
+            await sendMessage();
+        });
+        // Para a gravação
+        await mediaRecorder.stop();
+    }
+   }
+
+
 
    const agentStore = useAgentStore()
    const chatStore = useChatStore()
@@ -324,7 +220,6 @@
    }
 
    const scrollMessage = () => {
-   console.log('scrollMessage')
       if (!scrollElement.value) return  
       scrollElement.value.scrollTop = scrollElement.value?.scrollHeight
    }
@@ -332,7 +227,7 @@
    const sendMessage = async() => {         
       
     
-      if (chatStore.currentMessage || chatStore.currentAudioFile) {
+      if (chatStore.currentMessage) {
          chatStore.isLoading = true  
 
          nextTick(() => {
@@ -363,8 +258,8 @@
       chatStore.rateMessage(rate, messageId)
    }
 
-   onMounted(async () => {         
-      console.log('onMounted')
+   onMounted( () => {         
+            
       body.value.style.backgroundColor = '#0f172a'
       body.value.style.overflow = 'hidden'
       const agentId = route.params.chatbotId as string
@@ -377,42 +272,8 @@
       }).catch(error => {
          console.log(error)            
      });       
-
-       await nextTick();
-      //shadown
-
-      // Chama a função createBall
-      await createBall();
-        
+       
    })
-
-   const waitForElement = async (selector: string, timeout = 5000) => {
-    const start = Date.now();
-    let element = document.querySelector(selector);
-
-    while (!element && (Date.now() - start) < timeout) {
-        await new Promise(resolve => setTimeout(resolve, 100)); // Espera 100ms antes de tentar novamente
-        element = document.querySelector(selector);
-    }
-
-    return element;
-};
-const createBall = async () => {
-    await nextTick();  // Garante que os elementos no DOM estejam prontos
-
-    const timeElement = await waitForElement('#time'); // Espera o elemento #time ser encontrado
-
-    if (timeElement && timeElement.parentNode) {
-        if (!bolinha.value) {
-            bolinha.value = document.createElement('span');
-            bolinha.value.classList.add('bolinha', 'hidden');
-            timeElement.parentNode.insertBefore(bolinha.value, timeElement);
-        }
-        console.log('Bolinha criada:', bolinha.value);
-    } else {
-        console.warn('Elemento #time não encontrado ou não tem um elemento pai após o tempo de espera.');
-    }
-};
 
    const addLinkTarget = () => {
       
@@ -470,19 +331,15 @@ const createBall = async () => {
 </script>
 
 <template>
-
-<div>
-      
-    </div>
  
    <div
    
-      class="text-onsurface fixed shared-agent-view bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[420px]"
+      class="text-onsurface fixed bottom-5 max-h-[100vh] min-h-[66px] w-[100vh] max-w-[420px]"
       :class="screenSideClass">
       
       <div v-show="showDialog" class="chat-main grid content-end">
          <div
-            class="grid w-full grid-rows-[min-content_minmax(0px,_570px)] overflow-hidden rounded-xl grid-rows-responsive "
+            class="grid w-full grid-rows-[min-content_minmax(0px,_570px)] overflow-hidden rounded-xl"
             :style="fontFamily">
             <div
                class="flex min-h-[74px] flex-col py-4 pl-5 pr-3"
@@ -511,7 +368,7 @@ const createBall = async () => {
 
                   <div class="absolute right-1 top-0 flex gap-x-2">
                      <span class="cursor-pointer" @click="onCloseChatDialog()">
-                        <MonoClose class="h-5 text-white bg-white rounded-sm" />
+                        <MonoClose class="h-5 text-white" />
                      </span>
                   </div>
                </div>
@@ -592,48 +449,48 @@ const createBall = async () => {
 
                               <!-- <audio  class="audio_controlls" v-else :src="message.audio_file" controls></audio> -->
                         
-                           <!--Rating Message buttons-->
-                           <div class="rating-btns flex justify-end" v-if="message.id">
+                        <!--Rating Message buttons-->
+                        <div class="flex justify-end" v-if="message.id">
 
-                              <button 
-                                 :disabled="message.rating === true"
-                                 v-if="message.rating !== false || message.rating === true"
-                                 @click="rateMessage(true, message.id)"
-                                 :class="{active: message.rating === true}"
-                                 class="btn-raiting btn-like">
-                                    <MonoLike class="h-4 w-4"/>
-                              </button>
+                           <button 
+                              :disabled="message.rating === true"
+                              v-if="message.rating !== false || message.rating === true"
+                              @click="rateMessage(true, message.id)"
+                              :class="{active: message.rating === true}"
+                              class="btn-raiting btn-like">
+                                 <MonoLike class="h-4 w-4"/>
+                           </button>
 
-                              <button
-                                 :disabled="message.rating === false"
-                                 v-if="message.rating !== true || message.rating === false"
-                                 :class="{active: message.rating === false}"
-                                 @click="rateMessage(false, message.id)"
-                                 class="btn-raiting btn-unlike">
-                                 <MonoUnlike class="h-4 w-4"/>
-                              </button>
-                           </div>
-
-                           <!--Sources-->       
-                           <div class="flex mt-4 gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
-                              v-if="message.sources && message.sources.length > 0 && message.sources[0] != '' " >
-                                 <span>Sources: </span>
-                                 <a :href="source" target="_blank" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
-                                    <MonoLink class="h-4 w-4" />
-                                    <span >
-                                       <span>{{ truncateText(source,20) }}</span> 
-                                    </span>
-                                 </a>
-                           </div>
-
+                           <button
+                              :disabled="message.rating === false"
+                              v-if="message.rating !== true || message.rating === false"
+                              :class="{active: message.rating === false}"
+                              @click="rateMessage(false, message.id)"
+                              class="btn-raiting btn-unlike">
+                              <MonoUnlike class="h-4 w-4"/>
+                           </button>
                         </div>
+
+                        <!--Sources-->       
+                        <div class="flex mt-4 gap-2 sources bg-white mb-[12px] items-center overflow-x-auto"
+                           v-if="message.sources && message.sources.length > 0 && message.sources[0] != '' " >
+                              <span>Sources: </span>
+                              <a :href="source" target="_blank" v-for="(source, index) in message.sources" :key="index" class="bg-blue-300 flex gap-2 items-center rounded">
+                                 <MonoLink class="h-4 w-4" />
+                                 <span >
+                                    <span>{{ truncateText(source,20) }}</span> 
+                                 </span>
+                              </a>
+                        </div>
+
+                     </div>
                         
 
                      </div>
                   
                      <!--message.type == user -->
                      <div  v-if="message.type == 'user'"
-                        class="mb-53 col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
+                        class="mb-[22px] col-span-full grid grid-cols-[minmax(0,_90%)] justify-end gap-x-2 ">
                         
                            <span v-if="message.audio_file == ''"
                               class="break-words relative  grid place-self-end rounded-2xl rounded-tr-none bg-surface-30 px-3 py-1.5 text-base before:bg-surface-30">
@@ -689,68 +546,15 @@ const createBall = async () => {
                   <div v-if="chatStore.imageFile" class="imageselected">
 
                      <button class="close-btn">
-                        <MonoClose class="h-4 w-4 text-red " @click="chatStore.imageFile = null" />
+                        <MonoClose class="h-4 w-4 text-red" @click="chatStore.imageFile = null" />
                      </button>
 
                      <img :src="getUlrImage(chatStore.imageFile)" alt="Selected Image" class="mt-4 ImageFileSelected" />
                   
                   </div>
+
                   
-                  <RecordsAudio v-show="showRecordsAudio" color="#0c96f2" :saveRecord="saveRecord" @listenEventsRecord="listenEventsRecord" @listenEventsPlayer="listenEventsPlayer">
-
-                     <!-- control de grabador -->
-                     <template #btnCancelRecord="{ControllerRecord}">
-                           <button class="btn btn-sm btn-transparent" @click="ControllerRecord.cancelRecord">
-                           <MonoClose class="h-6 text-white"/>
-                          
-                           </button>
-                     </template>
-
-                     <template #btnRecord="{ControllerRecord}">
-                        <button class="btn btn-primary" 
-                        @click="ControllerRecord.playAudio"
-                        >
-                        <MonoMicrophone  class="h-6 text-white"  v-if="!ControllerRecord.record"/>
-                        <MonoPause class="h-4 text-white" color="#ffffff" v-else-if="!ControllerRecord.pause" />
-                        <MonoPlay class="h-4 text-white" color="#ffffff" v-else/>
-                        </button>
-                     </template>
-
-                        <template #btnStopRecord="{ControllerRecord}">
-                        <button class="btn btn-sm btn-transparent" @click="stopRecordingPlay(ControllerRecord)">
-                        <!-- <IconStop color="#536cbc" class="h-6"/> -->
-                        <MonoStop  class="h-6 text-white"  />
-                        
-                        </button>
-                     </template>
-                     
-                     <div v-if="showPlayer">
-
-                     
-                     <!-- control de player -->
-                     <!-- <template #btnPlayerCancel="{ControllerPlayer}">
-                        <button class="btn btn-sm btn-transparent" @click="ControllerPlayer.cancelPlay">
-                           <IconClose color="#536cbc" class="h-5"/>
-                        </button>
-                     </template>
-
-                     <template #btnPlayer="{ControllerPlayer}">
-                        <button class="btn btn-primary" @click="ControllerPlayer.playRecord">
-                           <IconPause color="#ffffff" v-if="ControllerPlayer.play"/>
-                           <IconPlay color="#ffffff" v-else-if="ControllerPlayer.pause" />
-                           <IconPlay color="#ffffff" v-else/>
-                        </button>
-                     </template>
-
-                     <template #btnPlayerStop="{ControllerPlayer}">
-                     <button class="btn btn-sm btn-transparent" @click="ControllerPlayer.stopPlay">
-                     <IconStop/>
-                     </button>
-                     </template> -->
-                     </div>
-                  </RecordsAudio>
-                  
-                  <div v-if="!showRecordsAudio" class="flex items-end py-1 w-full"> 
+                  <div class="flex items-end py-1 w-full"> 
 
                      <button 
                         v-if="agentStore.agentActive?.model?.name == 'GPT 4 128k'"
@@ -762,6 +566,7 @@ const createBall = async () => {
                         
                      <div class="flex min-w-0 flex-1 flex-col">    
                        
+                        
                         
                         <textarea @keydown.enter.stop.prevent="sendMessage" v-model.trim="chatStore.currentMessage" 
                            :style="{ height: textareaHeight }" 
@@ -778,19 +583,22 @@ const createBall = async () => {
                      </div>
                      
                      <div class="flex mr-3  gap-2 items-end"> 
-
-                        <button
-                           class= "audio_btn flex h-[36px]  shrink-0 items-center hover:bg-gray-200 rounded-md p-2 justify-center rounded-lg" >
-                           <MonoMicrophone class="h-6 text-slate-500" 
-                           :class="{ 'cursor-not-allowed text-red-500': isRecording }" 
-                           @click="showRecordsAudio = !showRecordsAudio"
+                  
+                        <button v-if="isSupported && !isListening" 
+                           class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
+                           <MonoMicrophone class="h-5 text-slate-500" 
+                           :class="{ 'cursor-not-allowed text-red-500': isRecording }" @click="start"
                            />
-                        
                         </button>
-               
+
+                        <button v-if="isSupported && isListening"
+                        class="audio_btn flex h-[36px]  shrink-0 items-center justify-center rounded-lg" >
+                           <MonoStop class="h-5 text-slate-500" @click="stop"
+                           />                      
+                        </button>
 
                         <button  @click.stop="sendMessage" :style="backgroundColor" :disabled="!chatStore.currentMessage || chatStore.isLoading"
-                           class=" flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg">
+                           class="flex h-[36px] w-[37px] shrink-0 items-center justify-center rounded-lg">
                            <MonoSend class="h-5 text-white" />
                         </button>
 
@@ -802,7 +610,9 @@ const createBall = async () => {
                <div class="p-4" v-if="!agentStore.agentActive.available">
                   ⚠️ Desculpe pelo inconveniente! No momento, nossos serviços estão indisponíveis.
                </div>
-               <span class="mt-4 text-sm text-[#71737c] text-center hidden">&copy; Sintia Chatbots 2024.</span>
+               
+               
+
             </div>
          </div>
       </div>
@@ -833,7 +643,7 @@ const createBall = async () => {
             </div>
 
             <div
-               class="absolute top-[0.5px] cursor-pointer rounded-full border border-white bg-red-300 p-0.5"
+               class="absolute top-[0.5px] cursor-pointer rounded-full border border-white bg-slate-500 p-0.5"
                :class="closeChatBalloonClass"
                @click="showChatBalloon = false">
                <MonoClose class="h-4 w-4 text-white" />
@@ -854,11 +664,6 @@ const createBall = async () => {
 </template>
 
 <style scoped>
-
-.mb-53{
-   margin-bottom: 53px;
-}
-
 
 div.imageselected {
    position: relative;
@@ -892,18 +697,6 @@ textarea.msg_input {
    resize: none;    
    max-height: 25dvh;
    min-height: 40px;
-}
-.audio_controlls {
-  display: flex;
-  align-items: center;
-  width: auto; /* ou defina uma largura fixa, se necessário */
-}
-
-.rating-btns {
-  display: flex;
-  justify-content: flex-start; /* Alinha os botões no início */
-  gap: 10px; /* Espaçamento entre os botões */
-  margin-top: 10px; /* Ajuste o espaço conforme necessário */
 }
 
 .btn-raiting{
@@ -990,36 +783,5 @@ textarea.msg_input {
     background: #283037;
 }
 
-
-@media (max-width: 1023px) and (min-width: 768px) {
-   .grid-rows-responsive {
-        grid-template-rows: min-content minmax(0, 92vh);
-        border-radius: 0;
-    }
-    .shared-agent-view{
-   /* width: 90vw; */
-  
-   bottom:0;
-   right: 0;
-   max-width: 100%;
- }
-}
-@media (max-width: 767px) {
- .shared-agent-view{
-   /* width: 90vw; */
-  
-   bottom:0;
-   right: 0;
-   max-width: 100%;
- }
- .grid-rows-responsive {
-    grid-template-rows: min-content minmax(0, 90vh); /* Também ocupa a altura total da tela em celulares */
-    border-radius: 0;
-  }
-  div#messages_list {
-    max-height: 80vh;
-}
-
-}
 
 </style>

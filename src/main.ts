@@ -1,3 +1,4 @@
+import '@/assets/styles/audioRecorder.css'
 import '@/assets/styles/responsive.css'
 import '@/assets/styles/tailwind.css'
 import '@/assets/styles/additional.css'

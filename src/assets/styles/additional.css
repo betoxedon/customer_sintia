@@ -1,6 +1,14 @@
+
+
+
+html{
+   --primary-color-audio: #0c9ef2 !important
+}
+
 .main-inner,
 .aside {
    max-height: calc(100vh - theme('spacing.6'));
+  
 }
 
 .main-inner ::-webkit-scrollbar {

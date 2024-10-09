@@ -310,6 +310,8 @@ onMounted(() => {
     audio.value.addEventListener('volumechange', updateVolume);
 
     audio.value.addEventListener('loadedmetadata', () => {
+      console.log('loadedmetadata')
+      console.log('audio.value.duration',audio?.value?.duration)
       if (audio.value && audio.value.duration !== undefined) {
         const duration = audio.value.duration;
         if (duration !== undefined && !isNaN(duration) && duration !== Infinity) {    

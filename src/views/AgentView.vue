@@ -57,7 +57,7 @@
 
       <div class="main-inner gap-y-0 grid-rows-[min-content_1fr_min-content]" >
          <div class="main-top flex items-center justify-between" 
-         :class="{'h-0 p-0':!isHomeAgent}"
+         :class="{'h-0':!isHomeAgent}"
          >
 
             <div 
